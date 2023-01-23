@@ -1,6 +1,6 @@
 {
   "name": "amazona",
-  "proxy": "https://backendamazona3.onrender.com",
+  "proxy": "https://testbackend1.onrender.com",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
