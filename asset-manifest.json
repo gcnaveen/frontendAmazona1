@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/frontendAmazona/static/css/main.4e0ace92.css",
-    "main.js": "/frontendAmazona/static/js/main.c1da2ebd.js",
+    "main.js": "/frontendAmazona/static/js/main.9f3ce125.js",
     "static/js/787.379de456.chunk.js": "/frontendAmazona/static/js/787.379de456.chunk.js",
     "index.html": "/frontendAmazona/index.html",
     "main.4e0ace92.css.map": "/frontendAmazona/static/css/main.4e0ace92.css.map",
-    "main.c1da2ebd.js.map": "/frontendAmazona/static/js/main.c1da2ebd.js.map",
+    "main.9f3ce125.js.map": "/frontendAmazona/static/js/main.9f3ce125.js.map",
     "787.379de456.chunk.js.map": "/frontendAmazona/static/js/787.379de456.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.4e0ace92.css",
-    "static/js/main.c1da2ebd.js"
+    "static/js/main.9f3ce125.js"
   ]
 }
