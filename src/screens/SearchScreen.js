@@ -122,7 +122,7 @@ export default function SearchScreen() {
   const getFilterUrl = (filter) => {
     const filterPage = filter.page || page;
     const filterCategory = filter.category || category;
-    const filterQuery = filter.query || query;
+    const filterQuery = filter?.query || query;
     const filterRating = filter.rating || rating;
     const filterPrice = filter.price || price;
     const sortOrder = filter.order || order;

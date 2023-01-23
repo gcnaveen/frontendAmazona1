@@ -7,6 +7,8 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { getError } from '../utils';
 import MessageBox from './MessageBox';
 import SearchBox from './SearchBox';
+import { LoadScriptNext } from '@react-google-maps/api';
+import LoadingBox from './LoadingBox';
 const reducer = (state, action) => {
   switch (action.type) {
     case 'FETCH_REQUEST':
@@ -101,7 +103,10 @@ export default function OrderSort() {
           </select>
         </Col>
       </Row>
-      {orders?.length === 0 && <MessageBox>No Product Found</MessageBox>}
+      {
+        orders?.length === 0 && <LoadingBox />
+        //  <MessageBox>No Product Found</MessageBox>
+      }
       <Row>
         {orders?.map((order) => (
           <Col sm={6} lg={4} className="mb-3" key={order._id}>

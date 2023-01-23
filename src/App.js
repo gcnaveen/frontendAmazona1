@@ -140,9 +140,17 @@ function App() {
 
               <Navbar.Toggle aria-controls="basic-navbar-nav" />
               <Navbar.Collapse id="basic-navbar-nav">
-                <SearchBox />
+                <div
+                  style={{
+                    alignItem: 'center',
+                    paddingLeft: '100px',
+                    width: '800px',
+                  }}
+                >
+                  <SearchBox />
+                </div>
 
-                <Nav className="me-auto  w-100  justify-content-end">
+                <Nav className="me-auto w-50  justify-content-end">
                   {userInfo && userInfo.isAdmin ? null : userInfo === null ? (
                     <Link to="/signin" className="nav-link">
                       <i
