@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/frontendAmazona/static/css/main.4e0ace92.css",
-    "main.js": "/frontendAmazona/static/js/main.9f3ce125.js",
-    "static/js/787.379de456.chunk.js": "/frontendAmazona/static/js/787.379de456.chunk.js",
-    "index.html": "/frontendAmazona/index.html",
-    "main.4e0ace92.css.map": "/frontendAmazona/static/css/main.4e0ace92.css.map",
-    "main.9f3ce125.js.map": "/frontendAmazona/static/js/main.9f3ce125.js.map",
-    "787.379de456.chunk.js.map": "/frontendAmazona/static/js/787.379de456.chunk.js.map"
+    "main.css": "/frontendAmazona1/static/css/main.4e0ace92.css",
+    "main.js": "/frontendAmazona1/static/js/main.c719676c.js",
+    "static/js/787.379de456.chunk.js": "/frontendAmazona1/static/js/787.379de456.chunk.js",
+    "index.html": "/frontendAmazona1/index.html",
+    "main.4e0ace92.css.map": "/frontendAmazona1/static/css/main.4e0ace92.css.map",
+    "main.c719676c.js.map": "/frontendAmazona1/static/js/main.c719676c.js.map",
+    "787.379de456.chunk.js.map": "/frontendAmazona1/static/js/787.379de456.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.4e0ace92.css",
-    "static/js/main.9f3ce125.js"
+    "static/js/main.c719676c.js"
   ]
 }
