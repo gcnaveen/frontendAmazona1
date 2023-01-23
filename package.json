@@ -1,7 +1,6 @@
 {
   "name": "amazona",
-  "proxy": "https://amazonabackend.onrender.com",
-  "homepage": "https://gcnaveen.github.io/frontendAmazona",
+  "proxy": "https://backendamazona3.onrender.com",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

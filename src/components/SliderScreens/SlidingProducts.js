@@ -60,7 +60,7 @@ export default function SlidingProducts() {
       setSlider(result.data.products);
     };
     fetchData();
-  }, []);
+  }, [sliderType, sliderValue]);
 
   //   console.log(state);
 
@@ -159,7 +159,7 @@ export default function SlidingProducts() {
                         <SwiperSlide>
                           <img
                             className="list-img-size"
-                            onClick={() => navigate(`/product/${ele.slug}`)}
+                            onClick={() => navigate(`/product/${ele?.slug}`)}
                             src={x}
                             alt={ele.name}
                           />

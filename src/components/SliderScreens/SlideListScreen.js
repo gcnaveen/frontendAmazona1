@@ -99,8 +99,7 @@ export default function SlideListScreen() {
   }, [page, userInfo, successDelete]);
 
   const createHandler = async () => {
-    navigate('/admin/sliders/createSlide')
-
+    navigate('/admin/sliders/createSlide');
   };
 
   //   console.log('in side the prices', sliders);
@@ -165,7 +164,7 @@ export default function SlideListScreen() {
                     <Button
                       type="button"
                       variant="light"
-                      onClick={() => navigate(`/admin/sliders/${product._id}`)}
+                      onClick={() => navigate(`/admin/sliders/${product?._id}`)}
                     >
                       Edit
                     </Button>

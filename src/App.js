@@ -70,14 +70,16 @@ function App() {
   };
   const [sidebarIsOpen, setSidebarIsOpen] = useState(false);
   const [categories, setCategories] = useState([]);
+  // const link = 'https://amazonabackend.onrender.com';
 
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const { data } = await axios.get(`/api/products/getAllCats`);
+        const { data } = await axios.get('/api/products/getAllCats');
         setCategories(data);
       } catch (err) {
-        toast.error(getError(err));
+        console.log('network error', err);
+        // toast.error(getError(err));
       }
     };
 

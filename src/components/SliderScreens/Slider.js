@@ -50,21 +50,24 @@ function Slider() {
     setIndex(selectedIndex);
   };
 
-  const navigateToSlier = (slide) => {
-    console.log(slide);
-    if (slide.sliderType === 'category' || slide.sliderType === 'subCategory') {
-      let sliderValue = slide.category;
-      if (slide.sliderType === 'subCategory') {
-        sliderValue = slide.subCategory;
+  const navigateToSlider = (slide) => {
+    console.log('slide', slide);
+    if (
+      slide?.sliderType === 'category' ||
+      slide?.sliderType === 'subCategory'
+    ) {
+      let sliderValue = slide?.category;
+      if (slide?.sliderType === 'subCategory') {
+        sliderValue = slide?.subCategory;
       }
       let navValues = {
-        sliderType: slide.sliderType,
+        sliderType: slide?.sliderType,
         sliderValue,
-        name: slide.name,
+        name: slide?.name,
       };
-      navigate(`/slider/${slide._id}`, { state: navValues });
+      navigate(`/slider/${slide?._id}`, { state: navValues });
     } else {
-      navigate(`/product/sliderProduct`, { state: slide.productID });
+      navigate(`/product/sliderProduct`, { state: slide?.productID });
     }
   };
 
@@ -81,7 +84,7 @@ function Slider() {
             <Row>
               <Col className="hero__section">
                 {/* <Link to={`/slider/${slide._id}`}> */}
-                <div onClick={() => navigateToSlier(slide)}>
+                <div onClick={() => navigateToSlider(slide)}>
                   <img
                     // backgroundColor="green"
                     className="d-block w-100"
