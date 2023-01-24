@@ -29,7 +29,7 @@ const reducer = (state, action) => {
 };
 
 export default function HomeScreens() {
-  const { getInitialValues,state, dispatch: ctxDispatch  } = useContext(Store);
+  const { getInitialValues, state, dispatch: ctxDispatch } = useContext(Store);
 
   const [{ loading, error, products }, dispatch] = useReducer(reducer, {
     products: [],
@@ -37,26 +37,27 @@ export default function HomeScreens() {
     error: '',
   });
 
+  useEffect(() => {}, []);
 
   useEffect(() => {
-  },[])
-  
-  
-  
-  useEffect(() => {
-    let items=localStorage.getItem('userInfo') && localStorage.getItem(`${JSON.parse(localStorage.getItem('userInfo'))._id}`) 
-      ? JSON.parse(localStorage.getItem(`${JSON.parse(localStorage.getItem('userInfo'))._id}`))
-      : []
-      
+    let items =
+      localStorage.getItem('userInfo') &&
+      localStorage.getItem(
+        `${JSON.parse(localStorage.getItem('userInfo'))._id}`
+      )
+        ? JSON.parse(
+            localStorage.getItem(
+              `${JSON.parse(localStorage.getItem('userInfo'))._id}`
+            )
+          )
+        : [];
+
     ctxDispatch({
       type: 'INITIAL_STATE',
       payload: { items },
     });
-  
-},[])
+  }, [ctxDispatch]);
 
-  
-  
   useEffect(() => {
     const fetchData = async () => {
       dispatch({ type: 'FETCH_REQUEST' });
@@ -71,7 +72,7 @@ export default function HomeScreens() {
   }, []);
   // console.log('pro', products);
   return (
-    <div style={{overflowX:'hidden'}}>
+    <div style={{ overflowX: 'hidden' }}>
       <Helmet>
         <title>Amazon</title>
       </Helmet>
@@ -92,8 +93,8 @@ export default function HomeScreens() {
           //   RightArrow={RightArrow}
           //   // onWheel={onWheel}
           // >
-          <Row  className='justify-content-evenly' >
-            {products.map((product) => {
+          <Row className="justify-content-evenly">
+            {products?.map((product) => {
               return (
                 <Col
                   key={product.slug}

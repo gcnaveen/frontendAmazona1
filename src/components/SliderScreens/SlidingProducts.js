@@ -1,39 +1,38 @@
-import React, { useEffect, useReducer, useState } from 'react';
-import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 // import Rating from './Rating';
 import axios from 'axios';
 import { useContext } from 'react';
-import data from '../../data';
+// import data from '../../data';
 import Rating from '../Rating';
 import { Store } from '../../Store';
-import MessageBox from '../MessageBox';
-import SwiperCore, { Navigation } from 'swiper';
+// import MessageBox from '../MessageBox';
+// import SwiperCore, { Navigation } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Col } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 import LoadingBox from '../LoadingBox';
 // import { Store } from '../Store';
 
-const reducer = (state, action) => {
-  switch (action.type) {
-    case 'FETCH_REQUEST':
-      return { ...state, loading: true };
-    case 'FETCH_SUCCESS':
-      return { ...state, sliders: action.payload, loading: false };
-    case 'FETCH_FAIL':
-      return { ...state, loading: false, error: action.payload };
-    default:
-      return state;
-  }
-};
+// const reducer = (state, action) => {
+//   switch (action.type) {
+//     case 'FETCH_REQUEST':
+//       return { ...state, loading: true };
+//     case 'FETCH_SUCCESS':
+//       return { ...state, sliders: action.payload, loading: false };
+//     case 'FETCH_FAIL':
+//       return { ...state, loading: false, error: action.payload };
+//     default:
+//       return state;
+//   }
+// };
 
 export default function SlidingProducts() {
   const { state, dispatch: ctxDispatch } = useContext(Store);
 
   const {
-    userInfo,
     cart: { cartItems },
   } = state;
   const [sliders, setSlider] = useState([]);
@@ -41,7 +40,7 @@ export default function SlidingProducts() {
   const { state: navValues } = useLocation();
   const { sliderType, sliderValue, name } = navValues;
   console.log(name);
-  const { sliderID } = useParams();
+  // const { sliderID } = useParams();
 
   const navigate = useNavigate();
   useEffect(() => {
@@ -140,7 +139,7 @@ export default function SlidingProducts() {
         <h4> Product : {name}</h4>
       )}
       <div className="products">
-        {sliders.map((ele) => {
+        {sliders?.map((ele) => {
           return (
             <div className="product" key={ele._id}>
               <Card style={{ background: '#f8f9fa', width: '300px' }}>
@@ -154,7 +153,7 @@ export default function SlidingProducts() {
                     loop={true}
                     navigation={true}
                   >
-                    {[ele.image, ...ele.images].map((x, i) => (
+                    {[ele.image, ...ele.images]?.map((x, i) => (
                       <Col key={i}>
                         <SwiperSlide>
                           <img

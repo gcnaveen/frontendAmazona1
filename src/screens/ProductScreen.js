@@ -269,7 +269,7 @@ export default function ProductScreen() {
           )}
         </div>
         <ListGroup>
-          {product.reviews.map((review) => (
+          {product?.reviews?.map((review) => (
             <ListGroup.Item key={review._id}>
               <strong>{review.name}</strong>
               <Rating rating={review.rating} caption=" "></Rating>

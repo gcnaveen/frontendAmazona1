@@ -8,7 +8,7 @@ import MessageBox from '../components/MessageBox';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Card from 'react-bootstrap/Card';
-import { isAccordionItemSelected } from 'react-bootstrap/esm/AccordionContext';
+// import { isAccordionItemSelected } from 'react-bootstrap/esm/AccordionContext';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -274,7 +274,7 @@ export default function DashboardScreen() {
                     loader={<div>Loading Chart...</div>}
                     data={[
                       ['Date', 'Sales'],
-                      ...summary.dailyOrders.map((x) => [x._id, x.sales]),
+                      ...summary.dailyOrders?.map((x) => [x._id, x.sales]),
                     ]}
                   ></Chart>
                 )}
@@ -293,7 +293,10 @@ export default function DashboardScreen() {
                     loader={<div>Loading Chart...</div>}
                     data={[
                       ['Category', 'Products'],
-                      ...summary.productCategories.map((x) => [x._id, x.count]),
+                      ...summary.productCategories?.map((x) => [
+                        x._id,
+                        x.count,
+                      ]),
                     ]}
                   ></Chart>
                 )}

@@ -1,15 +1,15 @@
 import axios from 'axios';
 import React, { useContext, useEffect, useReducer, useState } from 'react';
-import { Form, FormControl, InputGroup } from 'react-bootstrap';
+import { Form } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
-import Col from 'react-bootstrap/Col';
-import Row from 'react-bootstrap/Row';
+// import Col from 'react-bootstrap/Col';
+// import Row from 'react-bootstrap/Row';
 import { Helmet } from 'react-helmet-async';
-import { useAsyncValue, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import LoadingBox from '../components/LoadingBox';
 import MessageBox from '../components/MessageBox';
-import OrderSort from '../components/OrderSort';
+// import OrderSort from '../components/OrderSort';
 import { Store } from '../Store';
 import { getError } from '../utils';
 
@@ -89,23 +89,23 @@ export default function OrderListScreen() {
     }
   }, [userInfo, successDelete]);
 
-  const deleteHandler = async (order) => {
-    if (window.confirm('Are you sure to delete?')) {
-      try {
-        dispatch({ type: 'DELETE_REQUEST' });
-        await axios.delete(`/api/orders/${order._id}`, {
-          headers: { Authorization: `Bearer ${userInfo.token}` },
-        });
-        toast.success('order deleted successfully');
-        dispatch({ type: 'DELETE_SUCCESS' });
-      } catch (err) {
-        toast.error(getError(error));
-        dispatch({
-          type: 'DELETE_FAIL',
-        });
-      }
-    }
-  };
+  // const deleteHandler = async (order) => {
+  //   if (window.confirm('Are you sure to delete?')) {
+  //     try {
+  //       dispatch({ type: 'DELETE_REQUEST' });
+  //       await axios.delete(`/api/orders/${order._id}`, {
+  //         headers: { Authorization: `Bearer ${userInfo.token}` },
+  //       });
+  //       toast.success('order deleted successfully');
+  //       dispatch({ type: 'DELETE_SUCCESS' });
+  //     } catch (err) {
+  //       toast.error(getError(error));
+  //       dispatch({
+  //         type: 'DELETE_FAIL',
+  //       });
+  //     }
+  //   }
+  // };
 
   const handleSort = (method) => {
     setSort(method);
@@ -176,7 +176,7 @@ export default function OrderListScreen() {
     // sortArray(sort);
   }, [orders, sort, data]);
 
-  const [orderStatus, setOrderStatus] = useState();
+  // const [orderStatus, setOrderStatus] = useState();
 
   async function handleDeliveryStatus(e, order) {
     const { value, name } = e.target;

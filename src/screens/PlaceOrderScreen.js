@@ -76,7 +76,7 @@ export default function PlaceOrderScreen() {
       localStorage.removeItem(`${userInfo._id}`);
       swal({
         title: 'Success',
-        text: ` ${data.order.orderItems.map(
+        text: ` ${data.order.orderItems?.map(
           (ele) => ele.name
         )} item order has been placed`,
         icon: 'success',
@@ -130,7 +130,7 @@ export default function PlaceOrderScreen() {
             <Card.Body>
               <Card.Title>Items</Card.Title>
               <ListGroup variant="flush">
-                {cart.cartItems.map((item) => (
+                {cart.cartItems?.map((item) => (
                   <ListGroup.Item key={item._id}>
                     <Row className="align-items-center">
                       <Col md={6}>

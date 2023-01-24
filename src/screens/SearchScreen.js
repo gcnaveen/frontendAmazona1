@@ -150,7 +150,7 @@ export default function SearchScreen() {
                     Any
                   </Link>
                 </li>
-                {categories.map((c) => (
+                {categories?.map((c) => (
                   <li key={c}>
                     <Link
                       className={c === category ? 'text-bold' : ''}
@@ -175,7 +175,7 @@ export default function SearchScreen() {
                     Any
                   </Link>
                 </li>
-                {prices.map((p) => (
+                {prices?.map((p) => (
                   <li key={p.value}>
                     <Link
                       to={getFilterUrl({ price: p.value })}
@@ -191,7 +191,7 @@ export default function SearchScreen() {
             <div>
               <h3>Avg. Customer Review</h3>
               <ul style={{ listStyle: 'none' }}>
-                {ratings.map((r) => (
+                {ratings?.map((r) => (
                   <li key={r.name}>
                     <Link
                       to={getFilterUrl({ rating: r.rating })}
@@ -264,7 +264,7 @@ export default function SearchScreen() {
               )}
 
               <Row>
-                {products.map((product) => (
+                {products?.map((product) => (
                   <Col sm={6} lg={4} className="mb-3" key={product._id}>
                     <Product product={product}></Product>
                   </Col>

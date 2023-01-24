@@ -39,12 +39,12 @@ export default function ShippingAddressScreen() {
   console.log(id);
   const [
     {
-      loading,
-      error,
+      // loading,
+      // error,
       order,
 
-      loadingDeliver,
-      successDeliver,
+      // loadingDeliver,
+      // successDeliver,
     },
     dispatch,
   ] = useReducer(reducer, {
@@ -58,7 +58,7 @@ export default function ShippingAddressScreen() {
   const navigate = useNavigate();
   const { state, dispatch: ctxDispatch } = useContext(Store);
   const {
-    fullBox,
+    // fullBox,
     userInfo,
     // cart: { shippingAddress },
   } = state;
@@ -69,53 +69,50 @@ export default function ShippingAddressScreen() {
   //   shippingAddress.postalCode || ''
   // );
 
-
-const [shippingAddress,setShippingAddress]=useState({})
-
+  const [shippingAddress] = useState({});
 
   useEffect(() => {
-
     async function getShippingAddress() {
-      let address=await axios.get(`/api/orders/order/${id}`,{}, {
+      let address = await axios.get(
+        `/api/orders/order/${id}`,
+        {},
+        {
           headers: { authorization: `Bearer ${userInfo.token}` },
-        })
-      console.log("address", address.data.shippingAddress.location)
-     setShippingAdress1({...address.data.shippingAddress})
+        }
+      );
+      console.log('address', address.data.shippingAddress.location);
+      setShippingAdress1({ ...address.data.shippingAddress });
     }
-    getShippingAddress()
-  
-},[])
+    getShippingAddress();
+  }, [id, userInfo.token]);
 
-
-
-
-
-
-  console.log(shippingAddress)
+  console.log(shippingAddress);
 
   const [shippingAdress1, setShippingAdress1] = useState({
-    fullName: shippingAddress.fullBox, address: shippingAddress.address, city: shippingAddress.city, postalCode: shippingAddress.postalCode,
-    country: shippingAddress.country, location: { lat: shippingAddress?.location?.lat, lng: shippingAddress?.location?.lng }
-  })
-
-
+    fullName: shippingAddress.fullBox,
+    address: shippingAddress.address,
+    city: shippingAddress.city,
+    postalCode: shippingAddress.postalCode,
+    country: shippingAddress.country,
+    location: {
+      lat: shippingAddress?.location?.lat,
+      lng: shippingAddress?.location?.lng,
+    },
+  });
 
   function handleShippingAdress(e) {
-  let  {value,name}=e.target
-    setShippingAdress1({ ...shippingAdress1, [name]: value })
-    
-    
+    let { value, name } = e.target;
+    setShippingAdress1({ ...shippingAdress1, [name]: value });
   }
-  console.log("new",shippingAdress1)
-  console.log(shippingAddress)
-
+  console.log('new', shippingAdress1);
+  console.log(shippingAddress);
 
   //   useEffect(() => {
   //     if (!userInfo) {
   //       navigate('/signin?redirect=/shipping');
   //     }
   //   }, [userInfo, navigate]);
-  const [country, setCountry] = useState(shippingAddress.country || '');
+  // const [country, setCountry] = useState(shippingAddress.country || '');
   //   const submitHandler = (e) => {
   //     e.preventDefault();
   //     ctxDispatch({
@@ -181,7 +178,7 @@ const [shippingAddress,setShippingAddress]=useState({})
           <Form.Group className="mb-3" controlId="fullName">
             <Form.Label>Full Name</Form.Label>
             <Form.Control
-              name='fullName'
+              name="fullName"
               value={shippingAdress1.fullName}
               onChange={handleShippingAdress}
               //   onChange={(e) => setFullName(e.target.value)}
@@ -191,7 +188,7 @@ const [shippingAddress,setShippingAddress]=useState({})
           <Form.Group className="mb-3" controlId="address">
             <Form.Label>Address</Form.Label>
             <Form.Control
-            name='address'
+              name="address"
               value={shippingAdress1.address}
               onChange={handleShippingAdress}
               //   onChange={(e) => setAddress(e.target.value)}
@@ -201,7 +198,7 @@ const [shippingAddress,setShippingAddress]=useState({})
           <Form.Group className="mb-3" controlId="city">
             <Form.Label>City</Form.Label>
             <Form.Control
-              name='city'
+              name="city"
               value={shippingAdress1.city}
               onChange={handleShippingAdress}
               //   onChange={(e) => setCity(e.target.value)}
@@ -211,7 +208,7 @@ const [shippingAddress,setShippingAddress]=useState({})
           <Form.Group className="mb-3" controlId="postalCode">
             <Form.Label>Postal Code</Form.Label>
             <Form.Control
-              name='postalCode'
+              name="postalCode"
               value={shippingAdress1.postalCode}
               onChange={handleShippingAdress}
               //   onChange={(e) => setPostalCode(e.target.value)}
@@ -221,7 +218,7 @@ const [shippingAddress,setShippingAddress]=useState({})
           <Form.Group className="mb-3" controlId="country">
             <Form.Label>Country</Form.Label>
             <Form.Control
-              name='country'
+              name="country"
               value={shippingAdress1.country}
               onChange={handleShippingAdress}
               //   onChange={(e) => setCountry(e.target.value)}
@@ -237,7 +234,7 @@ const [shippingAddress,setShippingAddress]=useState({})
             >
               Choose Location On Map
             </Button>
-            {console.log("location is",shippingAdress1.location)}
+            {console.log('location is', shippingAdress1.location)}
 
             {shippingAdress1.location && shippingAdress1.location.lat ? (
               <div>

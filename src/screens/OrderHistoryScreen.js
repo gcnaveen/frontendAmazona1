@@ -40,7 +40,7 @@ export default function OrderHistoryScreen() {
           { headers: { Authorization: `Bearer ${userInfo.token}` } }
         );
         dispatch({ type: 'FETCH_SUCCESS', payload: data });
-        console.log(data)
+        console.log(data);
       } catch (error) {
         dispatch({
           type: 'FETCH_FAIL',
@@ -51,10 +51,9 @@ export default function OrderHistoryScreen() {
     fetchData();
   }, [userInfo]);
 
-
-  if (orders?.length=== 0) {
-  return <MessageBox>No Active Orders</MessageBox>
-}
+  if (orders?.length === 0) {
+    return <MessageBox>No Active Orders</MessageBox>;
+  }
 
   return (
     <div>
@@ -79,7 +78,7 @@ export default function OrderHistoryScreen() {
             </tr>
           </thead>
           <tbody>
-            {orders.map((order) => (
+            {orders?.map((order) => (
               <tr key={order._id}>
                 <td>
                   {' '}
@@ -93,7 +92,23 @@ export default function OrderHistoryScreen() {
                 <td>{order.totalPrice.toFixed(2)}</td>
                 <td>{order.isPaid ? order.paidAt.substring(0, 10) : 'No'}</td>
                 <td>
-                  { order.isDispatched && !order.isOutForDelivery &&  !order.isDelivered  ? "Dispatched"  :  order.isOutForDelivery && order.isDispatched && !order.isDelivered ? "Out For Delivery" : order.isDelivered ? "Delivered" : order.isOrderAccepted ? "Order Accepted" : order.isOrderRejected ? "Order Rejected": order.isCancelled ? "Order Cancelled" :  "Pending"}
+                  {order.isDispatched &&
+                  !order.isOutForDelivery &&
+                  !order.isDelivered
+                    ? 'Dispatched'
+                    : order.isOutForDelivery &&
+                      order.isDispatched &&
+                      !order.isDelivered
+                    ? 'Out For Delivery'
+                    : order.isDelivered
+                    ? 'Delivered'
+                    : order.isOrderAccepted
+                    ? 'Order Accepted'
+                    : order.isOrderRejected
+                    ? 'Order Rejected'
+                    : order.isCancelled
+                    ? 'Order Cancelled'
+                    : 'Pending'}
                 </td>
                 <td>
                   <Button

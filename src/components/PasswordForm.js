@@ -2,7 +2,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useState } from 'react';
 import { Store } from '../Store';
 import { toast } from 'react-toastify';
 import { getError } from '../utils';
@@ -17,8 +17,8 @@ export default function PasswordForm() {
   const [email, setEmail] = useState('');
   const [isOtpExpired, setIsOtpExpired] = useState(false);
 
-  const { state, dispatch: ctxDispatch } = useContext(Store);
-  const { userInfo } = state;
+  const { dispatch: ctxDispatch } = useContext(Store);
+  // const { userInfo } = state;
 
   const { search } = useLocation();
   const redirectInUrl = new URLSearchParams(search).get('redirect');
@@ -33,26 +33,25 @@ export default function PasswordForm() {
       const { data } = await axios.post('/api/users/change-password', {
         otp,
         password,
-        email
+        email,
       });
       console.log('data', data);
       ctxDispatch({ type: 'USER_SIGNIN', payload: data });
-      if(data?.message==='Invalid otp'){
+      if (data?.message === 'Invalid otp') {
         toast.error(data?.message);
-        return
+        return;
       }
       if (data?.statusText === 'Success') {
         toast.success(data?.message);
-      localStorage.setItem('userInfo', JSON.stringify(data));
-      navigate(redirect || '/');
+        localStorage.setItem('userInfo', JSON.stringify(data));
+        navigate(redirect || '/');
       }
       if (data?.message === 'Token Expire') {
-        toast.error("OTP Expired");
-        setIsOtpExpired(true)
+        toast.error('OTP Expired');
+        setIsOtpExpired(true);
 
-        return
+        return;
       }
-
     } catch (err) {
       toast.error(getError(err));
     }
@@ -64,31 +63,22 @@ export default function PasswordForm() {
   //   }
   // }, [navigate, redirect, userInfo]);
 
-
-
-
-
- async function  resendOTP  () {
-  setOtp('')
-  let options = {
-        method: 'POST',
-        url: `/api/users/email-send`,
-        data: {
-          email:email,
-        },
-      };
-   let response = await axios(options);
- if (response?.data?.statusText === 'Success') {
-        toast.success(response?.data?.message);
-      } else {
-        toast.error(response?.data?.message);
-      }
-}
-
-
-
-
-
+  async function resendOTP() {
+    setOtp('');
+    let options = {
+      method: 'POST',
+      url: `/api/users/email-send`,
+      data: {
+        email: email,
+      },
+    };
+    let response = await axios(options);
+    if (response?.data?.statusText === 'Success') {
+      toast.success(response?.data?.message);
+    } else {
+      toast.error(response?.data?.message);
+    }
+  }
 
   return (
     <Container className="small-container">
@@ -157,15 +147,17 @@ export default function PasswordForm() {
             />
           </Form.Group>
         </Form.Group>
-      <div className="mb-3 d-flex" style={{gap:'5px'}}>
-        <Button type="submit" >Change Password</Button>
-{isOtpExpired &&  <div >
-        <Button type="button" onClick={resendOTP}>Resend Otp</Button>
-      </div>}
-      </div>
-
+        <div className="mb-3 d-flex" style={{ gap: '5px' }}>
+          <Button type="submit">Change Password</Button>
+          {isOtpExpired && (
+            <div>
+              <Button type="button" onClick={resendOTP}>
+                Resend Otp
+              </Button>
+            </div>
+          )}
+        </div>
       </Form>
-
     </Container>
   );
 }

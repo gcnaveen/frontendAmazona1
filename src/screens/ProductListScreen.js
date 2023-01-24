@@ -94,13 +94,12 @@ export default function ProductListScreen() {
     }
   }, [page, userInfo, successDelete]);
 
-  const  createCategoryHandler = () => {
-  
-    navigate('/admin/createCategory')
-}
+  const createCategoryHandler = () => {
+    navigate('/admin/createCategory');
+  };
 
   const createHandler = async () => {
-navigate('/admin/product/createProduct')
+    navigate('/admin/product/createProduct');
 
     // if (window.confirm('Are you sure to create?')) {
     //   try {
@@ -148,7 +147,10 @@ navigate('/admin/product/createProduct')
         <Col>
           <h1>Products</h1>
         </Col>
-        <Col className="col text-end d-flex justify-content-end" style={{gap:'10px'}} >
+        <Col
+          className="col text-end d-flex justify-content-end"
+          style={{ gap: '10px' }}
+        >
           <div>
             <Button type="button" onClick={createHandler}>
               Create Product
@@ -182,7 +184,7 @@ navigate('/admin/product/createProduct')
               </tr>
             </thead>
             <tbody>
-              {products.map((product) => (
+              {products?.map((product) => (
                 <tr key={product._id}>
                   <td>{product._id}</td>
                   <td>{product.name}</td>
@@ -212,7 +214,7 @@ navigate('/admin/product/createProduct')
             </tbody>
           </table>
           <div>
-            {[...Array(pages).keys()].map((x) => (
+            {[...Array(pages).keys()]?.map((x) => (
               <Link
                 className={x + 1 === Number(page) ? 'btn text-bold' : 'btn'}
                 key={x + 1}

@@ -5,7 +5,7 @@ import MessageBox from '../components/MessageBox';
 import { Store } from '../Store';
 import { getError } from '../utils';
 import Button from 'react-bootstrap/Button';
-import { toast } from 'react-toastify';
+// import { toast } from 'react-toastify';
 import { Helmet } from 'react-helmet-async';
 
 const reducer = (state, action) => {
@@ -68,35 +68,37 @@ export default function UserListScreen() {
     }
   }, [userInfo, successDelete]);
 
-  const deleteHandler = async (user) => {
-    if (window.confirm('Are you sure to delete?')) {
-      try {
-        dispatch({ type: 'DELETE_REQUEST' });
-        await axios.delete(`/api/users/${user._id}`, {
-          headers: { Authorization: `Bearer ${userInfo.token}` },
-        });
-        toast.success('user deleted successfully');
-        dispatch({ type: 'DELETE_SUCCESS' });
-      } catch (error) {
-        toast.error(getError(error));
-        dispatch({
-          type: 'DELETE_FAIL',
-        });
-      }
-    }
-  };
-
+  // const deleteHandler = async (user) => {
+  //   if (window.confirm('Are you sure to delete?')) {
+  //     try {
+  //       dispatch({ type: 'DELETE_REQUEST' });
+  //       await axios.delete(`/api/users/${user._id}`, {
+  //         headers: { Authorization: `Bearer ${userInfo.token}` },
+  //       });
+  //       toast.success('user deleted successfully');
+  //       dispatch({ type: 'DELETE_SUCCESS' });
+  //     } catch (error) {
+  //       toast.error(getError(error));
+  //       dispatch({
+  //         type: 'DELETE_FAIL',
+  //       });
+  //     }
+  //   }
+  // };
 
   const handleUserStatus = async (user) => {
-    const { _id: userID, isActive: status } = user
-    
-    let userResponse = await axios.patch('/api/users/updateUserStatus', { userID, status },    {
-          headers: { Authorization: `Bearer ${userInfo.token}` },
-        })
-    console.log(userResponse.data)
-      fetchData();
+    const { _id: userID, isActive: status } = user;
 
-  }
+    let userResponse = await axios.patch(
+      '/api/users/updateUserStatus',
+      { userID, status },
+      {
+        headers: { Authorization: `Bearer ${userInfo.token}` },
+      }
+    );
+    console.log(userResponse.data);
+    fetchData();
+  };
   return (
     <div>
       <Helmet>
@@ -121,7 +123,7 @@ export default function UserListScreen() {
           </thead>
           <tbody>
             {/* {state.userInfo._id === } */}
-            {users.map((user) => (
+            {users?.map((user) => (
               <tr key={user._id}>
                 <td>{user._id}</td>
                 <td>{user.name}</td>
@@ -148,7 +150,7 @@ export default function UserListScreen() {
                     variant="light"
                     onClick={() => handleUserStatus(user)}
                   >
-                 { user.isActive ? "BLOCK" : "UNBLOCK"}
+                    {user.isActive ? 'BLOCK' : 'UNBLOCK'}
                   </Button>
                 </td>
               </tr>

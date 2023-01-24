@@ -3,9 +3,9 @@ import {
   Link,
   Route,
   Routes,
-  useNavigation,
+  // useNavigation,
 } from 'react-router-dom';
-import { toast, ToastContainer } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import HomeScreen from './screens/HomeScreens';
 import ProductScreen from './screens/ProductScreen';
@@ -27,7 +27,7 @@ import OrderScreen from './screens/OrderScreen';
 import OrderHistoryScreen from './screens/OrderHistoryScreen';
 import ProfileScreen from './screens/ProfileScreen';
 import Button from 'react-bootstrap/Button';
-import { getError } from './utils';
+// import { getError } from './utils';
 import axios from 'axios';
 import SearchBox from './components/SearchBox';
 import SearchScreen from './screens/SearchScreen';
@@ -48,7 +48,7 @@ import SliderCartScreen from './components/SliderScreens/SliderCartScreen';
 import SlideListScreen from './components/SliderScreens/SlideListScreen';
 import SliderEditScreen from './components/SliderScreens/SliderEditScreen';
 import EditShippingAdress from './screens/EditShippingAdress';
-import { NavItem } from 'react-bootstrap';
+// import { NavItem } from 'react-bootstrap';
 import CreateSlide from './components/SliderScreens/CreateSlide';
 import CategoryWiseProductList from './screens/CategoryWiseProductList';
 import { NavLink } from 'react-router-dom';
@@ -58,7 +58,11 @@ import CreateCateogry from './screens/CreateCateogry';
 // import swal from 'sweetalert';
 
 function App() {
-  const { state, dispatch: ctxDispatch, getInitialValues } = useContext(Store);
+  const {
+    state,
+    dispatch: ctxDispatch,
+    // getInitialValues
+  } = useContext(Store);
   const { fullBox, cart, userInfo } = state;
   const signoutHandler = () => {
     ctxDispatch({ type: 'USER_SIGNOUT' });
@@ -77,6 +81,7 @@ function App() {
       try {
         const { data } = await axios.get('/api/products/getAllCats');
         setCategories(data);
+        console.log('data', data);
       } catch (err) {
         console.log('network error', err);
         // toast.error(getError(err));
@@ -86,7 +91,7 @@ function App() {
     fetchCategories();
   }, [state]);
 
-  // console.log('user', state);
+  console.log('categories', JSON.stringify(categories));
 
   // const brandHandler = (userInfo) => {
   //   if (userInfo && userInfo?.length) {
@@ -246,10 +251,8 @@ function App() {
             </Container>
           </Navbar>
         </header>
-        <div className="catagory-div">
-          {/* // <NavItem key={i}>{ category}</NavItem> */}
-
-          {categories.map((category, i) => (
+        <div className="catagory-div" title={JSON.stringify(categories)}>
+          {categories?.map((category, i) => (
             <Nav.Item className="category-main-container" key={category.slug}>
               <NavLink
                 to={`/products/categories?type=category&name=${category.slug}`}
@@ -263,7 +266,7 @@ function App() {
               </NavLink>
               <div className="sub-category-div">
                 {category?.subCategory &&
-                  category.subCategory.map((item, i) => (
+                  category?.subCategory?.map((item, i) => (
                     <NavLink
                       key={i}
                       to={`/products/categories?type=subCategory&name=${item.slug}`}

@@ -153,7 +153,7 @@ export default function SlideListScreen() {
               </tr>
             </thead>
             <tbody>
-              {sliders.map((product) => (
+              {sliders?.map((product) => (
                 <tr>
                   <td>{product._id}</td>
                   <td>{product.name}</td>
@@ -182,7 +182,7 @@ export default function SlideListScreen() {
             </tbody>
           </table>
           <div>
-            {[...Array(pages).keys()].map((x) => (
+            {[...Array(pages).keys()]?.map((x) => (
               <Link
                 className={x + 1 === Number(page) ? 'btn text-bold' : 'btn'}
                 key={x + 1}

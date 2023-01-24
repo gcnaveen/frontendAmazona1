@@ -1,10 +1,10 @@
 import React from 'react';
 import Col from 'react-bootstrap/Col';
-import ListGroupItem from 'react-bootstrap/ListGroupItem';
-import ListGroup from 'react-bootstrap/ListGroup';
+// import ListGroupItem from 'react-bootstrap/ListGroupItem';
+// import ListGroup from 'react-bootstrap/ListGroup';
 
 import Row from 'react-bootstrap/Row';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 
 function Footer() {
   const year = new Date().getFullYear();

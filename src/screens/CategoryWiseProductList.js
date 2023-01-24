@@ -1,45 +1,37 @@
-import axios from 'axios'
-import React, { useContext, useEffect, useState } from 'react'
-import { Card } from 'react-bootstrap'
-import { useLocation, useParams } from 'react-router-dom'
+import axios from 'axios';
+import React, { useContext, useEffect, useState } from 'react';
+import { Card } from 'react-bootstrap';
+import { useLocation } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import { Store } from '../Store';
 import Rating from '../components/Rating';
 import { toast } from 'react-toastify';
 
-
-
-
-
-
 function CategoryWiseProductList() {
- const { state, dispatch: ctxDispatch } = useContext(Store);
-const [products,setProducts]=useState([])
-const useQuery = () => new URLSearchParams(useLocation().search);
-let query = useQuery();
-  
+  const { state, dispatch: ctxDispatch } = useContext(Store);
+  const [products, setProducts] = useState([]);
+  const useQuery = () => new URLSearchParams(useLocation().search);
+  let query = useQuery();
+
   const {
     cart: { cartItems },
-    } = state;
-    
-    
-    async function fetchProducts() {
-        
-            let PRODUCT_URL=`/api/products/search?category=${query.get('name')}`
-                
-        if (query.get('type')==='subCategory') {
-             PRODUCT_URL=`/api/products/search?subCategory=${query.get('name')}`
-        }
-        console.log(PRODUCT_URL)
-        let response = await axios.get(PRODUCT_URL)
-          console.log(response.data.products);
-        setProducts(response.data.products)
-        
+  } = state;
+
+  async function fetchProducts() {
+    let PRODUCT_URL = `/api/products/search?category=${query.get('name')}`;
+
+    if (query.get('type') === 'subCategory') {
+      PRODUCT_URL = `/api/products/search?subCategory=${query.get('name')}`;
     }
-    useEffect(() => {
-fetchProducts()
-},[query.get('name'),query.get('type')])
+    console.log(PRODUCT_URL);
+    let response = await axios.get(PRODUCT_URL);
+    console.log(response.data.products);
+    setProducts(response.data.products);
+  }
+  useEffect(() => {
+    fetchProducts();
+  }, [query.get('name'), query.get('type')]);
 
   const addToCartHandler = async (item) => {
     const existItem = cartItems.find((x) => x._id === item._id);
@@ -53,15 +45,16 @@ fetchProducts()
       type: 'CART_ADD_ITEM',
       payload: { ...item, quantity },
     });
-    toast.success(`${item.name} Added to the cart`)
-
+    toast.success(`${item.name} Added to the cart`);
   };
 
-  return   <div style={{position:'relative',zIndex:'500'}}>
-      <h1 style={{position:'relative',zIndex:'500'}}>Products</h1>
+  return (
+    <div style={{ position: 'relative', zIndex: '500' }}>
+      <h1 style={{ position: 'relative', zIndex: '500' }}>Products</h1>
       <div className="products">
-        {products.map((ele) => {
-            return <div className="product">
+        {products?.map((ele) => {
+          return (
+            <div className="product">
               <Card style={{ background: '#f8f9fa', width: '300px' }}>
                 <Link to={`/product/${ele.slug}`}>
                   <img
@@ -133,10 +126,11 @@ fetchProducts()
                 <button>Add to cart</button>
               </div> */}
             </div>
+          );
         })}
       </div>
     </div>
-  
+  );
 }
 
-export default CategoryWiseProductList
+export default CategoryWiseProductList;

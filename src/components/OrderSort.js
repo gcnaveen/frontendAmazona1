@@ -5,9 +5,9 @@ import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { getError } from '../utils';
-import MessageBox from './MessageBox';
-import SearchBox from './SearchBox';
-import { LoadScriptNext } from '@react-google-maps/api';
+// import MessageBox from './MessageBox';
+// import SearchBox from './SearchBox';
+// import { LoadScriptNext } from '@react-google-maps/api';
 import LoadingBox from './LoadingBox';
 const reducer = (state, action) => {
   switch (action.type) {
@@ -40,13 +40,10 @@ export default function OrderSort() {
   const order = sp.get('order') || 'newest';
   const page = sp.get('page') || 1;
 
-  const [{ loading, error, orders, pages, countOrders }, dispatch] = useReducer(
-    reducer,
-    {
-      loading: true,
-      error: '',
-    }
-  );
+  const [{ error, orders }, dispatch] = useReducer(reducer, {
+    loading: true,
+    error: '',
+  });
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -124,7 +121,7 @@ export default function OrderSort() {
                 </tr>
               </thead>
               <tbody>
-                {orders.map((order) => (
+                {orders?.map((order) => (
                   <tr key={order._id}>
                     <td>
                       <img

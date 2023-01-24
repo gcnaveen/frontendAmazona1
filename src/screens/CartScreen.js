@@ -36,7 +36,6 @@ export default function CartScreen() {
     navigate('/signin?redirect=/shipping');
   };
 
-
   return (
     <div>
       <Helmet>
@@ -51,7 +50,7 @@ export default function CartScreen() {
             </MessageBox>
           ) : (
             <ListGroup>
-              {cartItems.map((item) => (
+              {cartItems?.map((item) => (
                 <ListGroup.Item key={item._id}>
                   <Row className="align-items-center">
                     <Col md={4}>

@@ -50,7 +50,7 @@ export default function SlideProductScreen() {
   const navigate = useNavigate();
   const params = useParams();
   const { slug } = params;
-    console.log(slug);
+  console.log(slug);
   const { state, dispatch: ctxDispatch } = useContext(Store);
   const { cart, userInfo } = state;
   const [{ loading, error, slider, loadingCreateReview }, dispatch] =
@@ -65,7 +65,6 @@ export default function SlideProductScreen() {
       console.log('result');
 
       try {
-
         const result = await axios.get(`/api/sliders/slug/${slug}`);
         console.log('result', result.data);
         dispatch({ type: 'FETCH_SUCCESS', payload: result.data });
@@ -119,7 +118,7 @@ export default function SlideProductScreen() {
             <ListGroup.Item>Price : Rs{slider.price}</ListGroup.Item>
             <ListGroup.Item>
               <Row xs={1} md={2} className="g-2">
-                {[slider.image].map((x) => (
+                {[slider.image]?.map((x) => (
                   <Col key={x}>
                     <Card>
                       <Button

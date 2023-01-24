@@ -1,22 +1,22 @@
 import Carousel from 'react-bootstrap/Carousel';
 import React, { useEffect, useReducer, useState } from 'react';
-import Container from 'react-bootstrap/esm/Container';
+// import Container from 'react-bootstrap/esm/Container';
 import Row from 'react-bootstrap/esm/Row';
 import Col from 'react-bootstrap/esm/Col';
-import { Link, useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
+// import { motion } from 'framer-motion';
 import axios from 'axios';
-import LoadingBox from '../LoadingBox';
-import MessageBox from '../MessageBox';
+// import LoadingBox from '../LoadingBox';
+// import MessageBox from '../MessageBox';
 
 const reducer = (state, action) => {
   switch (action.type) {
     case 'FETCH_REQUEST':
       return { ...state, loading: true };
     case 'FETCH_SUCCESS':
-      return { ...state, sliders: action.payload, loading: false };
+      return { ...state, sliders: action?.payload, loading: false };
     case 'FETCH_FAIL':
-      return { ...state, loading: false, error: action.payload };
+      return { ...state, loading: false, error: action?.payload };
     default:
       return state;
   }
@@ -25,7 +25,7 @@ const reducer = (state, action) => {
 function Slider() {
   const [index, setIndex] = useState(0);
   const navigate = useNavigate();
-  const [{ loading, error, sliders }, dispatch] = useReducer(reducer, {
+  const [{ sliders }, dispatch] = useReducer(reducer, {
     sliders: [],
     loading: true,
     error: '',
@@ -38,7 +38,7 @@ function Slider() {
       try {
         const result = await axios.get('/api/sliders');
         // console.log(result.data)
-        dispatch({ type: 'FETCH_SUCCESS', payload: result.data });
+        dispatch({ type: 'FETCH_SUCCESS', payload: result?.data });
       } catch (err) {
         dispatch({ type: 'FETCH_FAIL', payload: err.message });
       }
@@ -70,20 +70,17 @@ function Slider() {
       navigate(`/product/sliderProduct`, { state: slide?.productID });
     }
   };
-
-  // console.log(sliders);
   return (
     <Carousel
       style={{ height: '300px', width: '100%' }}
       activeIndex={index}
       onSelect={handleSelect}
     >
-      {sliders.map((slide, i) => {
+      {sliders?.map((slide, i) => {
         return (
           <Carousel.Item key={i} style={{ height: '300px' }}>
             <Row>
               <Col className="hero__section">
-                {/* <Link to={`/slider/${slide._id}`}> */}
                 <div onClick={() => navigateToSlider(slide)}>
                   <img
                     // backgroundColor="green"
