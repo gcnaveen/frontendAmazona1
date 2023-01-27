@@ -1,15 +1,15 @@
 import axios from 'axios';
 import React, { useContext, useEffect, useReducer, useState } from 'react';
-import { Form } from 'react-bootstrap';
+import { Form, FormControl, InputGroup } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
-// import Col from 'react-bootstrap/Col';
-// import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import Row from 'react-bootstrap/Row';
 import { Helmet } from 'react-helmet-async';
-import { useNavigate } from 'react-router-dom';
+import { useAsyncValue, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import LoadingBox from '../components/LoadingBox';
 import MessageBox from '../components/MessageBox';
-// import OrderSort from '../components/OrderSort';
+import OrderSort from '../components/OrderSort';
 import { Store } from '../Store';
 import { getError } from '../utils';
 
@@ -44,6 +44,23 @@ const reducer = (state, action) => {
   }
 };
 export default function OrderListScreen() {
+  const [data, setData] = useState([]);
+
+  const initialSortedData = (data) => {
+    return data?.sort(function (a, b) {
+      let date1 = new Date(a.createdAt).getTime();
+      let date2 = new Date(b.createdAt).getTime();
+      if (date1 > date2) {
+        return -1;
+      }
+      if (date1 < date2) {
+        return 1;
+      }
+
+      return 0;
+    });
+  };
+
   // const { search } = useLocation();
   // const sp = new URLSearchParams(search); // /search?category=Shirts
   // const category = sp.get('category') || 'all';
@@ -55,8 +72,7 @@ export default function OrderListScreen() {
   // const sp = new URLSearchParams(search); // /search?category=Shirts
   // const users = sp.get('users') || 'all';
   // const products = sp.get('products') || 'all';
-  const [data, setData] = useState([]);
-  const [sort, setSort] = useState('highest');
+  const [sort, setSort] = useState('order-A-Z');
   const navigate = useNavigate();
   const { state } = useContext(Store);
   const { userInfo } = state;
@@ -72,8 +88,7 @@ export default function OrderListScreen() {
         headers: { Authorization: `Bearer ${userInfo.token}` },
       });
       dispatch({ type: 'FETCH_SUCCESS', payload: data });
-      //  handleSort('order-A-Z')
-      setData(data);
+      setData(initialSortedData(data));
     } catch (err) {
       dispatch({
         type: 'FETCH_FAIL',
@@ -89,23 +104,23 @@ export default function OrderListScreen() {
     }
   }, [userInfo, successDelete]);
 
-  // const deleteHandler = async (order) => {
-  //   if (window.confirm('Are you sure to delete?')) {
-  //     try {
-  //       dispatch({ type: 'DELETE_REQUEST' });
-  //       await axios.delete(`/api/orders/${order._id}`, {
-  //         headers: { Authorization: `Bearer ${userInfo.token}` },
-  //       });
-  //       toast.success('order deleted successfully');
-  //       dispatch({ type: 'DELETE_SUCCESS' });
-  //     } catch (err) {
-  //       toast.error(getError(error));
-  //       dispatch({
-  //         type: 'DELETE_FAIL',
-  //       });
-  //     }
-  //   }
-  // };
+  const deleteHandler = async (order) => {
+    if (window.confirm('Are you sure to delete?')) {
+      try {
+        dispatch({ type: 'DELETE_REQUEST' });
+        await axios.delete(`/api/orders/${order._id}`, {
+          headers: { Authorization: `Bearer ${userInfo.token}` },
+        });
+        toast.success('order deleted successfully');
+        dispatch({ type: 'DELETE_SUCCESS' });
+      } catch (err) {
+        toast.error(getError(error));
+        dispatch({
+          type: 'DELETE_FAIL',
+        });
+      }
+    }
+  };
 
   const handleSort = (method) => {
     setSort(method);
@@ -167,6 +182,8 @@ export default function OrderListScreen() {
 
         return 0;
       });
+      console.log(method);
+      console.log(data);
 
       setData(sorted);
     }
@@ -176,7 +193,7 @@ export default function OrderListScreen() {
     // sortArray(sort);
   }, [orders, sort, data]);
 
-  // const [orderStatus, setOrderStatus] = useState();
+  const [orderStatus, setOrderStatus] = useState();
 
   async function handleDeliveryStatus(e, order) {
     const { value, name } = e.target;
@@ -189,7 +206,6 @@ export default function OrderListScreen() {
         { status: name },
         { headers: { Authorization: `Bearer ${userInfo.token}` } }
       );
-      console.log('response', response.data.message);
 
       if (response.data.message === 'Order Status Updated') {
         setTimeout(() => {
@@ -257,6 +273,7 @@ export default function OrderListScreen() {
           <select
             onChange={(e) => handleSort(e.target.value)}
             // onClick={sorting}
+            defaultValue="order-A-Z"
           >
             <option value="lowest">Price: low to high</option>
             {/* <option value="#" disabled></option> */}
@@ -292,16 +309,9 @@ export default function OrderListScreen() {
                 key={order._id}
                 className={order.isRead ? 'read-container' : ''}
                 style={order.isRead ? { backgroundColor: 'aqua' } : {}}
-                onClick={
-                  order.isRead && order.isDelivered
-                    ? () => navigate(`/order/${order._id}`)
-                    : () => {}
-                }
               >
-                {/* <div  className={order.isRead ?   'read-container' : ''} onClick={()=>navigate((`/order/${order._id}`))}> */}
+                {/* onClick={order.isRead && order.isDelivered ? ()=>navigate((`/order/${order._id}`)) : ()=>{}} */}
                 <td>
-                  {console.log(order)}
-
                   <img
                     src={order?.orderItems?.map((a) => a.image)}
                     alt=""
@@ -349,70 +359,83 @@ export default function OrderListScreen() {
                   >
                     Delete
                   </Button> */}
-                    {order.isOrderAccepted || order.isOrderRejected ? null : (
-                      <Button
-                        style={{ height: 'fit-content' }}
-                        type="button"
-                        variant="light"
-                        onClick={() => handleOrder('ACCEPTED', order)}
-                      >
-                        Accept
-                      </Button>
-                    )}
-                    &nbsp;
-                    {order.isOrderAccepted || order.isOrderRejected ? null : (
-                      <Button
-                        style={{ height: 'fit-content' }}
-                        type="button"
-                        variant="light"
-                        onClick={() => handleOrder('REJECTED', order)}
-                      >
-                        Reject
-                      </Button>
-                    )}
-                    {order.isOrderAccepted ? (
-                      <div className="delivery-status-btn-container">
-                        <div className="delivery-status-btn">
-                          <label>Dispatched</label>
-                          <Form.Check
-                            name="dispatch"
-                            defaultChecked={order.isDispatched ? true : false}
-                            disabled={order.isDispatched ? true : false}
-                            onClick={(e) => handleDeliveryStatus(e, order)}
-                          />
-                        </div>
-                        <div className="delivery-status-btn">
-                          <label>Out For Delivery</label>
-                          <Form.Check
-                            name="outForDelivery"
-                            defaultChecked={
-                              order.isOutForDelivery ? true : false
-                            }
-                            disabled={
-                              order.isOutForDelivery || !order.isDispatched
-                                ? true
-                                : false
-                            }
-                            onClick={(e) => handleDeliveryStatus(e, order)}
-                          />
-                        </div>
-                        <div className="delivery-status-btn">
-                          <label>Delivered</label>
-                          <Form.Check
-                            name="delivered"
-                            defaultChecked={order.isDelivered ? true : false}
-                            disabled={
-                              order.isDelivered ||
-                              !order.isDispatched ||
-                              !order.isOutForDelivery
-                                ? true
-                                : false
-                            }
-                            onClick={(e) => handleDeliveryStatus(e, order)}
-                          />
-                        </div>
+                    {!order.isCancelled ? (
+                      <div>
+                        {order.isOrderAccepted ||
+                        order.isOrderRejected ? null : (
+                          <Button
+                            style={{ height: 'fit-content' }}
+                            type="button"
+                            variant="light"
+                            onClick={() => handleOrder('ACCEPTED', order)}
+                          >
+                            Accept
+                          </Button>
+                        )}
+                        &nbsp;
+                        {order.isOrderAccepted || order.isOrderRejected ? (
+                          'Order Rejected'
+                        ) : (
+                          <Button
+                            style={{ height: 'fit-content' }}
+                            type="button"
+                            variant="light"
+                            onClick={() => handleOrder('REJECTED', order)}
+                          >
+                            Reject
+                          </Button>
+                        )}
+                        {order.isOrderAccepted ? (
+                          <div className="delivery-status-btn-container">
+                            <div className="delivery-status-btn">
+                              <label>Dispatched</label>
+                              <Form.Check
+                                name="dispatch"
+                                defaultChecked={
+                                  order.isDispatched ? true : false
+                                }
+                                disabled={order.isDispatched ? true : false}
+                                onClick={(e) => handleDeliveryStatus(e, order)}
+                              />
+                            </div>
+                            <div className="delivery-status-btn">
+                              <label>Out For Delivery</label>
+                              <Form.Check
+                                name="outForDelivery"
+                                defaultChecked={
+                                  order.isOutForDelivery ? true : false
+                                }
+                                disabled={
+                                  order.isOutForDelivery || !order.isDispatched
+                                    ? true
+                                    : false
+                                }
+                                onClick={(e) => handleDeliveryStatus(e, order)}
+                              />
+                            </div>
+                            <div className="delivery-status-btn">
+                              <label>Delivered</label>
+                              <Form.Check
+                                name="delivered"
+                                defaultChecked={
+                                  order.isDelivered ? true : false
+                                }
+                                disabled={
+                                  order.isDelivered ||
+                                  !order.isDispatched ||
+                                  !order.isOutForDelivery
+                                    ? true
+                                    : false
+                                }
+                                onClick={(e) => handleDeliveryStatus(e, order)}
+                              />
+                            </div>
+                          </div>
+                        ) : null}
                       </div>
-                    ) : null}
+                    ) : (
+                      'Oder Cancelled'
+                    )}
                   </div>
                 </td>
                 {/* </div> */}

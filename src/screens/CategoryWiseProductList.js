@@ -55,27 +55,41 @@ function CategoryWiseProductList() {
         {products?.map((ele) => {
           return (
             <div className="product">
-              <Card style={{ background: '#f8f9fa', width: '300px' }}>
-                <Link to={`/product/${ele.slug}`}>
+              <Card style={{ width: '250px', height: '300px', margin: '2px' }}>
+                <Link to={`/product/${ele.slug}`} style={{ height: '50%' }}>
                   <img
                     src={ele.image}
                     className="card-img-top"
                     alt={ele.name}
-                    style={{ height: '261px' }}
+                    style={{ height: '100%', objectFit: 'contain' }}
                   />
                 </Link>
-                <Card.Body>
-                  <Link to={`/product/${ele.slug}`}>
-                    <Card.Title>{ele.name}</Card.Title>
+                <div
+                  style={{
+                    textAlign: 'center',
+                    padding: '5px',
+                    overflow: 'overlay',
+                  }}
+                >
+                  <Link
+                    to={`/product/${ele.slug}`}
+                    style={{
+                      fontSize: '15px',
+                      display: 'block',
+                      overflow: 'hidden',
+                      textDecoration: 'none',
+                    }}
+                  >
+                    <span>{ele.name}</span>
                   </Link>
                   <Rating rating={ele.rating} numReviews={ele.numReviews} />
                   <Card.Text>
-                    <div style={{ display: 'flex' }}>
-                      <div style={{ fontSize: '30px' }}>
+                    <div>
+                      <span style={{ fontSize: '20px' }}>
                         {' '}
-                        Rs.{ele.price - ele.productDiscountedPrice}{' '}
-                      </div>
-                      <div
+                        <b>Rs.{ele.price - ele.productDiscountedPrice} </b>
+                      </span>
+                      <span
                         style={{
                           textDecoration: 'line-through',
                           margin: '10px',
@@ -83,9 +97,9 @@ function CategoryWiseProductList() {
                       >
                         {' '}
                         Rs.{ele.price}
-                      </div>
+                      </span>
 
-                      <div
+                      <span
                         style={{
                           margin: 'auto',
                           background: '#dc3545',
@@ -97,21 +111,39 @@ function CategoryWiseProductList() {
                           (ele.productDiscountedPrice / ele.price) * 100
                         )}
                         % off)
-                      </div>
+                      </span>
                     </div>
                   </Card.Text>
                   {ele.countInStock === 0 ? (
                     state?.userInfo?.isAdmin ? null : (
                       <Button variant="light" disabled>
-                        Out of stock
+                        <span
+                          style={{
+                            height: '25px',
+                            itemAlign: 'center',
+                            padding: '2px',
+                          }}
+                        >
+                          {' '}
+                          Out of stock
+                        </span>
                       </Button>
                     )
                   ) : state?.userInfo?.isAdmin ? null : (
                     <Button onClick={() => addToCartHandler(ele)}>
-                      Add to cart
+                      <span
+                        style={{
+                          height: '25px',
+                          itemAlign: 'center',
+                          padding: '2px',
+                        }}
+                      >
+                        {' '}
+                        Add to cart
+                      </span>
                     </Button>
                   )}
-                </Card.Body>
+                </div>
               </Card>
               {/* <Link to={`/sliders/${ele.slug}`}>
                 <img src={ele.image} alt={ele.name} />

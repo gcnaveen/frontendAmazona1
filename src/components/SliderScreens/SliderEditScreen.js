@@ -73,7 +73,7 @@ export default function ProductEditScreen() {
       let selectedCategory = categories.find((category) => {
         return category.slug === sliderFields.category;
       });
-      setSubCategories(selectedCategory.subCategory);
+      setSubCategories(selectedCategory?.subCategory);
     }
   }, [categories, sliderFields.category]);
 
@@ -123,13 +123,13 @@ export default function ProductEditScreen() {
     }
   };
 
-  //   const deleteFileHandler = async (fileName, f) => {
-  //     console.log(fileName, f);
-  //     // console.log(images);
-  //     // console.log(images.filter((x) => x !== fileName));
-  //     // setImages(images.filter((x) => x !== fileName));
-  //     toast.success('Image removed successfully. click Update to apply it');
-  //   };
+  const deleteFileHandler = async (fileName, f) => {
+    console.log(fileName, f);
+    // console.log(images);
+    // console.log(images.filter((x) => x !== fileName));
+    // setImages(images.filter((x) => x !== fileName));
+    toast.success('Image removed successfully. click Update to apply it');
+  };
 
   return (
     <Container className="small-container">

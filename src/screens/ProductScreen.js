@@ -140,62 +140,15 @@ export default function ProductScreen() {
       dispatch({ type: 'CREATE_FAIL' });
     }
   };
-  console.log('product', product.images);
+  console.log('product', product);
   return loading ? (
     <LoadingBox />
   ) : error ? (
     <MessageBox variant="danger">{error}</MessageBox>
   ) : (
     <div>
-      <Row>
-        <Col md={6}>
-          {console.log('selected Image', selectedImage)}
-          <img
-            className="img-large"
-            src={selectedImage || product.image}
-            alt={product.name}
-          />
-        </Col>
-        <Col md={3}>
-          <ListGroup variant="flush">
-            <ListGroup.Item>
-              <Helmet>
-                <title>{product.name}</title>
-              </Helmet>
-              <h1>{product.name} </h1>
-            </ListGroup.Item>
-            <ListGroup.Item>
-              <Rating rating={product.rating} numReviews={product.numReviews} />
-            </ListGroup.Item>
-            <ListGroup.Item>Price : Rs{product.price}</ListGroup.Item>
-            <ListGroup.Item>
-              <Row xs={1} md={2} className="g-2">
-                <div style={{ width: '100%' }}>
-                  <Swiper
-                    sidesPerView={3}
-                    spaceBetween={40}
-                    slidesPerGroup={1}
-                    loop={true}
-                    navigation={true}
-                  >
-                    {console.log([product.image, ...product.images])}
-                    {(product.image || product.image.images.length > 0) &&
-                      [product.image, ...product.images]?.map((x, i) => (
-                        <Col key={i}>
-                          <SwiperSlide>
-                            <img
-                              className="list-img-size"
-                              onClick={() => setSelectedImage(x)}
-                              src={x}
-                              alt={product.name}
-                            />
-                            {/* <Card.Img variant="top" src={x} alt="product"     onClick={() => setSelectedImage(x)} /> */}
-                          </SwiperSlide>
-                        </Col>
-                      ))}
-                  </Swiper>
-                </div>
-                {/* {[product.image, ...product.images].map((x) => (
+      <Row xs={1} md={3} className="g-2">
+        {/* {[product.image, ...product.images].map((x) => (
                  
                   <Col key={x}>
                     <Card>
@@ -210,15 +163,139 @@ export default function ProductScreen() {
                     </Card>
                   </Col>
                 ))} */}
-              </Row>
-            </ListGroup.Item>
-            <ListGroup.Item>
-              Description: <p>{product.description}</p>
-            </ListGroup.Item>
-          </ListGroup>
-        </Col>
-        <Col md={3}>
-          <Card>
+      </Row>
+      <Row>
+        <h1>{product.name} </h1>
+        <Col md={12} style={{ display: 'flex' }}>
+          {console.log('selected Image', selectedImage)}
+          <div style={{ width: '50%' }}>
+            <Swiper
+              sidesPerView={3}
+              spaceBetween={40}
+              slidesPerGroup={1}
+              loop={true}
+              navigation={true}
+            >
+              {console.log([product.image, ...product.images])}
+              {(product.image || product.image.images.length > 0) &&
+                [product.image, ...product.images]?.map((x, i) => (
+                  <Col key={i}>
+                    <SwiperSlide>
+                      <img
+                        className="list-img-size"
+                        onClick={() => setSelectedImage(x)}
+                        src={x}
+                        alt={product.name}
+                      />
+                      {/* <Card.Img variant="top" src={x} alt="product"     onClick={() => setSelectedImage(x)} /> */}
+                    </SwiperSlide>
+                  </Col>
+                ))}
+            </Swiper>
+          </div>
+          <div class="col-sm-6" style={{ padding: '40px' }}>
+            <div
+              itemprop="name"
+              class="product_name"
+              style={{ color: ' #75b510', fontSize: '20px' }}
+            >
+              {product.slug}
+              {/* 100% Whey Gold Standard Optimum Nutrition (16 pack) */}
+            </div>
+
+            <div class="options clearfix">
+              <div id="product_price">
+                <p class="price product-price">
+                  <p
+                    class="money"
+                    data-currency-usd="$ 199.00"
+                    data-currency="USD"
+                  >
+                    Price: {product.price}
+                  </p>
+                  <p
+                    class="money compare-at-price"
+                    data-currency-usd="$ 220.00"
+                    data-currency="USD"
+                  >
+                    Discount Price:{product.productDiscountedPrice}
+                  </p>
+                </p>{' '}
+              </div>
+
+              <div class="variants-wrapper clearfix visuallyhidden">
+                <div class="selector-wrapper">
+                  {/* <select
+                      class="single-option-selector"
+                      data-option="option1"
+                      id="product-select-option-0"
+                    >
+                      <option value="Default Title">Default Title</option>
+                    </select> */}
+                </div>
+              </div>
+              <hr />
+              <div id="purchase">
+                {/* <ListGroup> */}
+                {product.countInStock > 0 && (
+                  <ListGroup.Item>
+                    <div className="d-grid">
+                      {!userInfo?.isAdmin && (
+                        <Button onClick={addToCartHandler} variant="primary">
+                          Add to Cart
+                        </Button>
+                      )}
+                    </div>
+                  </ListGroup.Item>
+                )}
+                {/* </ListGroup> */}
+                {/* <button class="btn btn-cart" type="submit" id="add-to-cart">
+                    Add to cart
+                  </button> */}
+              </div>
+            </div>
+
+            <div class="product_details">
+              <span> type:</span>
+              <span class="product_type" style={{ color: ' #75b510' }}>
+                {product.category}
+              </span>
+            </div>
+            <hr />
+            <div id="product_description" class="rte" itemprop="description">
+              <h4>Description:</h4>
+              <div>{product.description}</div>
+              {/* <div>
+                Health is one of most important things in our life. We think
+                that it is a real luck to have a strong health.
+              </div>
+              <div>
+                Our way of life doesn't increase the physiological condition of
+                our body. Alcohol, cigarettes, unhealthy food, stresses and
+                other factors have a great influence on our health.
+              </div>
+              <div>
+                The human's immune system is very uncertain thing because there
+                is a countless quantity of different dangerous viruses and
+                bacteria. From ancient times plague and other infectious
+                diseases have been killing people without leaving them any
+                chance to survive.
+              </div> */}
+            </div>
+
+            {/* <div class="addthis_toolbox addthis_default_style ">
+              <a class="addthis_button_facebook_like"></a>
+              <a class="addthis_button_tweet"></a>
+              <a class="addthis_button_pinterest_pinit"></a>
+              <a class="addthis_counter addthis_pill_style"></a>
+            </div> */}
+
+            {/* <script
+              type="text/javascript"
+              src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-4d89903e1583a34e"
+            ></script> */}
+          </div>
+          {/* <Card>
             <Card.Body>
               <ListGroup variant="flush">
                 <ListGroup.Item>
@@ -258,7 +335,175 @@ export default function ProductScreen() {
                 )}
               </ListGroup>
             </Card.Body>
-          </Card>
+          </Card> */}
+          {/* <img
+            className="img-large"
+            src={selectedImage || product.image}
+            alt={product.name}
+          /> */}
+        </Col>
+        <Col md={3}>
+          {/* <div class="col-sm-7">
+            <div itemprop="name" class="product_name">
+              100% Whey Gold Standard Optimum Nutrition (16 pack)
+            </div>
+
+            <form
+              action="/cart/add"
+              method="post"
+              enctype="multipart/form-data"
+              class="form-horizontal"
+              id="product-actions"
+            >
+              <div class="options clearfix">
+                <div id="product_price">
+                  <p class="price product-price">
+                    <span
+                      class="money"
+                      data-currency-usd="$ 199.00"
+                      data-currency="USD"
+                    >
+                      $ 199.00
+                    </span>
+                    <span
+                      class="money compare-at-price"
+                      data-currency-usd="$ 220.00"
+                      data-currency="USD"
+                    >
+                      $ 220.00
+                    </span>
+                  </p>{' '}
+                </div>
+
+                <div class="variants-wrapper clearfix visuallyhidden">
+                  <div class="selector-wrapper">
+                    <select
+                      class="single-option-selector"
+                      data-option="option1"
+                      id="product-select-option-0"
+                    >
+                      <option value="Default Title">Default Title</option>
+                    </select>
+                  </div>
+                  <select
+                    id="product-select"
+                    name="id"
+                    style={{ display: 'none' }}
+                  >
+                    <option value="13761971591">
+                      Default Title - $ 199.00
+                    </option>
+                  </select>
+                </div>
+
+                <div id="purchase">
+                  <label for="quantity">Qty: </label>
+                  <input
+                    min="1"
+                    type="number"
+                    id="quantity"
+                    name="quantity"
+                    value="1"
+                    class="form-control input-small"
+                  />
+                  <button class="btn btn-cart" type="submit" id="add-to-cart">
+                    Add to cart
+                  </button>
+                </div>
+              </div>
+            </form>
+
+            <div class="product_details">
+              <div class="product_type">
+                type:{' '}
+                <a href="/collections/types?q=Tablets" title="Tablets">
+                  Tablets
+                </a>
+              </div>
+              <div class="product_vendor">
+                Vendor:{' '}
+                <a
+                  href="/collections/vendors?q=tm-shopify032-nutrition"
+                  title="tm-shopify032-nutrition"
+                >
+                  tm-shopify032-nutrition
+                </a>
+              </div>
+            </div>
+
+            <div id="product_description" class="rte" itemprop="description">
+              <h4>Description:</h4>
+              <div>
+                Health is one of most important things in our life. We think
+                that it is a real luck to have a strong health.
+              </div>
+              <div>
+                Our way of life doesn't increase the physiological condition of
+                our body. Alcohol, cigarettes, unhealthy food, stresses and
+                other factors have a great influence on our health.
+              </div>
+              <div>
+                The human's immune system is very uncertain thing because there
+                is a countless quantity of different dangerous viruses and
+                bacteria. From ancient times plague and other infectious
+                diseases have been killing people without leaving them any
+                chance to survive.
+              </div>
+            </div>
+
+            <div class="addthis_toolbox addthis_default_style ">
+              <a class="addthis_button_facebook_like"></a>
+              <a class="addthis_button_tweet"></a>
+              <a class="addthis_button_pinterest_pinit"></a>
+              <a class="addthis_counter addthis_pill_style"></a>
+            </div>
+
+            <script
+              type="text/javascript"
+              src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-4d89903e1583a34e"
+            ></script>
+          </div> */}
+          {/* <Card>
+            <Card.Body>
+              <ListGroup variant="flush">
+                <ListGroup.Item>
+                  <Row>
+                    <Col>Price:</Col>
+                    <Col>Rs.{product.price}</Col>
+                  </Row>
+                </ListGroup.Item>
+                <ListGroup.Item>
+                  <Row>
+                    <Col>Discount Price:</Col>
+                    <Col>Rs. {product.productDiscountedPrice} </Col>
+                  </Row>
+                </ListGroup.Item>
+                <ListGroup.Item>
+                  <Row>
+                    <Col>Status:</Col>
+                    <Col>
+                      {product.countInStock > 0 ? (
+                        <Badge bg="success">In Stock</Badge>
+                      ) : (
+                        <Badge bg="danger">Out of Stock</Badge>
+                      )}
+                    </Col>
+                  </Row>
+                </ListGroup.Item>
+                {product.countInStock > 0 && (
+                  <ListGroup.Item>
+                    <div className="d-grid">
+                      {!userInfo?.isAdmin && (
+                        <Button onClick={addToCartHandler} variant="primary">
+                          Add to Cart
+                        </Button>
+                      )}
+                    </div>
+                  </ListGroup.Item>
+                )}
+              </ListGroup>
+            </Card.Body>
+          </Card> */}
         </Col>
       </Row>
       <div className="my-3">

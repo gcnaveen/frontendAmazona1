@@ -26,7 +26,8 @@ import PlaceOrderScreen from './screens/PlaceOrderScreen';
 import OrderScreen from './screens/OrderScreen';
 import OrderHistoryScreen from './screens/OrderHistoryScreen';
 import ProfileScreen from './screens/ProfileScreen';
-import Button from 'react-bootstrap/Button';
+import ListGroup from 'react-bootstrap/ListGroup';
+// import Button from 'react-bootstrap/Button';
 // import { getError } from './utils';
 import axios from 'axios';
 import SearchBox from './components/SearchBox';
@@ -55,7 +56,6 @@ import { NavLink } from 'react-router-dom';
 import SubMenuComp from './components/Sidebar/SubMenu';
 import CreateProduct from './screens/CreateProduct';
 import CreateCateogry from './screens/CreateCateogry';
-// import swal from 'sweetalert';
 
 function App() {
   const {
@@ -63,7 +63,7 @@ function App() {
     dispatch: ctxDispatch,
     // getInitialValues
   } = useContext(Store);
-  const { fullBox, cart, userInfo } = state;
+  const { cart, userInfo } = state;
   const signoutHandler = () => {
     ctxDispatch({ type: 'USER_SIGNOUT' });
     localStorage.removeItem('userInfo');
@@ -72,9 +72,8 @@ function App() {
     // localStorage.removeItem('cartItems');
     window.location.href = '/signin';
   };
-  const [sidebarIsOpen, setSidebarIsOpen] = useState(false);
+  const [sidebarIsOpen] = useState(false);
   const [categories, setCategories] = useState([]);
-  // const link = 'https://amazonabackend.onrender.com';
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -93,206 +92,253 @@ function App() {
 
   console.log('categories', JSON.stringify(categories));
 
-  // const brandHandler = (userInfo) => {
-  //   if (userInfo && userInfo?.length) {
-  //     let list = [];
-  //     listItems?.forEach((item, index) => {
-  //       if (item?.brand?.toLowerCase() === brand?.toLowerCase()) {
-  //         list.push(item);
-  //       }
-  //     });
-  //     setUpdatedList(list);
-  //   }
-  // };
-  // console.log('userInfo', userInfo);
-
   return (
     <BrowserRouter>
       <div
-        className={
-          sidebarIsOpen
-            ? fullBox
-              ? 'site-container active-cont d-flex flex-column full-box'
-              : 'site-container active-cont d-flex flex-column'
-            : fullBox
-            ? 'site-container d-flex flex-column full-box'
-            : 'site-container d-flex flex-column'
-        }
+        className="site-container d-flex flex-column"
+        // style={{ minWidth: '626px' }}
       >
         <ToastContainer position="bottom-center" limit={1} />
-        <header>
-          <Navbar
-            variant="dark"
-            style={{ backgroundColor: '#221b68' }}
-            expand="lg"
-          >
-            <Container>
-              <Button
-                variant="dark"
-                onClick={() => setSidebarIsOpen(!sidebarIsOpen)}
-              >
-                <i className="fas fa-bars"></i>
-              </Button>
-
-              <LinkContainer to="/">
-                <Navbar.Brand style={{ color: 'white' }}>
-                  {/* <img
-                    src="https://www.betonamit.com/wp-content/uploads/2020/09/amazon-logo-header-300x188.jpg"
-                    alt=""
-                    style={{ width: 'auto', height: '40px' }}
-                  /> */}
-                  MedsShop
-                </Navbar.Brand>
-              </LinkContainer>
-
-              <Navbar.Toggle aria-controls="basic-navbar-nav" />
-              <Navbar.Collapse id="basic-navbar-nav">
-                <div
-                  style={{
-                    alignItem: 'center',
-                    paddingLeft: '100px',
-                    width: '800px',
-                  }}
-                >
-                  <SearchBox />
-                </div>
-
-                <Nav className="me-auto w-50  justify-content-end">
-                  {userInfo && userInfo.isAdmin ? null : userInfo === null ? (
-                    <Link to="/signin" className="nav-link">
-                      <i
-                        className="fas fa-shopping-cart"
-                        style={{ color: 'white' }}
-                      ></i>
-                      Cart
-                    </Link>
-                  ) : (
-                    <Link
-                      to="/cart"
-                      className="nav-link"
-                      style={{ color: 'white' }}
-                    >
-                      <i
-                        className="fas fa-shopping-cart"
-                        style={{ color: 'white' }}
-                      ></i>
-                      Cart
-                      {cart.cartItems.length > 0 &&
-                        (userInfo ? (
-                          <Badge pill bg="danger">
-                            {cart.cartItems.reduce((a, c) => a + c.quantity, 0)}
-                          </Badge>
-                        ) : null)}
-                    </Link>
-                  )}
-
-                  {userInfo && userInfo?.isAdmin ? (
-                    <NavDropdown title="Admin" id="admin-nav-dropdown">
-                      <LinkContainer to="/admin/dashboard">
-                        <NavDropdown.Item>Dashboard</NavDropdown.Item>
-                      </LinkContainer>
-                      <LinkContainer to="/admin/products">
-                        <NavDropdown.Item>Products</NavDropdown.Item>
-                      </LinkContainer>
-                      <LinkContainer to="/admin/sliders">
-                        <NavDropdown.Item>Slides</NavDropdown.Item>
-                      </LinkContainer>
-                      <LinkContainer to="/admin/orders">
-                        <NavDropdown.Item>Orders</NavDropdown.Item>
-                      </LinkContainer>
-                      <LinkContainer to="/admin/users">
-                        <NavDropdown.Item>Users</NavDropdown.Item>
-                      </LinkContainer>
-                      <LinkContainer to="/profile">
-                        <NavDropdown.Item>Admin Profile</NavDropdown.Item>
-                      </LinkContainer>
-                      <NavDropdown.Divider />
-                      <Link
-                        className="dropdown-item"
-                        to="#signout"
-                        onClick={signoutHandler}
-                      >
-                        Sign Out
-                      </Link>
-                    </NavDropdown>
-                  ) : userInfo ? (
-                    <div>
-                      <NavDropdown
-                        style={{ color: 'white' }}
-                        title={userInfo.name}
-                        id="basic-nav-dropdown"
-                      >
-                        <LinkContainer to="/profile">
-                          <NavDropdown.Item>User Profile</NavDropdown.Item>
-                        </LinkContainer>
-
-                        <LinkContainer to="/orderhistory">
-                          <NavDropdown.Item>Order History</NavDropdown.Item>
-                        </LinkContainer>
-
-                        <NavDropdown.Divider />
-                        <Link
-                          className="dropdown-item"
-                          to="#signout"
-                          onClick={signoutHandler}
-                        >
-                          Sign Out
-                        </Link>
-                      </NavDropdown>
-                    </div>
-                  ) : (
-                    <Link className="nav-link" to="/signin">
-                      <i className="fas fa-user"></i>
-                      Sign In
-                    </Link>
-                  )}
-                </Nav>
-              </Navbar.Collapse>
-            </Container>
-          </Navbar>
-        </header>
-        <div className="catagory-div" title={JSON.stringify(categories)}>
-          {categories?.map((category, i) => (
-            <Nav.Item className="category-main-container" key={category.slug}>
-              <NavLink
-                to={`/products/categories?type=category&name=${category.slug}`}
+        <header
+          variant="dark"
+          style={{ backgroundColor: '#2c2626' }}
+          expand="lg"
+        >
+          {userInfo ? (
+            <span
+              style={{
+                color: 'wheat',
+                display: 'flex',
+                flexDirection: ' row-reverse',
+                height: ' 30px',
+                width: 'auto',
+              }}
+            >
+              <Link
+                to="#signout"
                 style={{
+                  marginRight: '160px',
+                  marginTop: '25px',
                   textDecoration: 'none',
-                  color: '#363075',
-                  fontSize: '18px',
+                  color: '#736a6a',
+                  fontSize: '15px',
+                  width: 'auto',
+                }}
+                onClick={signoutHandler}
+              >
+                Sign Out
+              </Link>
+            </span>
+          ) : (
+            <span
+              style={{
+                color: 'wheat',
+                display: 'flex',
+                flexDirection: ' row-reverse',
+                height: ' 30px',
+                width: 'auto',
+              }}
+            >
+              {' '}
+              <Link
+                to="/signin"
+                style={{
+                  marginRight: '160px',
+                  marginTop: '25px',
+                  textDecoration: 'none',
+                  color: '#736a6a',
+                  fontSize: '15px',
+                  width: 'auto',
                 }}
               >
-                {category.name}
-              </NavLink>
-              <div className="sub-category-div">
-                {category?.subCategory &&
-                  category?.subCategory?.map((item, i) => (
-                    <NavLink
-                      key={i}
-                      to={`/products/categories?type=subCategory&name=${item.slug}`}
-                      className="sub-menu-item"
-                      style={{ textDecoration: 'none', color: 'white' }}
-                    >
-                      {item.name}
-                    </NavLink>
-                  ))}
-              </div>
-            </Nav.Item>
-          ))}
-        </div>
-        {/* <div>
-          {' '}
-          {categories.map((category) => (
-            <Nav.Item key={category}>
-              <LinkContainer
-                to={`/search?category=${category}`}
-                onClick={() => setSidebarIsOpen(false)}
+                SignIn
+              </Link>
+            </span>
+          )}
+
+          <Navbar
+            style={{
+              paddingLeft: '40px',
+              paddingBottom: '20px',
+              width: 'auto',
+              height: 'auto',
+              maxWidth: '992px',
+              // minWidth: '700px',
+            }}
+          >
+            <img
+              src="//cdn.shopify.com/s/files/1/0432/0609/t/3/assets/logo.png?v=3239645435533822301397117626"
+              alt="Nutrition supplements"
+            ></img>
+            <LinkContainer to="/">
+              <Navbar.Brand style={{ color: 'white' }}>
+                <b className="titleHover">
+                  <span
+                    style={{
+                      fontSize: '50px',
+                      lineHeight: '50px',
+                      marginTop: ' 10px',
+                      display: 'block',
+                      color: 'white',
+                      fontWeight: 700,
+                    }}
+                  >
+                    Nutrition
+                  </span>
+                  <span
+                    style={{
+                      display: 'block',
+                      marginTop: '-10px',
+                      fontWeight: 100,
+                      fontSize: ' 41px',
+                      lineHeight: '41px',
+                      color: '#736a6a',
+                    }}
+                  >
+                    supplements
+                  </span>
+                </b>
+              </Navbar.Brand>
+            </LinkContainer>
+
+            <Navbar.Toggle aria-controls="basic-navbar-nav" />
+            <Navbar.Collapse id="basic-navbar-nav">
+              <div
+                style={{
+                  alignItem: 'center',
+                  paddingLeft: '100px',
+                  width: '260x',
+                }}
               >
-                <Nav.Link>{category}</Nav.Link>
-              </LinkContainer>
-            </Nav.Item>
-          ))}
-        </div> */}
+                <SearchBox />
+              </div>
+
+              <Nav className="me-auto w-50  justify-content-end">
+                {userInfo?.isAdmin ? null : (
+                  <div
+                    style={{
+                      borderRadius: '10px',
+                      background: '#75b510',
+                      width: '120px',
+                      height: '60px',
+                      padding: '10px',
+                      marginRight: '115px',
+                    }}
+                  >
+                    {userInfo && userInfo.isAdmin ? null : userInfo === null ? (
+                      <Link
+                        to="/signin"
+                        className="nav-link"
+                        style={{ padding: '10px' }}
+                      >
+                        <i
+                          className="fas fa-shopping-cart"
+                          style={{ color: 'white' }}
+                        ></i>
+                        <span style={{ color: 'white', fontSize: '17px' }}>
+                          {' '}
+                          Cart
+                        </span>
+                      </Link>
+                    ) : (
+                      <Link
+                        to="/cart"
+                        className="nav-link"
+                        style={{ color: 'white' }}
+                      >
+                        <i
+                          className="fas fa-shopping-cart"
+                          style={{ color: 'white' }}
+                        ></i>
+                        <span style={{ color: 'white', fontSize: '17px' }}>
+                          {' '}
+                          Cart
+                        </span>{' '}
+                        {cart.cartItems.length > 0 &&
+                          (userInfo ? (
+                            <Badge pill bg="danger">
+                              {cart.cartItems.reduce(
+                                (a, c) => a + c.quantity,
+                                0
+                              )}
+                            </Badge>
+                          ) : null)}
+                      </Link>
+                    )}
+                  </div>
+                )}
+              </Nav>
+            </Navbar.Collapse>
+          </Navbar>
+          <div>
+            <Navbar
+              style={{
+                maxWidth: '1000px',
+                position: 'relative',
+                zIndex: 99,
+                borderTop: ' 1px solid #534b4b',
+                background:
+                  'linear-gradient(to bottom,#3f3737 0%,#2e2727 100%)',
+                margin: 'auto',
+                borderRadius: '6px',
+              }}
+            >
+              <div
+                style={{
+                  fontSize: '20px',
+                  color: 'white',
+                  paddingLeft: '5px',
+                  borderRadius: '6px',
+                }}
+              >
+                CATEGORY
+              </div>
+              <div
+                className="headerhover"
+                style={{ marginLeft: 'auto', paddingRight: '20px' }}
+              >
+                {userInfo && userInfo?.isAdmin ? (
+                  <div>
+                    <Link className="header-link" to="/">
+                      Home
+                    </Link>
+                    <Link className="header-link" to="/admin/dashboard">
+                      Dashboard
+                    </Link>
+                    <Link className="header-link" to="/admin/products">
+                      Products
+                    </Link>
+                    <Link className="header-link" to="/admin/sliders">
+                      Sliders
+                    </Link>
+                    <Link className="header-link" to="/admin/orders">
+                      Orders
+                    </Link>
+                    <Link className="header-link" to="/admin/users">
+                      Users
+                    </Link>
+                    <Link className="header-link" to="/profile">
+                      Admin Profile
+                    </Link>
+                  </div>
+                ) : (
+                  <div>
+                    <Link className="header-link" to="/">
+                      Home
+                    </Link>
+                    <Link className="header-link" to="/orderhistory">
+                      Order History
+                    </Link>
+                    <Link className="header-link" to="/profile">
+                      User Profile
+                    </Link>
+                  </div>
+                )}
+              </div>
+            </Navbar>
+          </div>
+        </header>
+
         <div
           className={
             sidebarIsOpen
@@ -306,14 +352,50 @@ function App() {
             </Nav.Item>
             <div className="side-bar-nav">
               {categories.map((category, i) => (
-                // <NavItem key={i}>{ category}</NavItem>
                 <SubMenuComp key={category.slug} category={category} />
               ))}
             </div>
           </Nav>
         </div>
-        <main style={{ overflowX: 'hidden' }}>
-          <Container className="mt-3" style={{ overflowX: 'hidden' }}>
+        <main
+          style={{
+            display: 'flex',
+            marginLeft: '88px',
+            backgroundColor: '#85ca18;',
+          }}
+        >
+          <div class="caregoryList" style={{ width: '25%' }}>
+            <ListGroup>
+              {categories?.map((category, i) => (
+                <NavLink
+                  to={`/products/categories?type=category&name=${category.slug}`}
+                  style={{
+                    textDecoration: 'none',
+                    color: 'black',
+                    fontSize: '18px',
+                  }}
+                >
+                  <ListGroup.Item key={category.slug}>
+                    {category.name}
+                  </ListGroup.Item>
+                </NavLink>
+              ))}
+            </ListGroup>
+            <div class="widget widget_banner" style={{ paddingTop: '30px' }}>
+              <img
+                src="//cdn.shopify.com/s/files/1/0432/0609/t/3/assets/custom_banner_img.jpg?v=109058294885636396901397135061"
+                alt=""
+                style={{ width: '100%' }}
+              />
+            </div>
+          </div>
+          <Container
+            className="mt-3"
+            style={{
+              marginRight: '77px',
+              width: '65%',
+            }}
+          >
             <Routes>
               <Route
                 path="/products/categories"

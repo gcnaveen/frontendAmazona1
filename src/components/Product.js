@@ -35,34 +35,110 @@ export default function Product(props) {
   );
   // console.log('in side product', state.userInfo?.isAdmin);
   return (
+    //   <div
+    //     class="product col-sm-4"
+    //     style={{
+    //       margin: '0px',
+    //       background: '#f8f9fa',
+    //       width: '100%',
+    //       height: '85%',
+    //     }}
+    //   >
+    //     <div class="inside">
+    //       <div class="product_img" style={{ height: '60%', objectFit: 'cover' }}>
+    //         <a href={`/product/${props.product.slug}`}>
+    //           <img src={props.product.image} alt={props.product.name} />
+    //         </a>
+    //       </div>
+
+    //       <div class="product_name">
+    //         <a href={`/product/${props.product.slug}`}>{props.product.name}</a>
+    //       </div>
+
+    //       <div class="product_price">
+    //         <Rating
+    //           rating={props.product.rating}
+    //           numReviews={props.product.numReviews}
+    //         />
+    //         <span style={{ fontSize: '15px' }}>Rs.{discountPrice}</span>
+    //         <span style={{ textDecoration: 'line-through', margin: '10px' }}>
+    //           {' '}
+    //           Rs.{props.product.price}
+    //         </span>
+    //         <span
+    //           style={{ margin: 'auto', background: '#dc3545', color: 'white' }}
+    //         >
+    //           ({percentage}% off)
+    //         </span>
+    //       </div>
+
+    //       <div class="product_links">
+    //         <form method="post" action="/cart/add">
+    //           <input type="hidden" name="id" value="674918293" />
+
+    //           {props.product.countInStock === 0 ? (
+    //             state?.userInfo?.isAdmin ? null : (
+    //               <Button variant="light" disabled>
+    //                 Out of stock
+    //               </Button>
+    //             )
+    //           ) : state?.userInfo?.isAdmin ? null : (
+    //             <Button onClick={() => addToCartHandler(props.product)}>
+    //               Add to cart
+    //             </Button>
+    //           )}
+    //         </form>
+    //       </div>
+    //     </div>
+    //   </div>
+    // );
+    // {
     <Card
-      style={{ background: '#f8f9fa', minWidth: '280px', minHeight: '480px' }}
+      style={{
+        width: '250px',
+        height: '300px',
+        margin: '2px',
+      }}
     >
-      <Link to={`/product/${props.product.slug}`}>
+      <Link to={`/product/${props.product.slug}`} style={{ height: '150px' }}>
         <img
           src={props.product.image}
           className="card-img-top"
           alt={props.product.name}
-          style={{ height: '261px' }}
+          style={{ height: '100%', objectFit: 'contain' }}
         />
       </Link>
-      <Card.Body>
-        <Link to={`/product/${props.product.slug}`}>
-          <Card.Title>{props.product.name}</Card.Title>
+      <div style={{ textAlign: 'center', padding: '5px', overflow: 'overlay' }}>
+        <Link
+          to={`/product/${props.product.slug}`}
+          style={{
+            fontSize: '15px',
+            display: 'block',
+            overflow: 'hidden',
+            textDecoration: 'none',
+          }}
+        >
+          <span>{props.product.name}</span>
         </Link>
         <Rating
           rating={props.product.rating}
           numReviews={props.product.numReviews}
         />
         <Card.Text>
-          <div style={{ display: 'flex' }}>
-            <div style={{ fontSize: '30px' }}> Rs.{discountPrice} </div>
-            <div style={{ textDecoration: 'line-through', margin: '10px' }}>
+          <div>
+            <span style={{ fontSize: '20px' }}>
+              <b>Rs.{discountPrice}</b>
+            </span>
+            <span
+              style={{
+                textDecoration: 'line-through',
+                margin: '10px',
+              }}
+            >
               {' '}
               Rs.{props.product.price}
-            </div>
-
-            <div
+            </span>
+            <span
               style={{
                 margin: 'auto',
                 background: '#dc3545',
@@ -70,21 +146,38 @@ export default function Product(props) {
               }}
             >
               ({percentage}% off)
-            </div>
+            </span>
           </div>
         </Card.Text>
         {props.product.countInStock === 0 ? (
           state?.userInfo?.isAdmin ? null : (
             <Button variant="light" disabled>
-              Out of stock
+              <span
+                style={{
+                  height: '25px',
+                  itemAlign: 'center',
+                  padding: '2px',
+                }}
+              >
+                {' '}
+                Out of stock
+              </span>
             </Button>
           )
         ) : state?.userInfo?.isAdmin ? null : (
           <Button onClick={() => addToCartHandler(props.product)}>
-            Add to cart
+            <span
+              style={{
+                height: '25px',
+                itemAlign: 'center',
+                padding: '2px',
+              }}
+            >
+              Add to cart
+            </span>
           </Button>
         )}
-      </Card.Body>
+      </div>
     </Card>
   );
 }

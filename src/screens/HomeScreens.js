@@ -72,7 +72,7 @@ export default function HomeScreens() {
   }, []);
   // console.log('pro', products);
   return (
-    <div style={{ overflowX: 'hidden' }}>
+    <div>
       <Helmet>
         <title>Amazon</title>
       </Helmet>
@@ -80,7 +80,7 @@ export default function HomeScreens() {
         <Slider />
       </div>
 
-      <div className="products" style={{ paddingTop: '30px' }}>
+      <>
         {loading ? (
           <LoadingBox />
         ) : error ? (
@@ -93,7 +93,7 @@ export default function HomeScreens() {
           //   RightArrow={RightArrow}
           //   // onWheel={onWheel}
           // >
-          <Row className="justify-content-evenly">
+          <Row className="product">
             {products?.map((product) => {
               return (
                 <Col
@@ -102,7 +102,13 @@ export default function HomeScreens() {
                   md={4}
                   lg={3}
                   className="md-3"
-                  style={{ paddingBottom: '10px' }}
+                  style={{
+                    paddingBottom: '10px',
+                    // maxWidth: '600px',
+                    display: 'flex',
+                    scroll: 'none',
+                    // scrollX: 'none',
+                  }}
                 >
                   <Product product={product} />
 
@@ -115,7 +121,7 @@ export default function HomeScreens() {
           </Row>
           // </ScrollMenu>
         )}
-      </div>
+      </>
     </div>
   );
 }

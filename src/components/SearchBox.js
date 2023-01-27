@@ -15,7 +15,7 @@ export default function SearchBox() {
 
   return (
     <Form className="d-flex me-auto" onSubmit={submitHandler}>
-      <InputGroup>
+      <InputGroup style={{ marginRight: '145px' }}>
         <FormControl
           type="text"
           name="q"

@@ -8,6 +8,7 @@ import { Store } from '../Store';
 import { toast } from 'react-toastify';
 import { getError } from '../utils';
 import { Helmet } from 'react-helmet-async';
+import LoadingBox from '../components/LoadingBox';
 
 export default function SigninScreen() {
   const navigate = useNavigate();
@@ -34,7 +35,7 @@ export default function SigninScreen() {
       toast.error(getError(err));
     }
   };
-
+  console.log(userInfo);
   useEffect(() => {
     if (userInfo) {
       navigate(redirect);
@@ -46,6 +47,7 @@ export default function SigninScreen() {
       <Helmet>
         <title>Sign In</title>
       </Helmet>
+
       <h1 className="my-3">Sign In</h1>
       <Form onSubmit={submitHandler}>
         <Form.Group className="mb-3" controlId="email">

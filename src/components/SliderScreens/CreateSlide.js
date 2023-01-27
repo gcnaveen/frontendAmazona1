@@ -1,19 +1,19 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useContext, useEffect, useReducer, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import { toast } from 'react-toastify';
-// import ListGroup from 'react-bootstrap/ListGroup';
+import ListGroup from 'react-bootstrap/ListGroup';
 import { Helmet } from 'react-helmet-async';
-// import { Store } from '../../Store';
+import { Store } from '../../Store';
 import { getError } from '../../utils';
 
 function CreateSlide() {
   const navigate = useNavigate();
-  // const { state } = useContext(Store);
-  // const { userInfo } = state;
+  const { state } = useContext(Store);
+  const { userInfo } = state;
 
   const [sliderFields, setSliderFields] = useState({
     name: '',
@@ -27,32 +27,6 @@ function CreateSlide() {
   const [sliderFiles, setSliderFiles] = useState([]);
   const [categories, setCategories] = useState([]);
   const [subCategories, setSubCategories] = useState([]);
-  const [productIds, setProductIds] = useState([]);
-
-  useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const { data } = await axios.get(`/api/products/getAllCats`);
-        // console.log(data)
-        setCategories(data);
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    const fetchProductIds = async () => {
-      try {
-        const { data } = await axios.get(`/api/products/productIds`);
-        // console.log(data)
-        setProductIds(data);
-      } catch (err) {
-        console.log(err);
-      }
-    };
-
-    fetchProductIds();
-
-    fetchCategories();
-  }, []);
 
   const handleSlideFields = (e) => {
     let { name, value } = e.target;
@@ -70,15 +44,7 @@ function CreateSlide() {
     e.preventDefault();
 
     if (sliderFields.sliderType === 'product' && !sliderFields.productID) {
-      toast.error('Please Add Product ID', 500);
-      return;
-    }
-    let isValidID = productIds.some((id) => {
-      return id._id === sliderFields.productID;
-    });
-
-    if (!isValidID) {
-      toast.error('Please Enter Valid Product ID');
+      toast.error('Please Add Product ID');
       return;
     }
 
@@ -87,6 +53,7 @@ function CreateSlide() {
     for (let i = 0; i < sliderFiles.length; i++) {
       formData.append('file', sliderFiles[i]);
     }
+    console.log(sliderFields);
     formData.append('name', sliderFields.name);
     formData.append('brand', sliderFields.brand);
     formData.append('category', sliderFields.category);
@@ -109,7 +76,21 @@ function CreateSlide() {
       });
   };
 
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const { data } = await axios.get(`/api/products/getAllCats`);
+        console.log(data);
+        setCategories(data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchCategories();
+  }, []);
+
   const uploadFileHandler = (e) => {
+    console.log(e.target.files);
     setSliderFiles(e.target.files);
   };
 
@@ -152,7 +133,7 @@ function CreateSlide() {
                 name="category"
                 onChange={handleSlideFields}
               >
-                {categories?.map((category) => (
+                {categories.map((category) => (
                   <option value={category.slug} key={category.slug}>
                     {category.name}
                   </option>
@@ -169,7 +150,7 @@ function CreateSlide() {
                 onChange={handleSlideFields}
               >
                 <option value="">No Sub Category</option>
-                {subCategories?.map((subCat) => (
+                {subCategories.map((subCat) => (
                   <option value={subCat.slug} key={subCat.slug}>
                     {subCat.name}
                   </option>
@@ -221,12 +202,6 @@ function CreateSlide() {
           </div>
 
           <div className="row justify-content-center mt-2">
-            <Button
-              style={{ width: '80px', marginRight: '10px' }}
-              onClick={() => navigate('/admin/sliders')}
-            >
-              Cancel
-            </Button>
             <Button type="submit" style={{ width: '80px' }}>
               Create
             </Button>
