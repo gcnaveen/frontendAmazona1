@@ -81,46 +81,48 @@ export default function HomeScreens() {
       </div>
 
       <>
-        {loading ? (
-          <LoadingBox />
-        ) : error ? (
-          <MessageBox variant="danger">{error}</MessageBox>
-        ) : (
-          // <ScrollMenu
-          //   // Header={<div>HEADER</div>}
-          //   // Footer={<div>FOOTER</div>}
-          //   LeftArrow={LeftArrow}
-          //   RightArrow={RightArrow}
-          //   // onWheel={onWheel}
-          // >
-          <Row className="product">
-            {products?.map((product) => {
-              return (
-                <Col
-                  key={product.slug}
-                  sm={6}
-                  md={4}
-                  lg={3}
-                  className="md-3"
-                  style={{
-                    paddingBottom: '10px',
-                    // maxWidth: '600px',
-                    display: 'flex',
-                    scroll: 'none',
-                    // scrollX: 'none',
-                  }}
-                >
-                  <Product product={product} />
+        <div className="products">
+          {loading ? (
+            <LoadingBox />
+          ) : error ? (
+            <MessageBox variant="danger">{error}</MessageBox>
+          ) : (
+            // <ScrollMenu
+            //   // Header={<div>HEADER</div>}
+            //   // Footer={<div>FOOTER</div>}
+            //   LeftArrow={LeftArrow}
+            //   RightArrow={RightArrow}
+            //   // onWheel={onWheel}
+            // >
+            <Row className="justify-content-evenly">
+              {products?.map((product) => {
+                return (
+                  <Col
+                    key={product.slug}
+                    sm={6}
+                    md={4}
+                    lg={3}
+                    className="md-3"
+                    style={{
+                      paddingBottom: '10px',
+                      // maxWidth: '600px',
+                      display: 'flex',
+                      scroll: 'none',
+                      // scrollX: 'none',
+                    }}
+                  >
+                    <Product product={product} />
 
-                  {/* <HorizontalScroll> */}
+                    {/* <HorizontalScroll> */}
 
-                  {/* </HorizontalScroll> */}
-                </Col>
-              );
-            })}
-          </Row>
-          // </ScrollMenu>
-        )}
+                    {/* </HorizontalScroll> */}
+                  </Col>
+                );
+              })}
+            </Row>
+            // </ScrollMenu>
+          )}
+        </div>
       </>
     </div>
   );

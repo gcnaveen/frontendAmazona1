@@ -99,80 +99,29 @@ function App() {
         // style={{ minWidth: '626px' }}
       >
         <ToastContainer position="bottom-center" limit={1} />
-        <header
-          variant="dark"
-          style={{ backgroundColor: '#2c2626' }}
-          expand="lg"
-        >
-          {userInfo ? (
-            <span
-              style={{
-                color: 'wheat',
-                display: 'flex',
-                flexDirection: ' row-reverse',
-                height: ' 30px',
-                width: 'auto',
-              }}
-            >
-              <Link
-                to="#signout"
-                style={{
-                  marginRight: '160px',
-                  marginTop: '25px',
-                  textDecoration: 'none',
-                  color: '#736a6a',
-                  fontSize: '15px',
-                  width: 'auto',
-                }}
-                onClick={signoutHandler}
-              >
-                Sign Out
-              </Link>
-            </span>
-          ) : (
-            <span
-              style={{
-                color: 'wheat',
-                display: 'flex',
-                flexDirection: ' row-reverse',
-                height: ' 30px',
-                width: 'auto',
-              }}
-            >
-              {' '}
-              <Link
-                to="/signin"
-                style={{
-                  marginRight: '160px',
-                  marginTop: '25px',
-                  textDecoration: 'none',
-                  color: '#736a6a',
-                  fontSize: '15px',
-                  width: 'auto',
-                }}
-              >
-                SignIn
-              </Link>
-            </span>
-          )}
-
+        <header>
           <Navbar
+            variant="dark"
             style={{
-              paddingLeft: '40px',
-              paddingBottom: '20px',
-              width: 'auto',
-              height: 'auto',
-              maxWidth: '992px',
-              // minWidth: '700px',
+              backgroundColor: '#2c2626',
+              display: 'block',
+              padding: '20px',
             }}
+            expand="lg"
           >
-            <img
-              src="//cdn.shopify.com/s/files/1/0432/0609/t/3/assets/logo.png?v=3239645435533822301397117626"
-              alt="Nutrition supplements"
-            ></img>
-            <LinkContainer to="/">
-              <Navbar.Brand style={{ color: 'white' }}>
-                <b className="titleHover">
+            <Container>
+              {/* <Button
+                variant="dark"
+                onClick={() => setSidebarIsOpen(!sidebarIsOpen)}
+              >
+                <i className="fas fa-bars"></i>
+              </Button> */}
+              <img
+                src="//cdn.shopify.com/s/files/1/0432/0609/t/3/assets/logo.png?v=3239645435533822301397117626"
+                alt="Nutrition supplements"
+              ></img>
+              <LinkContainer to="/">
+                <Navbar.Brand style={{ color: 'white' }}>
                   <span
                     style={{
                       fontSize: '50px',
@@ -197,146 +146,309 @@ function App() {
                   >
                     supplements
                   </span>
-                </b>
-              </Navbar.Brand>
-            </LinkContainer>
+                </Navbar.Brand>
+              </LinkContainer>
 
-            <Navbar.Toggle aria-controls="basic-navbar-nav" />
-            <Navbar.Collapse id="basic-navbar-nav">
-              <div
-                style={{
-                  alignItem: 'center',
-                  paddingLeft: '100px',
-                  width: '260x',
-                }}
-              >
-                <SearchBox />
-              </div>
+              <Navbar.Toggle aria-controls="basic-navbar-nav" />
+              <Navbar.Collapse id="basic-navbar-nav">
+                <div
+                  style={{
+                    alignItem: 'center',
+                    paddingLeft: '150px',
+                    // width: '600px',
+                  }}
+                >
+                  <SearchBox />
+                </div>
+                <Nav
+                  className="me-auto  w-100  justify-content-end"
+                  style={{ display: 'inline-grid' }}
+                >
+                  {/* {userInfo && userInfo.isAdmin ? null : userInfo === null ? (
+                    <Link to="/signin" className="nav-link">
+                      <div
+                        style={{
+                          borderRadius: '10px',
+                          background: '#75b510',
+                          width: '120px',
+                          height: '60px',
+                          padding: '10px',
+                          marginRight: '115px',
+                        }}
+                      >
+                        <i
+                          className="fas fa-shopping-cart"
+                          style={{ color: 'white' }}
+                        ></i>
+                        Cart
+                      </div>
+                    </Link>
+                  ) : (
+                    <Link
+                      to="/cart"
+                      className="nav-link"
+                      style={{ color: 'white' }}
+                    >
+                      <i
+                        className="fas fa-shopping-cart"
+                        style={{ color: 'white' }}
+                      ></i>
+                      Cart
+                      {cart.cartItems.length > 0 &&
+                        (userInfo ? (
+                          <Badge pill bg="danger">
+                            {cart.cartItems.reduce((a, c) => a + c.quantity, 0)}
+                          </Badge>
+                        ) : null)}
+                    </Link>
+                  )}
 
-              <Nav className="me-auto w-50  justify-content-end">
-                {userInfo?.isAdmin ? null : (
-                  <div
-                    style={{
-                      borderRadius: '10px',
-                      background: '#75b510',
-                      width: '120px',
-                      height: '60px',
-                      padding: '10px',
-                      marginRight: '115px',
-                    }}
-                  >
-                    {userInfo && userInfo.isAdmin ? null : userInfo === null ? (
+                  {userInfo && userInfo?.isAdmin ? (
+                    <NavDropdown title="Admin" id="admin-nav-dropdown">
+                      <LinkContainer to="/admin/dashboard">
+                        <NavDropdown.Item>Dashboard</NavDropdown.Item>
+                      </LinkContainer>
+                      <LinkContainer to="/admin/products">
+                        <NavDropdown.Item>Products</NavDropdown.Item>
+                      </LinkContainer>
+                      <LinkContainer to="/admin/sliders">
+                        <NavDropdown.Item>Slides</NavDropdown.Item>
+                      </LinkContainer>
+                      <LinkContainer to="/admin/orders">
+                        <NavDropdown.Item>Orders</NavDropdown.Item>
+                      </LinkContainer>
+                      <LinkContainer to="/admin/users">
+                        <NavDropdown.Item>Users</NavDropdown.Item>
+                      </LinkContainer>
+                      <LinkContainer to="/profile">
+                        <NavDropdown.Item>Admin Profile</NavDropdown.Item>
+                      </LinkContainer>
+                      <NavDropdown.Divider />
+                      <Link
+                        className="dropdown-item"
+                        to="#signout"
+                        onClick={signoutHandler}
+                      >
+                        Sign Out
+                      </Link>
+                    </NavDropdown>
+                  ) : userInfo ? (
+                    <div>
+                      <NavDropdown
+                        style={{ color: 'white' }}
+                        title={userInfo.name}
+                        id="basic-nav-dropdown"
+                      >
+                        <LinkContainer to="/profile">
+                          <NavDropdown.Item>User Profile</NavDropdown.Item>
+                        </LinkContainer>
+
+                        <LinkContainer to="/orderhistory">
+                          <NavDropdown.Item>Order History</NavDropdown.Item>
+                        </LinkContainer>
+
+                        <NavDropdown.Divider />
+                        <Link
+                          className="dropdown-item"
+                          to="#signout"
+                          onClick={signoutHandler}
+                        >
+                          Sign Out
+                        </Link>
+                      </NavDropdown>
+                    </div>
+                  ) : (
+                    <Link className="nav-link" to="/signin">
+                      <i className="fas fa-user"></i>
+                      Sign In
+                    </Link>
+                  )} */}
+                  {userInfo ? (
+                    <span
+                      style={{
+                        color: 'wheat',
+                        display: 'flex',
+                        flexDirection: ' row-reverse',
+                        height: ' 30px',
+                        width: 'auto',
+                      }}
+                    >
+                      <Link
+                        to="#signout"
+                        style={{
+                          // marginRight: '160px',
+                          marginTop: '5px',
+                          textDecoration: 'none',
+                          color: '#736a6a',
+                          fontSize: '15px',
+                          width: 'auto',
+                          marginRight: '100px',
+                        }}
+                        onClick={signoutHandler}
+                      >
+                        Sign Out
+                      </Link>
+                    </span>
+                  ) : (
+                    <span
+                      style={{
+                        color: 'wheat',
+                        display: 'flex',
+                        flexDirection: ' row-reverse',
+                        height: ' 30px',
+                        width: 'auto',
+                      }}
+                    >
+                      {' '}
                       <Link
                         to="/signin"
-                        className="nav-link"
-                        style={{ padding: '10px' }}
+                        style={{
+                          // marginRight: '160px',
+                          marginTop: '5px',
+                          textDecoration: 'none',
+                          color: '#736a6a',
+                          fontSize: '15px',
+                          width: 'auto',
+                          marginRight: '100px',
+                        }}
                       >
-                        <i
-                          className="fas fa-shopping-cart"
-                          style={{ color: 'white' }}
-                        ></i>
-                        <span style={{ color: 'white', fontSize: '17px' }}>
-                          {' '}
-                          Cart
-                        </span>
+                        SignIn
                       </Link>
-                    ) : (
-                      <Link
-                        to="/cart"
-                        className="nav-link"
-                        style={{ color: 'white' }}
-                      >
-                        <i
-                          className="fas fa-shopping-cart"
+                    </span>
+                  )}
+
+                  {userInfo?.isAdmin ? null : (
+                    <div
+                      style={{
+                        borderRadius: '10px',
+                        background: '#75b510',
+                        width: '120px',
+                        height: '60px',
+                        padding: '10px',
+                        marginRight: '-45px',
+                        marginTop: '10px',
+                      }}
+                    >
+                      {userInfo && userInfo.isAdmin ? null : userInfo ===
+                        null ? (
+                        <Link
+                          to="/signin"
+                          className="nav-link"
+                          style={{ padding: '10px' }}
+                        >
+                          <i
+                            className="fas fa-shopping-cart"
+                            style={{ color: 'white' }}
+                          ></i>
+                          <span style={{ color: 'white', fontSize: '17px' }}>
+                            {' '}
+                            Cart
+                          </span>
+                        </Link>
+                      ) : (
+                        <Link
+                          to="/cart"
+                          className="nav-link"
                           style={{ color: 'white' }}
-                        ></i>
-                        <span style={{ color: 'white', fontSize: '17px' }}>
-                          {' '}
-                          Cart
-                        </span>{' '}
-                        {cart.cartItems.length > 0 &&
-                          (userInfo ? (
-                            <Badge pill bg="danger">
-                              {cart.cartItems.reduce(
-                                (a, c) => a + c.quantity,
-                                0
-                              )}
-                            </Badge>
-                          ) : null)}
-                      </Link>
-                    )}
-                  </div>
-                )}
-              </Nav>
-            </Navbar.Collapse>
-          </Navbar>
-          <div>
-            <Navbar
-              style={{
-                maxWidth: '1000px',
-                position: 'relative',
-                zIndex: 99,
-                borderTop: ' 1px solid #534b4b',
-                background:
-                  'linear-gradient(to bottom,#3f3737 0%,#2e2727 100%)',
-                margin: 'auto',
-                borderRadius: '6px',
-              }}
-            >
+                        >
+                          <i
+                            className="fas fa-shopping-cart"
+                            style={{ color: 'white' }}
+                          ></i>
+                          <span style={{ color: 'white', fontSize: '17px' }}>
+                            {' '}
+                            Cart
+                          </span>{' '}
+                          {cart.cartItems.length > 0 &&
+                            (userInfo ? (
+                              <Badge pill bg="danger">
+                                {cart.cartItems.reduce(
+                                  (a, c) => a + c.quantity,
+                                  0
+                                )}
+                              </Badge>
+                            ) : null)}
+                        </Link>
+                      )}
+                    </div>
+                  )}
+                </Nav>
+              </Navbar.Collapse>
+            </Container>
+            <Container>
               <div
                 style={{
-                  fontSize: '20px',
-                  color: 'white',
-                  paddingLeft: '5px',
+                  width: '1000px',
+                  maxWidth: '1000px',
+                  position: 'relative',
+                  zIndex: 99,
+                  borderTop: ' 1px solid #534b4b',
+                  background:
+                    'linear-gradient(to bottom,#3f3737 0%,#2e2727 100%)',
+                  margin: 'auto',
                   borderRadius: '6px',
+                  display: 'flex',
+                  marginTop: '30px',
+                  // border: '1px solid red',
                 }}
               >
-                CATEGORY
+                {' '}
+                <div
+                  style={{
+                    fontSize: '20px',
+                    color: 'white',
+                    paddingLeft: '5px',
+                    borderRadius: '6px',
+                  }}
+                >
+                  {' '}
+                  CATEGORY
+                </div>
+                <div
+                  className="headerhover"
+                  style={{ marginLeft: 'auto', paddingRight: '20px' }}
+                >
+                  {userInfo && userInfo?.isAdmin ? (
+                    <div>
+                      <Link className="header-link" to="/">
+                        Home
+                      </Link>
+                      <Link className="header-link" to="/admin/dashboard">
+                        Dashboard
+                      </Link>
+                      <Link className="header-link" to="/admin/products">
+                        Products
+                      </Link>
+                      <Link className="header-link" to="/admin/sliders">
+                        Sliders
+                      </Link>
+                      <Link className="header-link" to="/admin/orders">
+                        Orders
+                      </Link>
+                      <Link className="header-link" to="/admin/users">
+                        Users
+                      </Link>
+                      <Link className="header-link" to="/profile">
+                        Admin Profile
+                      </Link>
+                    </div>
+                  ) : (
+                    <div>
+                      <Link className="header-link" to="/">
+                        Home
+                      </Link>
+                      <Link className="header-link" to="/orderhistory">
+                        Order History
+                      </Link>
+                      <Link className="header-link" to="/profile">
+                        User Profile
+                      </Link>
+                    </div>
+                  )}
+                </div>
               </div>
-              <div
-                className="headerhover"
-                style={{ marginLeft: 'auto', paddingRight: '20px' }}
-              >
-                {userInfo && userInfo?.isAdmin ? (
-                  <div>
-                    <Link className="header-link" to="/">
-                      Home
-                    </Link>
-                    <Link className="header-link" to="/admin/dashboard">
-                      Dashboard
-                    </Link>
-                    <Link className="header-link" to="/admin/products">
-                      Products
-                    </Link>
-                    <Link className="header-link" to="/admin/sliders">
-                      Sliders
-                    </Link>
-                    <Link className="header-link" to="/admin/orders">
-                      Orders
-                    </Link>
-                    <Link className="header-link" to="/admin/users">
-                      Users
-                    </Link>
-                    <Link className="header-link" to="/profile">
-                      Admin Profile
-                    </Link>
-                  </div>
-                ) : (
-                  <div>
-                    <Link className="header-link" to="/">
-                      Home
-                    </Link>
-                    <Link className="header-link" to="/orderhistory">
-                      Order History
-                    </Link>
-                    <Link className="header-link" to="/profile">
-                      User Profile
-                    </Link>
-                  </div>
-                )}
-              </div>
-            </Navbar>
-          </div>
+            </Container>
+          </Navbar>
         </header>
 
         <div
@@ -364,8 +476,8 @@ function App() {
             backgroundColor: '#85ca18;',
           }}
         >
-          <div class="caregoryList" style={{ width: '25%' }}>
-            <ListGroup>
+          <div class="caregoryList">
+            <ListGroup style={{ paddingLeft: '100px', width: 'auto' }}>
               {categories?.map((category, i) => (
                 <NavLink
                   to={`/products/categories?type=category&name=${category.slug}`}
