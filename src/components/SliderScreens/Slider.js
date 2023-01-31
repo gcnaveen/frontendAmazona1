@@ -72,7 +72,7 @@ function Slider() {
   };
   return (
     <Carousel
-      style={{ height: '300px', width: '100%' }}
+      style={{ width: '100%' }}
       activeIndex={index}
       onSelect={handleSelect}
     >

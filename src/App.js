@@ -472,7 +472,7 @@ function App() {
         <main
           style={{
             display: 'flex',
-            marginLeft: '88px',
+            marginLeft: '0 40px',
             backgroundColor: '#85ca18;',
           }}
         >
