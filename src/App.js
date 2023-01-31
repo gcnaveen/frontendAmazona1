@@ -12,7 +12,7 @@ import ProductScreen from './screens/ProductScreen';
 import Navbar from 'react-bootstrap/Navbar';
 import Badge from 'react-bootstrap/Badge';
 import Nav from 'react-bootstrap/Nav';
-import NavDropdown from 'react-bootstrap/NavDropdown';
+// import NavDropdown from 'react-bootstrap/NavDropdown';
 import Container from 'react-bootstrap/Container';
 import { LinkContainer } from 'react-router-bootstrap';
 import { useContext, useEffect, useState } from 'react';
@@ -477,7 +477,7 @@ function App() {
           }}
         >
           <div class="caregoryList">
-            <ListGroup style={{ paddingLeft: '100px', width: 'auto' }}>
+            <ListGroup>
               {categories?.map((category, i) => (
                 <NavLink
                   to={`/products/categories?type=category&name=${category.slug}`}
