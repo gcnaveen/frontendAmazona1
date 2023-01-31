@@ -494,11 +494,11 @@ function App() {
               ))}
             </ListGroup>
             <div class="widget widget_banner" style={{ paddingTop: '30px' }}>
-              <img
+              {/* <img
                 src="//cdn.shopify.com/s/files/1/0432/0609/t/3/assets/custom_banner_img.jpg?v=109058294885636396901397135061"
                 alt=""
                 style={{ width: '100%' }}
-              />
+              /> */}
             </div>
           </div>
           <Container
