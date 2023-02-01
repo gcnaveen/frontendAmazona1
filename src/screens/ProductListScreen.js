@@ -175,7 +175,7 @@ export default function ProductListScreen() {
           <table className="table">
             <thead>
               <tr>
-                <th>ID</th>
+                <th>IMAGE</th>
                 <th>NAME</th>
                 <th>PRICE</th>
                 <th>CATEGORY</th>
@@ -186,7 +186,9 @@ export default function ProductListScreen() {
             <tbody>
               {products?.map((product) => (
                 <tr key={product._id}>
-                  <td>{product._id}</td>
+                  <td>
+                    <img src={product.image} alt="" className="orders-img" />
+                  </td>
                   <td>{product.name}</td>
                   <td>{product.price}</td>
                   {/* <td>{product.productDiscountedPrice}</td> */}

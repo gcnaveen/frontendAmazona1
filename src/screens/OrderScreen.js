@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, { useContext, useEffect, useReducer } from 'react';
+import React, { useContext, useEffect, useReducer, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -13,6 +13,7 @@ import { getError } from '../utils';
 import { toast } from 'react-toastify';
 import Button from 'react-bootstrap/Button';
 import { Helmet } from 'react-helmet-async';
+import { Form } from 'react-bootstrap';
 
 function reducer(state, action) {
   switch (action.type) {
@@ -41,6 +42,7 @@ function reducer(state, action) {
 export default function OrderScreen() {
   const { state } = useContext(Store);
   const { userInfo } = state;
+  const [data, setData] = useState([]);
 
   const params = useParams();
   const { id: orderId } = params;
@@ -114,6 +116,62 @@ export default function OrderScreen() {
   }
 
   console.log('object', order);
+  const fetchData = async () => {
+    try {
+      dispatch({ type: 'FETCH_REQUEST' });
+      const { data } = await axios.get(`/api/orders`, {
+        headers: { Authorization: `Bearer ${userInfo.token}` },
+      });
+      dispatch({ type: 'FETCH_SUCCESS', payload: data });
+      // setData(initialSortedData(data));
+    } catch (err) {
+      dispatch({
+        type: 'FETCH_FAIL',
+        payload: getError(err),
+      });
+    }
+  };
+  async function handleDeliveryStatus(e, order) {
+    const { value, name } = e.target;
+
+    let orderId = order?._id;
+
+    try {
+      let response = await axios.patch(
+        `/api/orders/updateStatus/${orderId}`,
+        { status: name },
+        { headers: { Authorization: `Bearer ${userInfo.token}` } }
+      );
+
+      if (response.data.message === 'Order Status Updated') {
+        setTimeout(() => {
+          fetchData();
+          // handleSort('order-A-Z');
+        }, 2000);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  }
+  async function handleOrder(type, order) {
+    let orderId = order?._id;
+
+    try {
+      let response = await axios.get(
+        `/api/orders/handleOrder/${orderId}/${type}`,
+        { headers: { Authorization: `Bearer ${userInfo.token}` } }
+      );
+      if (response.data.message === 'Order Status Updated') {
+        setTimeout(() => {
+          fetchData();
+          //  sortArray(sort)
+          // handleSort('order-A-Z');
+        }, 1000);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  }
 
   return loading ? (
     <LoadingBox></LoadingBox>
@@ -132,13 +190,14 @@ export default function OrderScreen() {
               <Card.Title>Shipping</Card.Title>
 
               <Card.Text>
-                <strong>Name:</strong> {order.shippingAddress.fullName} <br />
-                <strong>Address: </strong> {order.shippingAddress.address},
-                {order.shippingAddress.city}, {order.shippingAddress.postalCode}
-                ,{order.shippingAddress.country}
+                <strong>Name:</strong> {order.shippingAddress?.fullName} <br />
+                <strong>Address: </strong> {order.shippingAddress?.address},
+                {order.shippingAddress?.city},{' '}
+                {order.shippingAddress?.postalCode},
+                {order.shippingAddress?.country}
                 &nbsp;
-                {order.shippingAddress.location &&
-                  order.shippingAddress.location.lat && (
+                {order.shippingAddress?.location &&
+                  order.shippingAddress?.location?.lat && (
                     <a
                       target="_new"
                       href={`https://maps.google.com?q=${order.shippingAddress.location.lat},${order.shippingAddress.location.lng}`}
@@ -210,19 +269,19 @@ export default function OrderScreen() {
                 <ListGroup.Item>
                   <Row>
                     <Col>Items</Col>
-                    <Col>Rs.{order.itemsPrice.toFixed(2)}</Col>
+                    <Col>Rs.{order.itemsPrice?.toFixed(2)}</Col>
                   </Row>
                 </ListGroup.Item>
                 <ListGroup.Item>
                   <Row>
                     <Col>Shipping</Col>
-                    <Col>Rs.{order.shippingPrice.toFixed(2)}</Col>
+                    <Col>Rs.{order?.shippingPrice?.toFixed(2)}</Col>
                   </Row>
                 </ListGroup.Item>
                 <ListGroup.Item>
                   <Row>
                     <Col>Tax</Col>
-                    <Col>Rs.{order.taxPrice.toFixed(2)}</Col>
+                    <Col>Rs.{order?.taxPrice?.toFixed(2)}</Col>
                   </Row>
                 </ListGroup.Item>
                 <ListGroup.Item>
@@ -231,24 +290,97 @@ export default function OrderScreen() {
                       <strong> Order Total</strong>
                     </Col>
                     <Col>
-                      <strong>Rs.{order.totalPrice.toFixed(2)}</strong>
+                      <strong>Rs.{order?.totalPrice?.toFixed(2)}</strong>
                     </Col>
                   </Row>
                 </ListGroup.Item>
                 {userInfo.isAdmin &&
-                  (order.isPaid ||
-                    order.paymentMethod === 'Cash On Delivery') &&
-                  !order.isDelivered && (
+                  (order?.isPaid ||
+                    order?.paymentMethod === 'Cash On Delivery') &&
+                  !order?.isDelivered && (
                     <ListGroup.Item>
                       {loadingDeliver && <LoadingBox></LoadingBox>}
                       <div className="d-grid">
                         <Button
                           type="button"
-                          disabled={!order.isOutForDelivery}
+                          disabled={!order?.isOutForDelivery}
                           onClick={deliverOrderHandler}
                         >
                           Deliver Order
                         </Button>
+                        {!order.isCancelled ? (
+                          <div>
+                            {order?.isOrderAccepted ||
+                            order?.isOrderRejected ? null : (
+                              <Button
+                                style={{ height: 'fit-content' }}
+                                type="button"
+                                variant="light"
+                                onClick={() => handleOrder('ACCEPTED', order)}
+                              >
+                                Accept
+                              </Button>
+                            )}
+                            &nbsp;
+                            {order?.isOrderAccepted ? (
+                              <p
+                                style={{
+                                  backgroundColor: '#85ca18',
+                                  color: 'white',
+                                  height: '30px',
+                                  borderRadius: '6px',
+                                  width: 'auto',
+                                  paddingLeft: '20px',
+                                }}
+                              >
+                                Order Accepted
+                              </p>
+                            ) : null || order.isOrderRejected ? (
+                              <p
+                                style={{
+                                  backgroundColor: '#842029',
+                                  color: 'white',
+                                  height: '30px',
+                                  borderRadius: '6px',
+                                  width: 'auto',
+                                  paddingLeft: '20px',
+                                }}
+                              >
+                                Order Rejected
+                              </p>
+                            ) : (
+                              <Button
+                                style={{ height: 'fit-content' }}
+                                type="button"
+                                variant="light"
+                                onClick={() => handleOrder('REJECTED', order)}
+                              >
+                                Reject
+                              </Button>
+                            )}
+                            {order.isOrderAccepted ? (
+                              <div className="delivery-status-btn-container">
+                                <div className="delivery-status-btn"></div>
+
+                                <div className="delivery-status-btn"></div>
+                              </div>
+                            ) : null}
+                          </div>
+                        ) : (
+                          <p
+                            style={{
+                              backgroundColor: '#842029',
+                              color: 'white',
+                              height: '30px',
+                              borderRadius: '6px',
+                              width: 'auto',
+                              marginTop: '10px',
+                              paddingLeft: '20px',
+                            }}
+                          >
+                            Oder Cancelled
+                          </p>
+                        )}
                       </div>
                     </ListGroup.Item>
                   )}
@@ -266,6 +398,47 @@ export default function OrderScreen() {
                     </div>
                   </ListGroup.Item>
                 )}
+                {order.isOrderAccepted ? (
+                  <div className="delivery-status-btn-container">
+                    <div className="delivery-status-btn">
+                      <label style={{ color: 'green' }}>Dispatched</label>
+                      <Form.Check
+                        name="dispatch"
+                        defaultChecked={order.isDispatched ? true : false}
+                        disabled={order.isDispatched ? true : false}
+                        onClick={(e) => handleDeliveryStatus(e, order)}
+                      />
+                    </div>
+                    <div className="delivery-status-btn">
+                      <label style={{ color: 'green' }}>Out For Delivery</label>
+                      <Form.Check
+                        name="outForDelivery"
+                        defaultChecked={order.isOutForDelivery ? true : false}
+                        disabled={
+                          order.isOutForDelivery || !order.isDispatched
+                            ? true
+                            : false
+                        }
+                        onClick={(e) => handleDeliveryStatus(e, order)}
+                      />
+                    </div>
+                    <div className="delivery-status-btn">
+                      <label style={{ color: 'green' }}>Delivered</label>
+                      <Form.Check
+                        name="delivered"
+                        defaultChecked={order.isDelivered ? true : false}
+                        disabled={
+                          order.isDelivered ||
+                          !order.isDispatched ||
+                          !order.isOutForDelivery
+                            ? true
+                            : false
+                        }
+                        onClick={(e) => handleDeliveryStatus(e, order)}
+                      />
+                    </div>
+                  </div>
+                ) : null}
               </ListGroup>
             </Card.Body>
           </Card>

@@ -64,6 +64,7 @@ function App() {
     // getInitialValues
   } = useContext(Store);
   const { cart, userInfo } = state;
+  const [toggle, settoggle] = useState(true);
   const signoutHandler = () => {
     ctxDispatch({ type: 'USER_SIGNOUT' });
     localStorage.removeItem('userInfo');
@@ -74,13 +75,13 @@ function App() {
   };
   const [sidebarIsOpen] = useState(false);
   const [categories, setCategories] = useState([]);
+  console.log(state);
 
   useEffect(() => {
     const fetchCategories = async () => {
       try {
         const { data } = await axios.get('/api/products/getAllCats');
         setCategories(data);
-        console.log('data', data);
       } catch (err) {
         console.log('network error', err);
         // toast.error(getError(err));
@@ -90,7 +91,43 @@ function App() {
     fetchCategories();
   }, [state]);
 
-  console.log('categories', JSON.stringify(categories));
+  // console.log('categories', JSON.stringify(categories));
+  // const toggleCatagory = () => {
+  //   if (window?.location.pathname === '/signin') {
+  //     <div class="caregoryList">
+  //       <ListGroup style={{ paddingLeft: '10rem', width: '30rem' }}>
+  //         {categories?.map((category, i) => (
+  //           <NavLink
+  //             to={`/products/categories?type=category&name=${category.slug}`}
+  //             style={{
+  //               textDecoration: 'none',
+  //               color: 'black',
+  //               fontSize: '18px',
+  //             }}
+  //           >
+  //             <ListGroup.Item key={category.slug}>
+  //               {category.name}
+  //             </ListGroup.Item>
+  //           </NavLink>
+  //         ))}
+  //       </ListGroup>
+  //       <div class="widget widget_banner" style={{ paddingTop: '30px' }}>
+  //         <img
+  //           src="//cdn.shopify.com/s/files/1/0432/0609/t/3/assets/custom_banner_img.jpg?v=109058294885636396901397135061"
+  //           alt=""
+  //           style={{ paddingLeft: '182px' }}
+  //         />
+  //       </div>
+  //     </div>;
+  //   } else {
+  //     <div></div>;
+  //   }
+  // };
+  // if (window?.location.pathname === '/signin') {
+  //   window.location.reload(false);
+  // } else {
+  //   window.location.reload(true);
+  // }
 
   return (
     <BrowserRouter>
@@ -110,12 +147,6 @@ function App() {
             expand="lg"
           >
             <Container>
-              {/* <Button
-                variant="dark"
-                onClick={() => setSidebarIsOpen(!sidebarIsOpen)}
-              >
-                <i className="fas fa-bars"></i>
-              </Button> */}
               <img
                 src="//cdn.shopify.com/s/files/1/0432/0609/t/3/assets/logo.png?v=3239645435533822301397117626"
                 alt="Nutrition supplements"
@@ -164,105 +195,6 @@ function App() {
                   className="me-auto  w-100  justify-content-end"
                   style={{ display: 'inline-grid' }}
                 >
-                  {/* {userInfo && userInfo.isAdmin ? null : userInfo === null ? (
-                    <Link to="/signin" className="nav-link">
-                      <div
-                        style={{
-                          borderRadius: '10px',
-                          background: '#75b510',
-                          width: '120px',
-                          height: '60px',
-                          padding: '10px',
-                          marginRight: '115px',
-                        }}
-                      >
-                        <i
-                          className="fas fa-shopping-cart"
-                          style={{ color: 'white' }}
-                        ></i>
-                        Cart
-                      </div>
-                    </Link>
-                  ) : (
-                    <Link
-                      to="/cart"
-                      className="nav-link"
-                      style={{ color: 'white' }}
-                    >
-                      <i
-                        className="fas fa-shopping-cart"
-                        style={{ color: 'white' }}
-                      ></i>
-                      Cart
-                      {cart.cartItems.length > 0 &&
-                        (userInfo ? (
-                          <Badge pill bg="danger">
-                            {cart.cartItems.reduce((a, c) => a + c.quantity, 0)}
-                          </Badge>
-                        ) : null)}
-                    </Link>
-                  )}
-
-                  {userInfo && userInfo?.isAdmin ? (
-                    <NavDropdown title="Admin" id="admin-nav-dropdown">
-                      <LinkContainer to="/admin/dashboard">
-                        <NavDropdown.Item>Dashboard</NavDropdown.Item>
-                      </LinkContainer>
-                      <LinkContainer to="/admin/products">
-                        <NavDropdown.Item>Products</NavDropdown.Item>
-                      </LinkContainer>
-                      <LinkContainer to="/admin/sliders">
-                        <NavDropdown.Item>Slides</NavDropdown.Item>
-                      </LinkContainer>
-                      <LinkContainer to="/admin/orders">
-                        <NavDropdown.Item>Orders</NavDropdown.Item>
-                      </LinkContainer>
-                      <LinkContainer to="/admin/users">
-                        <NavDropdown.Item>Users</NavDropdown.Item>
-                      </LinkContainer>
-                      <LinkContainer to="/profile">
-                        <NavDropdown.Item>Admin Profile</NavDropdown.Item>
-                      </LinkContainer>
-                      <NavDropdown.Divider />
-                      <Link
-                        className="dropdown-item"
-                        to="#signout"
-                        onClick={signoutHandler}
-                      >
-                        Sign Out
-                      </Link>
-                    </NavDropdown>
-                  ) : userInfo ? (
-                    <div>
-                      <NavDropdown
-                        style={{ color: 'white' }}
-                        title={userInfo.name}
-                        id="basic-nav-dropdown"
-                      >
-                        <LinkContainer to="/profile">
-                          <NavDropdown.Item>User Profile</NavDropdown.Item>
-                        </LinkContainer>
-
-                        <LinkContainer to="/orderhistory">
-                          <NavDropdown.Item>Order History</NavDropdown.Item>
-                        </LinkContainer>
-
-                        <NavDropdown.Divider />
-                        <Link
-                          className="dropdown-item"
-                          to="#signout"
-                          onClick={signoutHandler}
-                        >
-                          Sign Out
-                        </Link>
-                      </NavDropdown>
-                    </div>
-                  ) : (
-                    <Link className="nav-link" to="/signin">
-                      <i className="fas fa-user"></i>
-                      Sign In
-                    </Link>
-                  )} */}
                   {userInfo ? (
                     <span
                       style={{
@@ -311,6 +243,9 @@ function App() {
                           width: 'auto',
                           marginRight: '100px',
                         }}
+                        onClick={() => {
+                          settoggle(false);
+                        }}
                       >
                         SignIn
                       </Link>
@@ -325,7 +260,7 @@ function App() {
                         width: '120px',
                         height: '60px',
                         padding: '10px',
-                        marginRight: '-45px',
+                        marginRight: '60px',
                         marginTop: '10px',
                       }}
                     >
@@ -392,18 +327,20 @@ function App() {
                   // border: '1px solid red',
                 }}
               >
-                {' '}
-                <div
-                  style={{
-                    fontSize: '20px',
-                    color: 'white',
-                    paddingLeft: '5px',
-                    borderRadius: '6px',
-                  }}
-                >
-                  {' '}
-                  CATEGORY
-                </div>
+                {userInfo ? (
+                  <div
+                    style={{
+                      fontSize: '20px',
+                      color: 'white',
+                      paddingLeft: '5px',
+                      borderRadius: '6px',
+                    }}
+                  >
+                    {' '}
+                    CATEGORY
+                  </div>
+                ) : null}
+
                 <div
                   className="headerhover"
                   style={{ marginLeft: 'auto', paddingRight: '20px' }}
@@ -476,31 +413,34 @@ function App() {
             backgroundColor: '#85ca18;',
           }}
         >
-          <div class="caregoryList">
-            <ListGroup>
-              {categories?.map((category, i) => (
-                <NavLink
-                  to={`/products/categories?type=category&name=${category.slug}`}
-                  style={{
-                    textDecoration: 'none',
-                    color: 'black',
-                    fontSize: '18px',
-                  }}
-                >
-                  <ListGroup.Item key={category.slug}>
-                    {category.name}
-                  </ListGroup.Item>
-                </NavLink>
-              ))}
-            </ListGroup>
-            <div class="widget widget_banner" style={{ paddingTop: '30px' }}>
-              {/* <img
-                src="//cdn.shopify.com/s/files/1/0432/0609/t/3/assets/custom_banner_img.jpg?v=109058294885636396901397135061"
-                alt=""
-                style={{ width: '100%' }}
-              /> */}
+          {/* {toggleCatagory()} */}
+          {!toggle && window.location.pathname === '/signin' ? null : (
+            <div class="caregoryList">
+              <ListGroup style={{ paddingLeft: '10rem', width: '30rem' }}>
+                {categories?.map((category, i) => (
+                  <NavLink
+                    to={`/products/categories?type=category&name=${category.slug}`}
+                    style={{
+                      textDecoration: 'none',
+                      color: 'black',
+                      fontSize: '18px',
+                    }}
+                  >
+                    <ListGroup.Item key={category.slug}>
+                      {category.name}
+                    </ListGroup.Item>
+                  </NavLink>
+                ))}
+              </ListGroup>
+              <div class="widget widget_banner" style={{ paddingTop: '30px' }}>
+                <img
+                  src="//cdn.shopify.com/s/files/1/0432/0609/t/3/assets/custom_banner_img.jpg?v=109058294885636396901397135061"
+                  alt=""
+                  style={{ paddingLeft: '182px' }}
+                />
+              </div>
             </div>
-          </div>
+          )}
           <Container
             className="mt-3"
             style={{

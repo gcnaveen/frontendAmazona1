@@ -74,7 +74,7 @@ export default function HomeScreens() {
   return (
     <div>
       <Helmet>
-        <title>Amazon</title>
+        <title>Nutrition supplements</title>
       </Helmet>
       <div style={{ marginBotton: '20px', width: '100%' }}>
         <Slider />
@@ -101,7 +101,7 @@ export default function HomeScreens() {
                     key={product.slug}
                     sm={6}
                     md={4}
-                    lg={3}
+                    lg={4}
                     className="md-3"
                     style={{
                       paddingBottom: '10px',

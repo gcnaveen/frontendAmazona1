@@ -49,7 +49,7 @@ export default function SigninScreen() {
       </Helmet>
 
       <h1 className="my-3">Sign In</h1>
-      <Form onSubmit={submitHandler}>
+      <Form onSubmit={submitHandler} style={{ width: '400px' }}>
         <Form.Group className="mb-3" controlId="email">
           <Form.Label>Email</Form.Label>
           <Form.Control

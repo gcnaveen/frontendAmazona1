@@ -7,6 +7,7 @@ import Button from 'react-bootstrap/Button';
 import { Store } from '../Store';
 import Rating from '../components/Rating';
 import { toast } from 'react-toastify';
+import LoadingBox from '../components/LoadingBox';
 
 function CategoryWiseProductList() {
   const { state, dispatch: ctxDispatch } = useContext(Store);
@@ -32,6 +33,12 @@ function CategoryWiseProductList() {
   useEffect(() => {
     fetchProducts();
   }, [query.get('name'), query.get('type')]);
+  console.log(
+    'products',
+    products.map((ele) =>
+      console.log(ele.reviews.map((product) => console.log(product.rating)))
+    )
+  );
 
   const addToCartHandler = async (item) => {
     const existItem = cartItems.find((x) => x._id === item._id);
@@ -50,13 +57,19 @@ function CategoryWiseProductList() {
 
   return (
     <div style={{ position: 'relative', zIndex: '500' }}>
-      <h1 style={{ position: 'relative', zIndex: '500' }}>Products</h1>
+      <h1 style={{ position: 'relative', zIndex: '500' }}>Products:</h1>
+      {
+        products?.length === 0 && <LoadingBox />
+        //  <MessageBox>No Product Found</MessageBox>
+      }
       <div className="products">
         {products?.map((ele) => {
           return (
             <div className="product">
               <Card style={{ width: '250px', height: '300px', margin: '2px' }}>
                 <Link to={`/product/${ele.slug}`} style={{ height: '50%' }}>
+                  {/* {ele?.length === 0 && <LoadingBox />} */}
+
                   <img
                     src={ele.image}
                     className="card-img-top"
@@ -64,6 +77,7 @@ function CategoryWiseProductList() {
                     style={{ height: '100%', objectFit: 'contain' }}
                   />
                 </Link>
+
                 <div
                   style={{
                     textAlign: 'center',
@@ -114,6 +128,7 @@ function CategoryWiseProductList() {
                       </span>
                     </div>
                   </Card.Text>
+
                   {ele.countInStock === 0 ? (
                     state?.userInfo?.isAdmin ? null : (
                       <Button variant="light" disabled>
@@ -161,6 +176,12 @@ function CategoryWiseProductList() {
           );
         })}
       </div>
+      {/* <div>
+        <h4>Best seller</h4>
+        {products.map((product) => {
+          return product.map((rating) => {});
+        })}
+      </div> */}
     </div>
   );
 }

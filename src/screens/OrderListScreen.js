@@ -253,6 +253,7 @@ export default function OrderListScreen() {
           fetchData();
           //  sortArray(sort)
           handleSort('order-A-Z');
+          navigate(`/order/${order._id}`);
         }, 1000);
       }
     } catch (err) {
@@ -337,19 +338,19 @@ export default function OrderListScreen() {
                         type="button"
                         variant="light"
                         onClick={() => {
-                          navigate(`/order/${order._id}`);
+                          handleReadStatus(order, i);
                         }}
                       >
                         Details
                       </Button>
-                      <div className="delivery-status-read-btn">
+                      {/* <div className="delivery-status-read-btn">
                         <label>Read</label>
                         <Form.Check
                           name="read"
                           defaultChecked={order.isRead ? true : false}
                           onClick={() => handleReadStatus(order, i)}
                         />
-                      </div>
+                      </div> */}
                     </div>
                     &nbsp;
                     {/* <Button
@@ -373,8 +374,10 @@ export default function OrderListScreen() {
                           </Button>
                         )}
                         &nbsp;
-                        {order.isOrderAccepted || order.isOrderRejected ? (
-                          'Order Rejected'
+                        {order.isOrderAccepted ? (
+                          'Order Accepted'
+                        ) : null || order.isOrderRejected ? (
+                          'Order Rejected '
                         ) : (
                           <Button
                             style={{ height: 'fit-content' }}
@@ -385,7 +388,7 @@ export default function OrderListScreen() {
                             Reject
                           </Button>
                         )}
-                        {order.isOrderAccepted ? (
+                        {/* {order.isOrderAccepted ? (
                           <div className="delivery-status-btn-container">
                             <div className="delivery-status-btn">
                               <label>Dispatched</label>
@@ -431,7 +434,7 @@ export default function OrderListScreen() {
                               />
                             </div>
                           </div>
-                        ) : null}
+                        ) : null} */}
                       </div>
                     ) : (
                       'Oder Cancelled'
