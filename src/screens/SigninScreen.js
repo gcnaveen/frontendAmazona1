@@ -74,13 +74,21 @@ export default function SigninScreen() {
           <Button type="submit">Sign In</Button>
         </div>
         <div className="mb-3">
-          <Link to={`/reset-password?redirect=${redirect}`}>
+          <Link
+            to={`/reset-password?redirect=${redirect}`}
+            style={{ color: ' #75b510 !important' }}
+          >
             Forgot Password
           </Link>
         </div>
         <div className="mb-3">
           New customer?{' '}
-          <Link to={`/signup?redirect=${redirect}`}>Create your account</Link>
+          <Link
+            to={`/signup?redirect=${redirect}`}
+            style={{ color: ' #75b510 !important' }}
+          >
+            Create your account
+          </Link>
         </div>
       </Form>
     </Container>

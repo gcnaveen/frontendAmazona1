@@ -1,6 +1,5 @@
 import {
   BrowserRouter,
-  Link,
   Route,
   Routes,
   // useNavigation,
@@ -64,7 +63,6 @@ function App() {
     // getInitialValues
   } = useContext(Store);
   const { cart, userInfo } = state;
-  const [toggle, settoggle] = useState(true);
   const signoutHandler = () => {
     ctxDispatch({ type: 'USER_SIGNOUT' });
     localStorage.removeItem('userInfo');
@@ -91,6 +89,18 @@ function App() {
     fetchCategories();
   }, [state]);
 
+  let returnCategoryComponent = function () {
+    let doc = document.getElementsByClassName('caregoryList');
+    if (window.location.pathname === ('/signin' || '/signup')) {
+      doc.classList.add('hide');
+    } else {
+      doc.classList.remove('hide');
+    }
+  };
+
+  setTimeout(() => {
+    returnCategoryComponent();
+  }, 500);
   // console.log('categories', JSON.stringify(categories));
   // const toggleCatagory = () => {
   //   if (window?.location.pathname === '/signin') {
@@ -205,8 +215,8 @@ function App() {
                         width: 'auto',
                       }}
                     >
-                      <Link
-                        to="#signout"
+                      <a
+                        href="#signout"
                         style={{
                           // marginRight: '160px',
                           marginTop: '5px',
@@ -219,7 +229,7 @@ function App() {
                         onClick={signoutHandler}
                       >
                         Sign Out
-                      </Link>
+                      </a>
                     </span>
                   ) : (
                     <span
@@ -232,8 +242,8 @@ function App() {
                       }}
                     >
                       {' '}
-                      <Link
-                        to="/signin"
+                      <a
+                        href="/signin"
                         style={{
                           // marginRight: '160px',
                           marginTop: '5px',
@@ -243,12 +253,9 @@ function App() {
                           width: 'auto',
                           marginRight: '100px',
                         }}
-                        onClick={() => {
-                          settoggle(false);
-                        }}
                       >
                         SignIn
-                      </Link>
+                      </a>
                     </span>
                   )}
 
@@ -266,9 +273,9 @@ function App() {
                     >
                       {userInfo && userInfo.isAdmin ? null : userInfo ===
                         null ? (
-                        <Link
-                          to="/signin"
-                          className="nav-link"
+                        <a
+                          href="/signin"
+                          className="nav-a"
                           style={{ padding: '10px' }}
                         >
                           <i
@@ -279,11 +286,11 @@ function App() {
                             {' '}
                             Cart
                           </span>
-                        </Link>
+                        </a>
                       ) : (
-                        <Link
-                          to="/cart"
-                          className="nav-link"
+                        <a
+                          href="/cart"
+                          className="nav-a"
                           style={{ color: 'white' }}
                         >
                           <i
@@ -303,7 +310,7 @@ function App() {
                                 )}
                               </Badge>
                             ) : null)}
-                        </Link>
+                        </a>
                       )}
                     </div>
                   )}
@@ -313,8 +320,8 @@ function App() {
             <Container>
               <div
                 style={{
-                  width: '1000px',
-                  maxWidth: '1000px',
+                  width: '1050px',
+                  // maxWidth: '1000px',
                   position: 'relative',
                   zIndex: 99,
                   borderTop: ' 1px solid #534b4b',
@@ -327,19 +334,20 @@ function App() {
                   // border: '1px solid red',
                 }}
               >
-                {userInfo ? (
-                  <div
-                    style={{
-                      fontSize: '20px',
-                      color: 'white',
-                      paddingLeft: '5px',
-                      borderRadius: '6px',
-                    }}
-                  >
-                    {' '}
-                    CATEGORY
-                  </div>
-                ) : null}
+                <div
+                  className="caregoryList"
+                  style={{
+                    display:
+                      window.location.pathname === '/signin' ? 'none' : '',
+                    fontSize: '20px',
+                    color: 'white',
+                    paddingLeft: '5px',
+                    borderRadius: '6px',
+                  }}
+                >
+                  {' '}
+                  CATEGORY
+                </div>
 
                 <div
                   className="headerhover"
@@ -347,39 +355,39 @@ function App() {
                 >
                   {userInfo && userInfo?.isAdmin ? (
                     <div>
-                      <Link className="header-link" to="/">
+                      <a className="header-a" href="/">
                         Home
-                      </Link>
-                      <Link className="header-link" to="/admin/dashboard">
+                      </a>
+                      <a className="header-a" href="/admin/dashboard">
                         Dashboard
-                      </Link>
-                      <Link className="header-link" to="/admin/products">
+                      </a>
+                      <a className="header-a" href="/admin/products">
                         Products
-                      </Link>
-                      <Link className="header-link" to="/admin/sliders">
+                      </a>
+                      <a className="header-a" href="/admin/sliders">
                         Sliders
-                      </Link>
-                      <Link className="header-link" to="/admin/orders">
+                      </a>
+                      <a className="header-a" href="/admin/orders">
                         Orders
-                      </Link>
-                      <Link className="header-link" to="/admin/users">
+                      </a>
+                      <a className="header-a" href="/admin/users">
                         Users
-                      </Link>
-                      <Link className="header-link" to="/profile">
+                      </a>
+                      <a className="header-a" href="/profile">
                         Admin Profile
-                      </Link>
+                      </a>
                     </div>
                   ) : (
                     <div>
-                      <Link className="header-link" to="/">
+                      <a className="header-a" href="/">
                         Home
-                      </Link>
-                      <Link className="header-link" to="/orderhistory">
+                      </a>
+                      <a className="header-a" href="/orderhistory">
                         Order History
-                      </Link>
-                      <Link className="header-link" to="/profile">
+                      </a>
+                      <a className="header-a" href="/profile">
                         User Profile
-                      </Link>
+                      </a>
                     </div>
                   )}
                 </div>
@@ -413,34 +421,42 @@ function App() {
             backgroundColor: '#85ca18;',
           }}
         >
-          {/* {toggleCatagory()} */}
-          {!toggle && window.location.pathname === '/signin' ? null : (
-            <div class="caregoryList">
-              <ListGroup style={{ paddingLeft: '10rem', width: '30rem' }}>
-                {categories?.map((category, i) => (
-                  <NavLink
-                    to={`/products/categories?type=category&name=${category.slug}`}
-                    style={{
-                      textDecoration: 'none',
-                      color: 'black',
-                      fontSize: '18px',
-                    }}
-                  >
-                    <ListGroup.Item key={category.slug}>
-                      {category.name}
-                    </ListGroup.Item>
-                  </NavLink>
-                ))}
-              </ListGroup>
-              <div class="widget widget_banner" style={{ paddingTop: '30px' }}>
-                <img
-                  src="//cdn.shopify.com/s/files/1/0432/0609/t/3/assets/custom_banner_img.jpg?v=109058294885636396901397135061"
-                  alt=""
-                  style={{ paddingLeft: '182px' }}
-                />
-              </div>
+          {/* {window.location.pathname === '/signin' ? null : ( */}
+
+          <div
+            class="caregoryList"
+            style={{
+              display:
+                window.location.pathname === ('/signin' || '/signup')
+                  ? 'none'
+                  : '',
+            }}
+          >
+            <ListGroup style={{ paddingLeft: '10rem', width: '30rem' }}>
+              {categories?.map((category, i) => (
+                <NavLink
+                  to={`/products/categories?type=category&name=${category.slug}`}
+                  style={{
+                    textDecoration: 'none',
+                    color: 'black',
+                    fontSize: '18px',
+                  }}
+                >
+                  <ListGroup.Item key={category.slug}>
+                    {category.name}
+                  </ListGroup.Item>
+                </NavLink>
+              ))}
+            </ListGroup>
+            <div class="widget widget_banner" style={{ paddingTop: '30px' }}>
+              <img
+                src="//cdn.shopify.com/s/files/1/0432/0609/t/3/assets/custom_banner_img.jpg?v=109058294885636396901397135061"
+                alt=""
+                style={{ paddingLeft: '182px' }}
+              />
             </div>
-          )}
+          </div>
+          {/* )} */}
           <Container
             className="mt-3"
             style={{

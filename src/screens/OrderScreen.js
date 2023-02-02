@@ -398,7 +398,7 @@ export default function OrderScreen() {
                     </div>
                   </ListGroup.Item>
                 )}
-                {order.isOrderAccepted ? (
+                {order.isOrderAccepted && userInfo.isAdmin ? (
                   <div className="delivery-status-btn-container">
                     <div className="delivery-status-btn">
                       <label style={{ color: 'green' }}>Dispatched</label>

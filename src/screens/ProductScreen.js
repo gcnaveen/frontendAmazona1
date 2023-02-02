@@ -524,7 +524,7 @@ export default function ProductScreen() {
           ))}
         </ListGroup>
         <div className="my-3">
-          {userInfo ? (
+          {!userInfo.isAdmin ? (
             <form onSubmit={submitHandler}>
               <h2>Write a customer review</h2>
               <Form.Group className="mb-3" controlId="rating">
@@ -562,7 +562,7 @@ export default function ProductScreen() {
                 {loadingCreateReview && <LoadingBox></LoadingBox>}
               </div>
             </form>
-          ) : (
+          ) : userInfo.isAdmin ? null : (
             <MessageBox>
               Please{' '}
               <Link to={`/signin?redirect=/product/${product.slug}`}>

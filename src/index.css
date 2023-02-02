@@ -79,6 +79,9 @@ button.thumbnail {
   margin-bottom: 10px;
   /* border: 1px solid black; */
 }
+.list-group-item {
+  color: white !important;
+}
 .orders-img {
   height: 100px;
   width: auto;
@@ -199,8 +202,12 @@ button {
 }
 
 a {
-  color: #75b510;
-  text-decoration: none;
+  color: #80837c !important;
+  text-decoration: none !important;
+}
+
+.header-a {
+  margin: 0 0.5rem !important;
 }
 
 .category-main-container:hover .sub-category-div {
@@ -274,6 +281,9 @@ a {
 .caregoryList .list-group-item {
   background-color: #85ca18;
   border: 1px solid #abdb20;
+}
+.hide {
+  display: none;
 }
 .caregoryList .list-group-item:hover {
   background-color: #6aa907 !important;

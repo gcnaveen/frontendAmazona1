@@ -120,6 +120,8 @@ export default function SlideListScreen() {
     }
   };
 
+  console.log(sliders);
+
   return (
     <div>
       <Row>

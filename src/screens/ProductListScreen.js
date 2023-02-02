@@ -176,6 +176,7 @@ export default function ProductListScreen() {
             <thead>
               <tr>
                 <th>IMAGE</th>
+                <th>ID</th>
                 <th>NAME</th>
                 <th>PRICE</th>
                 <th>CATEGORY</th>
@@ -189,6 +190,7 @@ export default function ProductListScreen() {
                   <td>
                     <img src={product.image} alt="" className="orders-img" />
                   </td>
+                  <td>{product._id}</td>
                   <td>{product.name}</td>
                   <td>{product.price}</td>
                   {/* <td>{product.productDiscountedPrice}</td> */}
