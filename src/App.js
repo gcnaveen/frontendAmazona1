@@ -266,7 +266,7 @@ function App() {
                         background: '#75b510',
                         width: '120px',
                         height: '60px',
-                        padding: '10px',
+                        padding: '17px',
                         marginRight: '60px',
                         marginTop: '10px',
                       }}

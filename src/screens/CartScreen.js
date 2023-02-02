@@ -35,7 +35,7 @@ export default function CartScreen() {
   const checkoutHandler = () => {
     navigate('/signin?redirect=/shipping');
   };
-
+  console.log(cartItems);
   return (
     <div>
       <Helmet>
@@ -50,8 +50,8 @@ export default function CartScreen() {
             </MessageBox>
           ) : (
             <ListGroup>
-              {cartItems?.map((item) => (
-                <ListGroup.Item key={item._id}>
+              {cartItems.map((item) => (
+                <ListGroup.Item key={item._id} style={{ color: 'black' }}>
                   <Row className="align-items-center">
                     <Col md={4}>
                       <img

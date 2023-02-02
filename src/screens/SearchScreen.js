@@ -236,6 +236,7 @@ export default function SearchScreen() {
                     rating !== 'all' ||
                     price !== 'all' ? (
                       <Button
+                        className="searchBtn"
                         variant="light"
                         onClick={() => navigate('/search')}
                       >
@@ -260,12 +261,21 @@ export default function SearchScreen() {
                 </Col>
               </Row>
               {products.length === 0 && (
-                <MessageBox>No Product Found</MessageBox>
+                <MessageBox>
+                  <b style={{ paddingLeft: '40px' }}>No Product Found</b>
+                </MessageBox>
               )}
 
               <Row>
                 {products?.map((product) => (
-                  <Col sm={6} lg={4} className="mb-3" key={product._id}>
+                  <Col
+                    style={{ margin: '10px' }}
+                    sm={6}
+                    md={4}
+                    lg={5}
+                    className="mb-3"
+                    key={product._id}
+                  >
                     <Product product={product}></Product>
                   </Col>
                 ))}

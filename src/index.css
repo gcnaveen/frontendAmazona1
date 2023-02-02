@@ -79,12 +79,19 @@ button.thumbnail {
   margin-bottom: 10px;
   /* border: 1px solid black; */
 }
-.list-group-item {
+/* .list-group-item {
   color: white !important;
-}
+} */
 .orders-img {
   height: 100px;
   width: auto;
+}
+.searchBtn {
+  background-color: #ef5757 !important;
+}
+.sliders-img {
+  height: 100px;
+  width: 200px;
 }
 .footer {
   padding-top: 60px;

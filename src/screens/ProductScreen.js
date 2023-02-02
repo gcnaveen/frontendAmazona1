@@ -211,14 +211,14 @@ export default function ProductScreen() {
                     data-currency-usd="$ 199.00"
                     data-currency="USD"
                   >
-                    Price: {product.price}
+                    Price : {product.price}
                   </p>
                   <p
                     class="money compare-at-price"
                     data-currency-usd="$ 220.00"
                     data-currency="USD"
                   >
-                    Discount Price:{product.productDiscountedPrice}
+                    Discount Price : {product.productDiscountedPrice}
                   </p>
                 </p>{' '}
               </div>
@@ -256,14 +256,14 @@ export default function ProductScreen() {
             </div>
 
             <div class="product_details">
-              <span> type:</span>
+              <span> type : </span>
               <span class="product_type" style={{ color: ' #75b510' }}>
                 {product.category}
               </span>
             </div>
             <hr />
             <div id="product_description" class="rte" itemprop="description">
-              <h4>Description:</h4>
+              <h4>Description : </h4>
               <div>{product.description}</div>
               {/* <div>
                 Health is one of most important things in our life. We think

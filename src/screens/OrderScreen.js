@@ -210,13 +210,13 @@ export default function OrderScreen() {
                   <Link to={`/adress-edit/${order._id}`}>Edit</Link>
                 )}
               </Card.Text>
-              {order.isDelivered ? (
+              {/* {order.isDelivered ? (
                 <MessageBox variant="success">
                   Delivered at {order.deliveredAt}
                 </MessageBox>
               ) : (
                 <MessageBox variant="danger">Not Delivered</MessageBox>
-              )}
+              )} */}
             </Card.Body>
           </Card>
           <Card className="mb-3">
@@ -225,13 +225,13 @@ export default function OrderScreen() {
               <Card.Text>
                 <strong>Method:</strong> {order.paymentMethod}
               </Card.Text>
-              {order.isPaid || order.paymentMethod === 'Cash On Delivery' ? (
+              {/* {order.isPaid || order.paymentMethod === 'Cash On Delivery' ? (
                 <MessageBox variant="success">
                   Paid at {order.paidAt}
                 </MessageBox>
               ) : (
                 <MessageBox variant="danger">Not Paid</MessageBox>
-              )}
+              )} */}
             </Card.Body>
           </Card>
 
@@ -247,7 +247,7 @@ export default function OrderScreen() {
                           src={item.image}
                           alt={item.name}
                           className="img-fluid rounded img-thumbnail"
-                        ></img>{' '}
+                        />
                         <Link to={`/product/${item.slug}`}>{item.name}</Link>
                       </Col>
                       <Col md={3}>
@@ -309,11 +309,15 @@ export default function OrderScreen() {
                           Deliver Order
                         </Button>
                         {!order.isCancelled ? (
-                          <div>
+                          <div style={{ margin: '5px' }}>
                             {order?.isOrderAccepted ||
                             order?.isOrderRejected ? null : (
                               <Button
-                                style={{ height: 'fit-content' }}
+                                style={{
+                                  height: 'fit-content',
+                                  width: '150px',
+                                  // borderRadius: '5px',
+                                }}
                                 type="button"
                                 variant="light"
                                 onClick={() => handleOrder('ACCEPTED', order)}
@@ -350,7 +354,10 @@ export default function OrderScreen() {
                               </p>
                             ) : (
                               <Button
-                                style={{ height: 'fit-content' }}
+                                style={{
+                                  height: 'fit-content',
+                                  width: '150px',
+                                }}
                                 type="button"
                                 variant="light"
                                 onClick={() => handleOrder('REJECTED', order)}

@@ -226,14 +226,14 @@ export default function ShippingAddressScreen() {
             />
           </Form.Group>
           <div className="mb-3">
-            <Button
+            {/* <Button
               id="chooseOnMap"
               type="button"
               variant="light"
               onClick={() => navigate('/map')}
             >
               Choose Location On Map
-            </Button>
+            </Button> */}
             {console.log('location is', shippingAdress1.location)}
 
             {shippingAdress1.location && shippingAdress1.location.lat ? (
@@ -242,7 +242,7 @@ export default function ShippingAddressScreen() {
                 LNG:{shippingAdress1.location.lng}
               </div>
             ) : (
-              <div>No location</div>
+              <div>{/* No location */}</div>
             )}
           </div>
           <div className="mb-3">

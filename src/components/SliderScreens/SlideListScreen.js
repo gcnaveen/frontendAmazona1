@@ -120,7 +120,11 @@ export default function SlideListScreen() {
     }
   };
 
-  console.log(sliders);
+  // console.log(
+  //   sliders.map((ele) => {
+  //     return ele.images;
+  //   })
+  // );
 
   return (
     <div>
@@ -147,6 +151,7 @@ export default function SlideListScreen() {
           <table className="table">
             <thead>
               <tr>
+                <th>IMAGE</th>
                 <th>ID</th>
                 <th>NAME</th>
                 <th>CATEGORY</th>
@@ -157,6 +162,13 @@ export default function SlideListScreen() {
             <tbody>
               {sliders?.map((product) => (
                 <tr>
+                  <td>
+                    <img
+                      className="sliders-img"
+                      src={product.images[0]}
+                      alt=""
+                    />
+                  </td>
                   <td>{product._id}</td>
                   <td>{product.name}</td>
                   <td>{product.category}</td>
