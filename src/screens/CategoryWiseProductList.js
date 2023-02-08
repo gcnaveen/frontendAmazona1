@@ -54,10 +54,13 @@ function CategoryWiseProductList() {
     });
     toast.success(`${item.name} Added to the cart`);
   };
-
+  console.log('products', products);
+  const product = products.map((ele) => ele.category);
   return (
     <div style={{ position: 'relative', zIndex: '500' }}>
-      <h1 style={{ position: 'relative', zIndex: '500' }}>Products:</h1>
+      <h1 style={{ position: 'relative', zIndex: '500' }}>
+        Category : {product[0]}
+      </h1>
       {
         products?.length === 0 && <LoadingBox />
         //  <MessageBox>No Product Found</MessageBox>

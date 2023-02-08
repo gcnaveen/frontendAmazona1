@@ -153,7 +153,7 @@ export default function ProductListScreen() {
         >
           <div>
             <Button type="button" onClick={createHandler}>
-              Create Product
+              Add Product
             </Button>
           </div>
           <div>

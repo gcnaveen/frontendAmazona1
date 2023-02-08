@@ -81,6 +81,7 @@ export default function OrderScreen() {
       const { data } = await axios.get(`/api/orders/${orderId}`, {
         headers: { authorization: `Bearer ${userInfo.token}` },
       });
+      console.log('in side fetch', data);
       dispatch({ type: 'FETCH_SUCCESS', payload: data });
     } catch (err) {
       dispatch({ type: 'FETCH_FAIL', payload: getError(err) });
@@ -209,9 +210,11 @@ export default function OrderScreen() {
                       </a>
                     )}
                   <br />
-                  {!order.isDispatched && !order.isCancelled && (
-                    <Link to={`/adress-edit/${order._id}`}>Edit</Link>
-                  )}
+                  {!order.isDispatched &&
+                    !order.isCancelled &&
+                    !userInfo?.isAdmin && (
+                      <Link to={`/adress-edit/${order._id}`}>Edit</Link>
+                    )}
                 </Card.Text>
                 {/* {order.isDelivered ? (
                 <MessageBox variant="success">
@@ -357,10 +360,10 @@ export default function OrderScreen() {
                   </Row>
                 </ListGroup.Item>
                 <ListGroup.Item>
-                  <Row>
+                  {/* <Row>
                     <Col>Tax</Col>
                     <Col>Rs.{order?.taxPrice?.toFixed(2)}</Col>
-                  </Row>
+                  </Row> */}
                 </ListGroup.Item>
                 <ListGroup.Item>
                   <Row>

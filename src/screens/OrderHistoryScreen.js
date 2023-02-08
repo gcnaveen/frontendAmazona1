@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useReducer } from 'react';
+import React, { useContext, useEffect, useReducer, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import LoadingBox from '../components/LoadingBox';
@@ -25,11 +25,13 @@ export default function OrderHistoryScreen() {
   const { state } = useContext(Store);
   const { userInfo } = state;
   const navigate = useNavigate();
+  const [sort, setSort] = useState('order-A-Z');
 
   const [{ loading, error, orders }, dispatch] = useReducer(reducer, {
     loading: true,
     error: '',
   });
+
   useEffect(() => {
     const fetchData = async () => {
       dispatch({ type: 'FETCH_REQUEST' });
@@ -40,6 +42,7 @@ export default function OrderHistoryScreen() {
           { headers: { Authorization: `Bearer ${userInfo?.token}` } }
         );
         dispatch({ type: 'FETCH_SUCCESS', payload: data });
+        initialSortedData(data);
         console.log(data);
       } catch (error) {
         dispatch({
@@ -50,7 +53,24 @@ export default function OrderHistoryScreen() {
     };
     fetchData();
   }, [userInfo]);
+  const initialSortedData = (data) => {
+    console.log('initialSortedData', data);
+    return data?.sort(function (a, b) {
+      let date1 = new Date(a.createdAt).getTime();
+      let date2 = new Date(b.createdAt).getTime();
+      if (date1 > date2) {
+        return -1;
+      }
+      if (date1 < date2) {
+        return 1;
+      }
 
+      return 0;
+    });
+  };
+  useEffect(() => {
+    initialSortedData();
+  }, [orders, sort]);
   if (orders?.length === 0) {
     return <MessageBox>No Active Orders</MessageBox>;
   }

@@ -49,8 +49,7 @@ export default function PlaceOrderScreen() {
   );
   cart.shippingPrice = cart.itemsPrice > 100 ? round2(0) : round2(10);
   cart.taxPrice = round2(0.15 * cart.itemsPrice);
-  cart.totalPrice =
-    cart.itemsPrice + cart.shippingPrice + cart.taxPrice - cart.discountPrice;
+  cart.totalPrice = cart.itemsPrice + cart.shippingPrice - cart.discountPrice;
   // const placeOrderHandler = async () => {
   //   try {
   //     dispatch({ type: 'CREATE_REQUEST' });
@@ -282,10 +281,10 @@ export default function PlaceOrderScreen() {
                   </Row>
                 </ListGroup.Item>
                 <ListGroup.Item>
-                  <Row>
+                  {/* <Row>
                     <Col>Tax</Col>
                     <Col>Rs.{cart.taxPrice.toFixed(2)}</Col>
-                  </Row>
+                  </Row> */}
                 </ListGroup.Item>
                 <ListGroup.Item>
                   <Row>

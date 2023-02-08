@@ -57,7 +57,10 @@ export default function Product(props) {
           src={props.product.image}
           className="card-img-top"
           alt={props.product.name}
-          style={{ height: '100%', objectFit: 'contain' }}
+          style={{
+            height: '100%',
+            objectFit: 'contain',
+          }}
         />
       </Link>
       <div style={{ textAlign: 'center', padding: '5px', overflow: 'overlay' }}>
