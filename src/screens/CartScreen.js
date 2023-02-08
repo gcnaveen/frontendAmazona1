@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { Store } from '../Store';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -9,9 +9,13 @@ import Card from 'react-bootstrap/Card';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Helmet } from 'react-helmet-async';
+import { Modal, ModalBody, ModalHeader } from 'reactstrap';
+import ContactDetailScreen from './ContactDetailScreen';
 
 export default function CartScreen() {
   const navigate = useNavigate();
+  const [quantity, setQuantity] = useState(0);
+  const [modal, setModal] = useState(false);
   const { state, dispatch: ctxDispatch } = useContext(Store);
   const {
     cart: { cartItems },
@@ -33,7 +37,38 @@ export default function CartScreen() {
   };
 
   const checkoutHandler = () => {
-    navigate('/signin?redirect=/shipping');
+    // return (
+    //   <Modal>
+    //     <ModalHeader>Contact Details</ModalHeader>
+    //   </Modal>
+    // );
+    // navigate('/shipping');
+    state.userInfo ? navigate('/shipping') : setModal(!modal);
+  };
+  // let vl = cartItems.map((ele) => {
+  //   return ele.quantity;
+  // });
+
+  console.log('cartItems:::', cartItems);
+  // console.log('mukli hadri', vl);
+  const handleChange = (item, val) => {
+    // console.log('in side change::', vl, method);
+
+    if (val === '') {
+      updateCartHandler(item, 1);
+    } else if (val === '10') {
+      updateCartHandler(item, 10);
+    } else if (val === '50') {
+      updateCartHandler(item, 50);
+    } else if (val === '100') {
+      updateCartHandler(item, 100);
+    } else if (val === '180') {
+      updateCartHandler(item, 180);
+    } else if (val === '150') {
+      updateCartHandler(item, 150);
+    } else {
+      updateCartHandler(item, 1);
+    }
   };
   console.log(cartItems);
   return (
@@ -41,7 +76,17 @@ export default function CartScreen() {
       <Helmet>
         <title>Shopping Cart</title>
       </Helmet>
-      <h1>Shopping Cart</h1>
+      <div>
+        <Modal size="md" isOpen={modal} toggle={() => setModal(!modal)}>
+          <ModalHeader toggle={() => setModal(!modal)}>
+            Contact Details
+          </ModalHeader>
+          <ModalBody>
+            <ContactDetailScreen />
+          </ModalBody>
+        </Modal>
+      </div>
+
       <Row>
         <Col md={8}>
           {cartItems.length === 0 ? (
@@ -63,11 +108,12 @@ export default function CartScreen() {
                     </Col>
                     <Col md={3}>
                       <Button
-                        onClick={() =>
-                          updateCartHandler(item, item.quantity - 1)
-                        }
+                        onClick={() => {
+                          // let qnty = quantity + 1;
+                          updateCartHandler(item, item.quantity - 1);
+                        }}
                         variant="light"
-                        disabled={item.quantity === 1}
+                        disabled={quantity === 1}
                       >
                         <i className="fas fa-minus-circle"></i>
                       </Button>{' '}
@@ -77,7 +123,7 @@ export default function CartScreen() {
                         onClick={() =>
                           updateCartHandler(item, item.quantity + 1)
                         }
-                        disabled={item.quantity === item.countInStock}
+                        disabled={quantity === item.countInStock}
                       >
                         <i className="fas fa-plus-circle"></i>
                       </Button>
@@ -90,6 +136,20 @@ export default function CartScreen() {
                       >
                         <i className="fas fa-trash"></i>
                       </Button>
+
+                      <div>
+                        <select
+                          defaultValue=""
+                          onChange={(e) => handleChange(item, e.target.value)}
+                        >
+                          <option value="">quantity</option>
+                          <option value="10">10</option>
+                          <option value="50">50</option>
+                          <option value="100">100</option>
+                          <option value="150">150</option>
+                          <option value="180">180</option>
+                        </select>
+                      </div>
                     </Col>
                   </Row>
                 </ListGroup.Item>
@@ -102,11 +162,11 @@ export default function CartScreen() {
             <Card.Body>
               <ListGroup variant="flush">
                 <ListGroup.Item>
-                  <h3>
+                  <h5>
                     Subtotal ({cartItems.reduce((a, c) => a + c.quantity, 0)}{' '}
                     items) : Rs.
                     {cartItems.reduce((a, c) => a + c.price * c.quantity, 0)}
-                  </h3>
+                  </h5>
                 </ListGroup.Item>
                 <ListGroup.Item>
                   <div className="d-grid">

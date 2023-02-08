@@ -14,6 +14,7 @@ import { toast } from 'react-toastify';
 import Button from 'react-bootstrap/Button';
 import { Helmet } from 'react-helmet-async';
 import { Form } from 'react-bootstrap';
+import ReactTable from 'react-table-6';
 
 function reducer(state, action) {
   switch (action.type) {
@@ -172,7 +173,7 @@ export default function OrderScreen() {
       console.log(err);
     }
   }
-
+  console.log('inside the', order);
   return loading ? (
     <LoadingBox></LoadingBox>
   ) : error ? (
@@ -186,7 +187,69 @@ export default function OrderScreen() {
       <Row>
         <Col md={8}>
           <Card className="mb-3">
-            <Card.Body>
+            {order?.user ? (
+              <Card.Body>
+                <Card.Title>Shipping</Card.Title>
+
+                <Card.Text>
+                  <strong>Name:</strong> {order.shippingAddress?.fullName}{' '}
+                  <br />
+                  <strong>Address: </strong> {order.shippingAddress?.address},
+                  {order.shippingAddress?.city},{' '}
+                  {order.shippingAddress?.postalCode},
+                  {order.shippingAddress?.country}
+                  &nbsp;
+                  {order.shippingAddress?.location &&
+                    order.shippingAddress?.location?.lat && (
+                      <a
+                        target="_new"
+                        href={`https://maps.google.com?q=${order.shippingAddress.location.lat},${order.shippingAddress.location.lng}`}
+                      >
+                        Show On Map
+                      </a>
+                    )}
+                  <br />
+                  {!order.isDispatched && !order.isCancelled && (
+                    <Link to={`/adress-edit/${order._id}`}>Edit</Link>
+                  )}
+                </Card.Text>
+                {/* {order.isDelivered ? (
+                <MessageBox variant="success">
+                  Delivered at {order.deliveredAt}
+                </MessageBox>
+              ) : (
+                <MessageBox variant="danger">Not Delivered</MessageBox>
+              )} */}
+              </Card.Body>
+            ) : (
+              <Card.Body>
+                <Card.Title>Contact Details</Card.Title>
+
+                <Card.Text>
+                  <strong>Phone Number : </strong>{' '}
+                  {order.contactDetails?.phoneNumber} <br />
+                  <strong>Whatsapp Number </strong>{' '}
+                  {order.contactDetails?.whatsappNumber},<br />
+                  <strong>Telegram Number </strong>{' '}
+                  {order.contactDetails?.telegramNumber},<br />
+                  <strong>iMessage Number </strong>{' '}
+                  {order.contactDetails?.iMessageNumber},<strong>Email </strong>
+                  {order.contactDetails?.email},
+                  <br />
+                  {/* {!order.isDispatched && !order.isCancelled && (
+                    <Link to={`/adress-edit/${order._id}`}>Edit</Link>
+                  )} */}
+                </Card.Text>
+                {/* {order.isDelivered ? (
+                <MessageBox variant="success">
+                  Delivered at {order.deliveredAt}
+                </MessageBox>
+              ) : (
+                <MessageBox variant="danger">Not Delivered</MessageBox>
+              )} */}
+              </Card.Body>
+            )}
+            {/* <Card.Body>
               <Card.Title>Shipping</Card.Title>
 
               <Card.Text>
@@ -210,30 +273,32 @@ export default function OrderScreen() {
                   <Link to={`/adress-edit/${order._id}`}>Edit</Link>
                 )}
               </Card.Text>
-              {/* {order.isDelivered ? (
+              {order.isDelivered ? (
                 <MessageBox variant="success">
                   Delivered at {order.deliveredAt}
                 </MessageBox>
               ) : (
                 <MessageBox variant="danger">Not Delivered</MessageBox>
-              )} */}
-            </Card.Body>
+              )}
+            </Card.Body> */}
           </Card>
-          <Card className="mb-3">
-            <Card.Body>
-              <Card.Title>Payment</Card.Title>
-              <Card.Text>
-                <strong>Method:</strong> {order.paymentMethod}
-              </Card.Text>
-              {/* {order.isPaid || order.paymentMethod === 'Cash On Delivery' ? (
+          {userInfo ? (
+            <Card className="mb-3">
+              <Card.Body>
+                <Card.Title>Payment</Card.Title>
+                <Card.Text>
+                  <strong>Method:</strong> {order.paymentMethod}
+                </Card.Text>
+                {/* {order.isPaid || order.paymentMethod === 'Cash On Delivery' ? (
                 <MessageBox variant="success">
                   Paid at {order.paidAt}
                 </MessageBox>
               ) : (
                 <MessageBox variant="danger">Not Paid</MessageBox>
               )} */}
-            </Card.Body>
-          </Card>
+              </Card.Body>
+            </Card>
+          ) : null}
 
           <Card className="mb-3">
             <Card.Body>
@@ -242,18 +307,31 @@ export default function OrderScreen() {
                 {order?.orderItems?.map((item) => (
                   <ListGroup.Item key={item._id}>
                     <Row className="align-items-center">
-                      <Col md={6}>
+                      <Col md={3}>
                         <img
                           src={item.image}
                           alt={item.name}
                           className="img-fluid rounded img-thumbnail"
                         />
+                      </Col>
+                      <Col md={9}>
+                        <div>
+                          <ReactTable
+                            data={[
+                              {
+                                quantity: item.quantity,
+                                price: `Rs.${item.price}`,
+                              },
+                            ]}
+                            columns={[
+                              { Header: 'Quantity', accessor: 'quantity' },
+                              { Header: 'Price', accessor: 'price' },
+                            ]}
+                            minRows={0}
+                          />
+                        </div>
                         <Link to={`/product/${item.slug}`}>{item.name}</Link>
                       </Col>
-                      <Col md={3}>
-                        <span>{item.quantity}</span>
-                      </Col>
-                      <Col md={3}>Rs.{item.price}</Col>
                     </Row>
                   </ListGroup.Item>
                 ))}

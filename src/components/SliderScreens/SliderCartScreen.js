@@ -34,7 +34,7 @@ export default function SliderCartScreen() {
   };
 
   const checkoutHandler = () => {
-    navigate('/signin?redirect=/shipping');
+    navigate('redirect=/shipping');
   };
   console.log('in side slide cart');
 
@@ -104,11 +104,11 @@ export default function SliderCartScreen() {
             <Card.Body>
               <ListGroup variant="flush">
                 <ListGroup.Item>
-                  <h3>
+                  <h5>
                     Subtotal ({cartItems.reduce((a, c) => a + c.quantity, 0)}{' '}
                     items) : Rs.
                     {cartItems.reduce((a, c) => a + c.price * c.quantity, 0)}
-                  </h3>
+                  </h5>
                 </ListGroup.Item>
                 <ListGroup.Item>
                   <div className="d-grid">

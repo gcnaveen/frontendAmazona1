@@ -57,6 +57,7 @@ export default function ProductScreen() {
   const [selectedImage, setSelectedImage] = useState('');
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState('');
+  // const [quantity, setQuantity] = useState(0);
   const navigate = useNavigate();
   const params = useParams();
   const { slug } = params;
@@ -66,7 +67,7 @@ export default function ProductScreen() {
       loading: true,
       error: '',
     });
-  console.log(product);
+  console.log('product', product);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -91,12 +92,31 @@ export default function ProductScreen() {
     fetchData();
   }, [productID, slug]);
 
+  // const updateCartHandler = async (product, quantity) => {
+  //   const { data } = await axios.get(`/api/products/${product._id}`);
+  //   if (data.countInStock < quantity) {
+  //     window.alert('Sorry. Product is out of stock');
+  //     return;
+  //   }
+  //   console.log('in side details', data);
+  //   ctxDispatch({
+  //     type: 'CART_ADD_ITEM',
+  //     payload: { ...product, quantity },
+  //   });
+  // };
+
+  const removeItemHandler = (item) => {
+    ctxDispatch({ type: 'CART_REMOVE_ITEM', payload: item });
+  };
+
   const { state, dispatch: ctxDispatch } = useContext(Store);
   const { cart, userInfo } = state;
+
   const addToCartHandler = async () => {
     const existItem = cart.cartItems.find((x) => x._id === product._id);
-    const quantity = existItem ? existItem.quantity + 1 : 1;
+    let quantity = existItem ? existItem.quantity + 1 : 1;
     const { data } = await axios.get(`/api/products/${product._id}`);
+    console.log('inside :::', data);
     if (data.countInStock < quantity) {
       window.alert('Sorry. Product is out of stock');
       return;
@@ -176,7 +196,7 @@ export default function ProductScreen() {
               loop={true}
               navigation={true}
             >
-              {console.log([product.image, ...product.images])}
+              {/* {console.log([product.image, ...product.images])} */}
               {(product.image || product.image.images.length > 0) &&
                 [product.image, ...product.images]?.map((x, i) => (
                   <Col key={i}>
@@ -219,6 +239,11 @@ export default function ProductScreen() {
                     data-currency="USD"
                   >
                     Discount Price : {product.productDiscountedPrice}
+                  </p>
+
+                  <p style={{ color: 'green' }}>
+                    For bulk orders and better offers please contact our sales
+                    team on +91-9387678635
                   </p>
                 </p>{' '}
               </div>
@@ -265,245 +290,8 @@ export default function ProductScreen() {
             <div id="product_description" class="rte" itemprop="description">
               <h4>Description : </h4>
               <div>{product.description}</div>
-              {/* <div>
-                Health is one of most important things in our life. We think
-                that it is a real luck to have a strong health.
-              </div>
-              <div>
-                Our way of life doesn't increase the physiological condition of
-                our body. Alcohol, cigarettes, unhealthy food, stresses and
-                other factors have a great influence on our health.
-              </div>
-              <div>
-                The human's immune system is very uncertain thing because there
-                is a countless quantity of different dangerous viruses and
-                bacteria. From ancient times plague and other infectious
-                diseases have been killing people without leaving them any
-                chance to survive.
-              </div> */}
             </div>
-
-            {/* <div class="addthis_toolbox addthis_default_style ">
-              <a class="addthis_button_facebook_like"></a>
-              <a class="addthis_button_tweet"></a>
-              <a class="addthis_button_pinterest_pinit"></a>
-              <a class="addthis_counter addthis_pill_style"></a>
-            </div> */}
-
-            {/* <script
-              type="text/javascript"
-              src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-4d89903e1583a34e"
-            ></script> */}
           </div>
-          {/* <Card>
-            <Card.Body>
-              <ListGroup variant="flush">
-                <ListGroup.Item>
-                  <Row>
-                    <Col>Price:</Col>
-                    <Col>Rs.{product.price}</Col>
-                  </Row>
-                </ListGroup.Item>
-                <ListGroup.Item>
-                  <Row>
-                    <Col>Discount Price:</Col>
-                    <Col>Rs. {product.productDiscountedPrice} </Col>
-                  </Row>
-                </ListGroup.Item>
-                <ListGroup.Item>
-                  <Row>
-                    <Col>Status:</Col>
-                    <Col>
-                      {product.countInStock > 0 ? (
-                        <Badge bg="success">In Stock</Badge>
-                      ) : (
-                        <Badge bg="danger">Out of Stock</Badge>
-                      )}
-                    </Col>
-                  </Row>
-                </ListGroup.Item>
-                {product.countInStock > 0 && (
-                  <ListGroup.Item>
-                    <div className="d-grid">
-                      {!userInfo?.isAdmin && (
-                        <Button onClick={addToCartHandler} variant="primary">
-                          Add to Cart
-                        </Button>
-                      )}
-                    </div>
-                  </ListGroup.Item>
-                )}
-              </ListGroup>
-            </Card.Body>
-          </Card> */}
-          {/* <img
-            className="img-large"
-            src={selectedImage || product.image}
-            alt={product.name}
-          /> */}
-        </Col>
-        <Col md={3}>
-          {/* <div class="col-sm-7">
-            <div itemprop="name" class="product_name">
-              100% Whey Gold Standard Optimum Nutrition (16 pack)
-            </div>
-
-            <form
-              action="/cart/add"
-              method="post"
-              enctype="multipart/form-data"
-              class="form-horizontal"
-              id="product-actions"
-            >
-              <div class="options clearfix">
-                <div id="product_price">
-                  <p class="price product-price">
-                    <span
-                      class="money"
-                      data-currency-usd="$ 199.00"
-                      data-currency="USD"
-                    >
-                      $ 199.00
-                    </span>
-                    <span
-                      class="money compare-at-price"
-                      data-currency-usd="$ 220.00"
-                      data-currency="USD"
-                    >
-                      $ 220.00
-                    </span>
-                  </p>{' '}
-                </div>
-
-                <div class="variants-wrapper clearfix visuallyhidden">
-                  <div class="selector-wrapper">
-                    <select
-                      class="single-option-selector"
-                      data-option="option1"
-                      id="product-select-option-0"
-                    >
-                      <option value="Default Title">Default Title</option>
-                    </select>
-                  </div>
-                  <select
-                    id="product-select"
-                    name="id"
-                    style={{ display: 'none' }}
-                  >
-                    <option value="13761971591">
-                      Default Title - $ 199.00
-                    </option>
-                  </select>
-                </div>
-
-                <div id="purchase">
-                  <label for="quantity">Qty: </label>
-                  <input
-                    min="1"
-                    type="number"
-                    id="quantity"
-                    name="quantity"
-                    value="1"
-                    class="form-control input-small"
-                  />
-                  <button class="btn btn-cart" type="submit" id="add-to-cart">
-                    Add to cart
-                  </button>
-                </div>
-              </div>
-            </form>
-
-            <div class="product_details">
-              <div class="product_type">
-                type:{' '}
-                <a href="/collections/types?q=Tablets" title="Tablets">
-                  Tablets
-                </a>
-              </div>
-              <div class="product_vendor">
-                Vendor:{' '}
-                <a
-                  href="/collections/vendors?q=tm-shopify032-nutrition"
-                  title="tm-shopify032-nutrition"
-                >
-                  tm-shopify032-nutrition
-                </a>
-              </div>
-            </div>
-
-            <div id="product_description" class="rte" itemprop="description">
-              <h4>Description:</h4>
-              <div>
-                Health is one of most important things in our life. We think
-                that it is a real luck to have a strong health.
-              </div>
-              <div>
-                Our way of life doesn't increase the physiological condition of
-                our body. Alcohol, cigarettes, unhealthy food, stresses and
-                other factors have a great influence on our health.
-              </div>
-              <div>
-                The human's immune system is very uncertain thing because there
-                is a countless quantity of different dangerous viruses and
-                bacteria. From ancient times plague and other infectious
-                diseases have been killing people without leaving them any
-                chance to survive.
-              </div>
-            </div>
-
-            <div class="addthis_toolbox addthis_default_style ">
-              <a class="addthis_button_facebook_like"></a>
-              <a class="addthis_button_tweet"></a>
-              <a class="addthis_button_pinterest_pinit"></a>
-              <a class="addthis_counter addthis_pill_style"></a>
-            </div>
-
-            <script
-              type="text/javascript"
-              src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-4d89903e1583a34e"
-            ></script>
-          </div> */}
-          {/* <Card>
-            <Card.Body>
-              <ListGroup variant="flush">
-                <ListGroup.Item>
-                  <Row>
-                    <Col>Price:</Col>
-                    <Col>Rs.{product.price}</Col>
-                  </Row>
-                </ListGroup.Item>
-                <ListGroup.Item>
-                  <Row>
-                    <Col>Discount Price:</Col>
-                    <Col>Rs. {product.productDiscountedPrice} </Col>
-                  </Row>
-                </ListGroup.Item>
-                <ListGroup.Item>
-                  <Row>
-                    <Col>Status:</Col>
-                    <Col>
-                      {product.countInStock > 0 ? (
-                        <Badge bg="success">In Stock</Badge>
-                      ) : (
-                        <Badge bg="danger">Out of Stock</Badge>
-                      )}
-                    </Col>
-                  </Row>
-                </ListGroup.Item>
-                {product.countInStock > 0 && (
-                  <ListGroup.Item>
-                    <div className="d-grid">
-                      {!userInfo?.isAdmin && (
-                        <Button onClick={addToCartHandler} variant="primary">
-                          Add to Cart
-                        </Button>
-                      )}
-                    </div>
-                  </ListGroup.Item>
-                )}
-              </ListGroup>
-            </Card.Body>
-          </Card> */}
         </Col>
       </Row>
       <div className="my-3">
@@ -524,7 +312,7 @@ export default function ProductScreen() {
           ))}
         </ListGroup>
         <div className="my-3">
-          {!userInfo.isAdmin ? (
+          {!userInfo?.isAdmin ? (
             <form onSubmit={submitHandler}>
               <h2>Write a customer review</h2>
               <Form.Group className="mb-3" controlId="rating">

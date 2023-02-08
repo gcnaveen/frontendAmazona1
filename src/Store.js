@@ -12,18 +12,20 @@ const initialState = {
     shippingAddress: localStorage.getItem('shippingAddress')
       ? JSON.parse(localStorage.getItem('shippingAddress'))
       : { location: {} },
-
+    contactDetails: localStorage.getItem('contactDetails')
+      ? JSON.parse(localStorage.getItem('contactDetails'))
+      : '',
     paymentMethod: localStorage.getItem('paymentMethod')
       ? localStorage.getItem('paymentMethod')
       : '',
     cartItems:
-      localStorage.getItem('userInfo') &&
+      // localStorage.getItem('userInfo') &&
       localStorage.getItem(
-        `${JSON.parse(localStorage.getItem('userInfo'))._id}`
+        `${JSON.parse(localStorage.getItem('userInfo'))?._id}`
       )
         ? JSON.parse(
             localStorage.getItem(
-              `${JSON.parse(localStorage.getItem('userInfo'))._id}`
+              `${JSON.parse(localStorage.getItem('userInfo'))?._id}`
             )
           )
         : [],
@@ -40,11 +42,11 @@ function reducer(state, action) {
       // add to cart
       const newItem = action.payload;
       const existItem = state.cart.cartItems.find(
-        (item) => item._id === newItem._id
+        (item) => item?._id === newItem?._id
       );
       const cartItems = existItem
         ? state.cart.cartItems.map((item) =>
-            item._id === existItem._id ? newItem : item
+            item?._id === existItem?._id ? newItem : item
           )
         : [...state.cart.cartItems, newItem];
       let userID = JSON.parse(localStorage.getItem('userInfo'))?._id;
@@ -52,9 +54,9 @@ function reducer(state, action) {
       return { ...state, cart: { ...state.cart, cartItems } };
     case 'CART_REMOVE_ITEM': {
       const cartItems = state.cart.cartItems.filter(
-        (item) => item._id !== action.payload._id
+        (item) => item?._id !== action.payload?._id
       );
-      let userID = JSON.parse(localStorage.getItem('userInfo'))._id;
+      let userID = JSON.parse(localStorage.getItem('userInfo'))?._id;
       localStorage.setItem(`${userID}`, JSON.stringify(cartItems));
       return { ...state, cart: { ...state.cart, cartItems } };
     }
@@ -68,6 +70,15 @@ function reducer(state, action) {
           cartItems: [],
           shippingAddress: {},
           paymentMethod: '',
+          contactDetails: {},
+        },
+      };
+    case 'SAVE_CONTACT_DETAILS':
+      return {
+        ...state,
+        cart: {
+          ...state.cart,
+          contactDetails: action.payload,
         },
       };
     case 'SAVE_SHIPPING_ADDRESS':
@@ -113,7 +124,6 @@ function reducer(state, action) {
       return state;
   }
 }
-
 const getInitialValues = (items) => {
   console.log({ ...initialState.cart, cartItems: items });
   return { ...initialState.cart, cartItems: items };

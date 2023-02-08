@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useReducer } from 'react';
+import React, { useContext, useEffect, useReducer, useState } from 'react';
 import Axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import Row from 'react-bootstrap/Row';
@@ -13,6 +13,7 @@ import { getError } from '../utils';
 import LoadingBox from '../components/LoadingBox';
 import { Helmet } from 'react-helmet-async';
 import swal from 'sweetalert';
+import ReactTable from 'react-table-6';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -29,12 +30,13 @@ const reducer = (state, action) => {
 
 export default function PlaceOrderScreen() {
   const navigate = useNavigate();
+  const [popup, setPopup] = useState(false);
   const [{ loading }, dispatch] = useReducer(reducer, {
     loading: false,
   });
   const { state, dispatch: ctxDispatch } = useContext(Store);
   const { cart, userInfo } = state;
-  // console.log('cart', state);
+  console.log('cart', state.userInfo);
   const round2 = (num) => Math.round(num * 100 + Number.EPSILON) / 100; // 123.2345 => 123.23
   cart.itemsPrice = round2(
     cart.cartItems.reduce((a, c) => a + c.quantity * c.price, 0)
@@ -49,16 +51,60 @@ export default function PlaceOrderScreen() {
   cart.taxPrice = round2(0.15 * cart.itemsPrice);
   cart.totalPrice =
     cart.itemsPrice + cart.shippingPrice + cart.taxPrice - cart.discountPrice;
+  // const placeOrderHandler = async () => {
+  //   try {
+  //     dispatch({ type: 'CREATE_REQUEST' });
+  //     const { data } = await Axios.post(
+  //       '/api/orders',
+  //       {
+  //         orderItems: cart.cartItems,
+  //         shippingAddress: cart.shippingAddress,
+  //         paymentMethod: cart.paymentMethod,
+  //         contactDetails: cart.contactDetails,
+  //         itemsPrice: cart.itemsPrice,
+  //         shippingPrice: cart.shippingPrice,
+  //         taxPrice: cart.taxPrice,
+  //         totalPrice: cart.totalPrice,
+  //       },
+  //       {
+  //         headers: {
+  //           authorization: `Bearer ${userInfo.token}`,
+  //         },
+  //       }
+  //     );
+  //     console.log(data);
+  //     ctxDispatch({ type: 'CART_CLEAR' });
+  //     dispatch({ type: 'CREATE_SUCCESS' });
+  //     localStorage.removeItem(`${userInfo._id}`);
 
+  //     swal({
+  //       title: 'Success',
+  //       text: ` ${data.order.orderItems.map(
+  //         (ele) => ele.name
+  //       )} item order has been placed`,
+  //       icon: 'success',
+  //       button: 'close',
+  //     });
+  //     navigate(`/order/${data.order._id}`);
+  //   } catch (err) {
+  //     dispatch({ type: 'CREATE_FAIL' });
+  //     toast.error(getError(err));
+  //   }
+  // };
   const placeOrderHandler = async () => {
     try {
       dispatch({ type: 'CREATE_REQUEST' });
+      const token = userInfo
+        ? userInfo.token
+        : 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2M2UzYzhkNzljZDgzYjdlOGJlZWZiMGEiLCJuYW1lIjoiZ3Vlc3R1c2VyIiwiZW1haWwiOiJndWVzdEBleGFtcGxlLmNvbSIsImlzQWRtaW4iOmZhbHNlLCJpYXQiOjE2NzU4NzI0NzEsImV4cCI6MjYyMjYwMDQ3MX0.byzxrrei5Q9E-y_DRSGjj8KyUDRac2vw6ZuNtpG1Nw8';
+      console.log('token', token);
       const { data } = await Axios.post(
         '/api/orders',
         {
           orderItems: cart.cartItems,
           shippingAddress: cart.shippingAddress,
           paymentMethod: cart.paymentMethod,
+          contactDetails: cart.contactDetails,
           itemsPrice: cart.itemsPrice,
           shippingPrice: cart.shippingPrice,
           taxPrice: cart.taxPrice,
@@ -66,22 +112,31 @@ export default function PlaceOrderScreen() {
         },
         {
           headers: {
-            authorization: `Bearer ${userInfo.token}`,
+            authorization: `Bearer ${token}`,
           },
         }
       );
+
       console.log(data);
       ctxDispatch({ type: 'CART_CLEAR' });
       dispatch({ type: 'CREATE_SUCCESS' });
-      localStorage.removeItem(`${userInfo._id}`);
+      localStorage.removeItem(`${userInfo?._id}`);
+
       swal({
         title: 'Success',
-        text: ` ${data.order.orderItems?.map(
-          (ele) => ele.name
-        )} item order has been placed`,
+        text: 'Thanks for Ordering our customer exicutive will contact you shortly',
         icon: 'success',
         button: 'close',
       });
+
+      // swal({
+      //   title: 'Success',
+      //   text: ` ${data.order.orderItems.map(
+      //     (ele) => ele.name
+      //   )} item order has been placed`,
+      //   icon: 'success',
+      //   button: 'close',
+      // });
       navigate(`/order/${data.order._id}`);
     } catch (err) {
       dispatch({ type: 'CREATE_FAIL' });
@@ -93,7 +148,7 @@ export default function PlaceOrderScreen() {
       navigate('/payment');
     }
   }, [cart, navigate]);
-
+  console.log('inside the place order:::', userInfo);
   return (
     <div>
       <CheckoutSteps step1 step2 step3 step4></CheckoutSteps>
@@ -103,7 +158,43 @@ export default function PlaceOrderScreen() {
       <h1 className="my-3">Preview Order</h1>
       <Row>
         <Col md={8}>
-          <Card className="mb-3">
+          {userInfo ? (
+            <Card className="mb-3">
+              <Card.Body>
+                <Card.Title>Shipping</Card.Title>
+                <Card.Text>
+                  <strong>Name:</strong> {cart.shippingAddress.fullName} <br />
+                  <strong>Address: </strong> {cart.shippingAddress.address},
+                  {cart.shippingAddress.city}, {cart.shippingAddress.postalCode}
+                  ,{cart.shippingAddress.country}
+                </Card.Text>
+                <Link to="/shipping">Edit</Link>
+              </Card.Body>
+            </Card>
+          ) : (
+            <Card className="mb-3">
+              <Card.Body>
+                <Card.Title>Contact Details</Card.Title>
+                <Card.Text>
+                  <strong>Phone Number : </strong>{' '}
+                  {cart.contactDetails.phoneNumber} <br />
+                  <strong>Whatsapp Number : </strong>{' '}
+                  {cart.contactDetails.whatsappNumber}
+                  <br />
+                  <strong>Telegram Number : </strong>{' '}
+                  {cart.contactDetails.telegramNumber}
+                  <br />
+                  <strong>iMessage Number : </strong>{' '}
+                  {cart.contactDetails.iMessageNumber}
+                  <br />
+                  <strong>Email : </strong> {cart.contactDetails.email}
+                  <br />
+                </Card.Text>
+                {/* <Link to="/shipping">Edit</Link> */}
+              </Card.Body>
+            </Card>
+          )}
+          {/* <Card className="mb-3">
             <Card.Body>
               <Card.Title>Shipping</Card.Title>
               <Card.Text>
@@ -114,37 +205,57 @@ export default function PlaceOrderScreen() {
               </Card.Text>
               <Link to="/shipping">Edit</Link>
             </Card.Body>
-          </Card>
-
-          <Card className="mb-3">
-            <Card.Body>
-              <Card.Title>Payment</Card.Title>
-              <Card.Text>
-                <strong>Method:</strong> {cart.paymentMethod}
-              </Card.Text>
-              <Link to="/payment">Edit</Link>
-            </Card.Body>
-          </Card>
+          </Card> */}
+          {state?.userInfo ? (
+            <Card className="mb-3">
+              <Card.Body>
+                <Card.Title>Payment</Card.Title>
+                <Card.Text>
+                  <strong>Method:</strong> {cart.paymentMethod}
+                </Card.Text>
+                <Link to="/payment">Edit</Link>
+              </Card.Body>
+            </Card>
+          ) : (
+            ''
+          )}
 
           <Card className="mb-3">
             <Card.Body>
               <Card.Title>Items</Card.Title>
               <ListGroup variant="flush">
-                {cart.cartItems?.map((item) => (
+                {cart.cartItems.map((item) => (
                   <ListGroup.Item key={item._id}>
                     <Row className="align-items-center">
-                      <Col md={6}>
+                      <Col md={3}>
                         <img
                           src={item.image}
                           alt={item.name}
                           className="img-fluid rounded img-thumbnail"
                         ></img>{' '}
+                      </Col>
+                      <Col md={9}>
+                        <div>
+                          <ReactTable
+                            data={[
+                              {
+                                quantity: item.quantity,
+                                price: `Rs.${item.price}`,
+                              },
+                            ]}
+                            columns={[
+                              { Header: 'Quantity', accessor: 'quantity' },
+                              { Header: 'Price', accessor: 'price' },
+                            ]}
+                            minRows={0}
+                          />
+                        </div>
                         <Link to={`/product/${item.slug}`}>{item.name}</Link>
                       </Col>
-                      <Col md={3}>
+                      {/* <Col md={3}>
                         <span>{item.quantity}</span>
                       </Col>
-                      <Col md={3}>Rs.{item.price}</Col>
+                      <Col md={3}>Rs.{item.price}</Col> */}
                     </Row>
                   </ListGroup.Item>
                 ))}
@@ -202,7 +313,7 @@ export default function PlaceOrderScreen() {
                       Place Order
                     </Button>
                   </div>
-                  {loading && <LoadingBox></LoadingBox>}
+                  {/* {loading && <LoadingBox></LoadingBox>} */}
                 </ListGroup.Item>
               </ListGroup>
             </Card.Body>

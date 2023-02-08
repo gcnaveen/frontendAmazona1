@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useReducer, useState } from 'react';
+import React, { useContext, useEffect, useReducer } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import LoadingBox from '../components/LoadingBox';
@@ -14,7 +14,6 @@ const reducer = (state, action) => {
       return { ...state, loading: true };
     case 'FETCH_SUCCESS':
       return { ...state, orders: action.payload, loading: false };
-
     case 'FETCH_FAIL':
       return { ...state, loading: false, error: action.payload };
     default:
@@ -31,22 +30,6 @@ export default function OrderHistoryScreen() {
     loading: true,
     error: '',
   });
-  const [data, setData] = useState([]);
-
-  const initialSortedData = (data) => {
-    return data?.sort(function (a, b) {
-      let date1 = new Date(a.createdAt).getTime();
-      let date2 = new Date(b.createdAt).getTime();
-      if (date1 > date2) {
-        return -1;
-      }
-      if (date1 < date2) {
-        return 1;
-      }
-
-      return 0;
-    });
-  };
   useEffect(() => {
     const fetchData = async () => {
       dispatch({ type: 'FETCH_REQUEST' });
@@ -54,11 +37,9 @@ export default function OrderHistoryScreen() {
         const { data } = await axios.get(
           `/api/orders/mine`,
 
-          { headers: { Authorization: `Bearer ${userInfo.token}` } }
+          { headers: { Authorization: `Bearer ${userInfo?.token}` } }
         );
         dispatch({ type: 'FETCH_SUCCESS', payload: data });
-        setData(initialSortedData(data));
-
         console.log(data);
       } catch (error) {
         dispatch({
@@ -97,7 +78,7 @@ export default function OrderHistoryScreen() {
             </tr>
           </thead>
           <tbody>
-            {orders?.map((order) => (
+            {orders.map((order) => (
               <tr key={order._id}>
                 <td>
                   {' '}

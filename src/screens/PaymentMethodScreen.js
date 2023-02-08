@@ -67,6 +67,38 @@ export default function PaymentMethodScreen() {
               checked={paymentMethodName === 'Cash On Delivery'}
               onChange={(e) => setPaymentMethod(e.target.value)}
             />
+            <Form.Check
+              type="radio"
+              id="PAYPAL"
+              label="PAYPAL"
+              value="PAYPAL"
+              checked={paymentMethodName === 'PAYPAL'}
+              onChange={(e) => setPaymentMethod(e.target.value)}
+            />
+            <Form.Check
+              type="radio"
+              id="BTC"
+              label="BTC"
+              value="BTC"
+              checked={paymentMethodName === 'BTC'}
+              onChange={(e) => setPaymentMethod(e.target.value)}
+            />
+            <Form.Check
+              type="radio"
+              id="ETHERUM"
+              label="ETHERUM"
+              value="ETHERUM"
+              checked={paymentMethodName === 'ETHERUM'}
+              onChange={(e) => setPaymentMethod(e.target.value)}
+            />
+            <Form.Check
+              type="radio"
+              id="BANK TRANSFER"
+              label="BANK TRANSFER"
+              value="BANK TRANSFER"
+              checked={paymentMethodName === 'BANK TRANSFER'}
+              onChange={(e) => setPaymentMethod(e.target.value)}
+            />
           </div>
           <div className="mb-3">
             <Button type="submit">Continue</Button>

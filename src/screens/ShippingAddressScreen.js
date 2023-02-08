@@ -21,11 +21,10 @@ export default function ShippingAddressScreen() {
     shippingAddress.postalCode || ''
   );
   useEffect(() => {
-    if (!userInfo) {
-      navigate('/signin?redirect=/shipping');
-    }
-  }, [userInfo, navigate]);
+    navigate('/shipping');
+  }, [navigate]);
   const [country, setCountry] = useState(shippingAddress.country || '');
+  // const [error, setError] = useState({})
   const submitHandler = (e) => {
     e.preventDefault();
     ctxDispatch({
@@ -57,7 +56,7 @@ export default function ShippingAddressScreen() {
   }, [ctxDispatch, fullBox]);
   return (
     <div>
-      <CheckoutSteps step1 step2></CheckoutSteps>
+      <CheckoutSteps step1 step2 step3></CheckoutSteps>
       <div className="container small-container">
         <Helmet>
           <title>Shipping Address</title>
@@ -68,6 +67,7 @@ export default function ShippingAddressScreen() {
             <Form.Label>Full Name</Form.Label>
             <Form.Control
               value={fullName}
+              type="text"
               onChange={(e) => setFullName(e.target.value)}
               required
             />
@@ -76,6 +76,7 @@ export default function ShippingAddressScreen() {
             <Form.Label>Address</Form.Label>
             <Form.Control
               value={address}
+              type="text"
               onChange={(e) => setAddress(e.target.value)}
               required
             />
@@ -84,6 +85,7 @@ export default function ShippingAddressScreen() {
             <Form.Label>City</Form.Label>
             <Form.Control
               value={city}
+              type="text"
               onChange={(e) => setCity(e.target.value)}
               required
             />
@@ -92,6 +94,7 @@ export default function ShippingAddressScreen() {
             <Form.Label>Postal Code</Form.Label>
             <Form.Control
               value={postalCode}
+              type="number"
               onChange={(e) => setPostalCode(e.target.value)}
               required
             />
@@ -100,6 +103,7 @@ export default function ShippingAddressScreen() {
             <Form.Label>Country</Form.Label>
             <Form.Control
               value={country}
+              type="text"
               onChange={(e) => setCountry(e.target.value)}
               required
             />

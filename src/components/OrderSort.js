@@ -60,6 +60,7 @@ export default function OrderSort() {
     };
     fetchData();
   }, [category, error, order, page, price, query]);
+  console.log('orders user:::', order);
   const getFilterUrl = (filter) => {
     const filterQuery = filter.query || query;
     const filterPrice = filter.price || price;

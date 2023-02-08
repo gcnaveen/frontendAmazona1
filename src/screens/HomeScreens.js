@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useReducer } from 'react';
+import React, { useContext, useEffect, useReducer, useState } from 'react';
 import axios from 'axios';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -8,6 +8,10 @@ import MessageBox from '../components/MessageBox';
 import Slider from '../components/SliderScreens/Slider';
 import { Helmet } from 'react-helmet-async';
 import { Store } from '../Store';
+import DealsOfTheday from '../components/DealsOfTheday';
+import BlackFridaySale from '../components/Black-friday-sale/BlackFridaySale';
+import BestSeller from '../components/BestSelleer/BestSeller';
+import { Link } from 'react-router-dom';
 // import { LeftArrow, RightArrow } from '../components/arrows';
 // import { Swiper, SwiperSlide } from 'swiper/react';
 // import { FreeMode } from 'swiper';
@@ -30,6 +34,7 @@ const reducer = (state, action) => {
 
 export default function HomeScreens() {
   const { getInitialValues, state, dispatch: ctxDispatch } = useContext(Store);
+  const [show, setShow] = useState(6);
 
   const [{ loading, error, products }, dispatch] = useReducer(reducer, {
     products: [],
@@ -70,16 +75,36 @@ export default function HomeScreens() {
     };
     fetchData();
   }, []);
-  // console.log('pro', products);
+
+  const product = products.map((ele) => ele.price);
+
+  const _slice = products.slice(0, show);
+  console.log('slice', _slice);
+
+  const loadMore = () => {
+    <Product />;
+  };
+
+  console.log('pro', product);
   return (
     <div>
       <Helmet>
-        <title>Nutrition supplements</title>
+        <title>RX MEDICINE ONLINE</title>
       </Helmet>
       <div style={{ marginBotton: '20px', width: '100%' }}>
         <Slider />
       </div>
+      {/* <div style={{ marginBotton: '20px' }}>
+        <BlackFridaySale />
+      </div> */}
 
+      <div>
+        <BestSeller product={products} />
+      </div>
+      <div>
+        {' '}
+        <DealsOfTheday products={products} />
+      </div>
       <>
         <div className="products">
           {loading ? (
@@ -87,15 +112,38 @@ export default function HomeScreens() {
           ) : error ? (
             <MessageBox variant="danger">{error}</MessageBox>
           ) : (
-            // <ScrollMenu
-            //   // Header={<div>HEADER</div>}
-            //   // Footer={<div>FOOTER</div>}
-            //   LeftArrow={LeftArrow}
-            //   RightArrow={RightArrow}
-            //   // onWheel={onWheel}
-            // >
             <Row className="justify-content-evenly">
-              {products?.map((product) => {
+              <div style={{ width: '95%' }} className="page-heading">
+                <h2>Products</h2>
+                <div className="viweAll">
+                  <Link
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'row-reverse',
+                      // marginBottom: '2%',
+                      fontSize: '18px',
+                    }}
+                    to="/allProducts"
+                    onClick={() => loadMore()}
+                  >
+                    View all
+                  </Link>
+                </div>
+              </div>
+
+              {/* <Link
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row-reverse',
+                  marginBottom: '2%',
+                  fontSize: '18px',
+                }}
+                to="/allProducts"
+                onClick={() => loadMore()}
+              >
+                View all
+              </Link> */}
+              {_slice?.map((product) => {
                 return (
                   <Col
                     key={product.slug}
@@ -108,20 +156,29 @@ export default function HomeScreens() {
                       // maxWidth: '600px',
                       display: 'flex',
                       scroll: 'none',
+                      justifyContent: 'center',
                       // scrollX: 'none',
                     }}
                   >
                     <Product product={product} />
-
-                    {/* <HorizontalScroll> */}
-
-                    {/* </HorizontalScroll> */}
                   </Col>
                 );
               })}
+              {/* <Link to="" onClick={() => loadMore()}>
+                show more
+              </Link> */}
             </Row>
-            // </ScrollMenu>
           )}
+          {/* <div
+            style={{
+              width: '100%',
+              border: '1px solid',
+              margin: '10px',
+            }}
+          >
+            {' '}
+            Best Sellers{' '}
+          </div> */}
         </div>
       </>
     </div>

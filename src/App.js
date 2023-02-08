@@ -55,6 +55,11 @@ import { NavLink } from 'react-router-dom';
 import SubMenuComp from './components/Sidebar/SubMenu';
 import CreateProduct from './screens/CreateProduct';
 import CreateCateogry from './screens/CreateCateogry';
+import Product from './components/Product';
+import ContactDetailScreen from './screens/ContactDetailScreen';
+import BestSeller from './components/BestSelleer/BestSeller';
+import BlackFridaySale from './components/Black-friday-sale/BlackFridaySale';
+import ViewAllProducts from './screens/ViewAllProducts';
 
 function App() {
   const {
@@ -62,7 +67,7 @@ function App() {
     dispatch: ctxDispatch,
     // getInitialValues
   } = useContext(Store);
-  const { cart, userInfo } = state;
+  const { cart, userInfo, fullBox } = state;
   const signoutHandler = () => {
     ctxDispatch({ type: 'USER_SIGNOUT' });
     localStorage.removeItem('userInfo');
@@ -92,9 +97,9 @@ function App() {
   let returnCategoryComponent = function () {
     let doc = document.getElementsByClassName('caregoryList');
     if (window.location.pathname === ('/signin' || '/signup')) {
-      doc.classList.add('hide');
+      doc.classList?.add('hide');
     } else {
-      doc.classList.remove('hide');
+      doc.classList?.remove('hide');
     }
   };
 
@@ -142,8 +147,15 @@ function App() {
   return (
     <BrowserRouter>
       <div
-        className="site-container d-flex flex-column"
-        // style={{ minWidth: '626px' }}
+        className={
+          sidebarIsOpen
+            ? fullBox
+              ? 'site-container active-cont d-flex flex-column full-box'
+              : 'site-container active-cont d-flex flex-column'
+            : fullBox
+            ? 'site-container d-flex flex-column full-box'
+            : 'site-container d-flex flex-column'
+        } // style={{ minWidth: '626px' }}
       >
         <ToastContainer position="bottom-center" limit={1} />
         <header>
@@ -173,7 +185,7 @@ function App() {
                       fontWeight: 700,
                     }}
                   >
-                    Nutrition
+                    RX
                   </span>
                   <span
                     style={{
@@ -185,7 +197,19 @@ function App() {
                       color: '#736a6a',
                     }}
                   >
-                    supplements
+                    MEDICINE
+                  </span>
+                  <span
+                    style={{
+                      display: 'block',
+                      marginTop: '-10px',
+                      fontWeight: 100,
+                      fontSize: ' 41px',
+                      lineHeight: '41px',
+                      color: '#736a6a',
+                    }}
+                  >
+                    ONLINE
                   </span>
                 </Navbar.Brand>
               </LinkContainer>
@@ -271,23 +295,24 @@ function App() {
                         marginTop: '10px',
                       }}
                     >
-                      {userInfo && userInfo.isAdmin ? null : userInfo ===
-                        null ? (
-                        <a
-                          href="/signin"
-                          className="nav-a"
-                          style={{ padding: '10px' }}
-                        >
-                          <i
-                            className="fas fa-shopping-cart"
-                            style={{ color: 'white' }}
-                          ></i>
-                          <span style={{ color: 'white', fontSize: '17px' }}>
-                            {' '}
-                            Cart
-                          </span>
-                        </a>
-                      ) : (
+                      {userInfo && userInfo.isAdmin ? null : (
+                        // : userInfo ===
+                        //   null ? (
+                        // <a
+                        //   href="/signin"
+                        //   className="nav-a"
+                        //   style={{ padding: '10px' }}
+                        // >
+                        //   <i
+                        //     className="fas fa-shopping-cart"
+                        //     style={{ color: 'white' }}
+                        //   ></i>
+                        //   <span style={{ color: 'white', fontSize: '17px' }}>
+                        //     {' '}
+                        //     Cart
+                        //   </span>
+                        // </a>
+                        // )
                         <a
                           href="/cart"
                           className="nav-a"
@@ -301,15 +326,18 @@ function App() {
                             {' '}
                             Cart
                           </span>{' '}
-                          {cart.cartItems.length > 0 &&
-                            (userInfo ? (
+                          {
+                            cart.cartItems.length > 0 && (
+                              // (userInfo ? (
                               <Badge pill bg="danger">
                                 {cart.cartItems.reduce(
                                   (a, c) => a + c.quantity,
                                   0
                                 )}
                               </Badge>
-                            ) : null)}
+                            )
+                            // ) : null)
+                          }
                         </a>
                       )}
                     </div>
@@ -317,38 +345,24 @@ function App() {
                 </Nav>
               </Navbar.Collapse>
             </Container>
-            <Container>
+            {/* <Container>
               <div
                 style={{
                   width: '1050px',
+
                   // maxWidth: '1000px',
                   position: 'relative',
                   zIndex: 99,
                   borderTop: ' 1px solid #534b4b',
                   background:
                     'linear-gradient(to bottom,#3f3737 0%,#2e2727 100%)',
-                  margin: 'auto',
+                  // margin: 'auto',
                   borderRadius: '6px',
                   display: 'flex',
                   marginTop: '30px',
                   // border: '1px solid red',
                 }}
               >
-                <div
-                  className="caregoryList"
-                  style={{
-                    display:
-                      window.location.pathname === '/signin' ? 'none' : '',
-                    fontSize: '20px',
-                    color: 'white',
-                    paddingLeft: '5px',
-                    borderRadius: '6px',
-                  }}
-                >
-                  {' '}
-                  CATEGORY
-                </div>
-
                 <div
                   className="headerhover"
                   style={{ marginLeft: 'auto', paddingRight: '20px' }}
@@ -388,14 +402,96 @@ function App() {
                       <a className="header-a" href="/profile">
                         User Profile
                       </a>
+                      <a className="header-a" href="">
+                        Contact Us
+                      </a>
+                      <a className="header-a" href="">
+                        About Us
+                      </a>
                     </div>
                   )}
                 </div>
               </div>
-            </Container>
+            </Container> */}
           </Navbar>
         </header>
+        <div className="category-div">
+          <div
+            style={{
+              // width: '100% !important',
+              width: '80%',
 
+              // maxWidth: '1000px',
+              // position: 'relative',
+              // zIndex: 99,
+              // borderTop: ' 1px solid #534b4b',
+              background: 'linear-gradient(to bottom,#3f3737 0%,#2e2727 100%)',
+              // margin: 'auto',
+              // borderRadius: '6px',
+              display: 'flex',
+              flexDirection: 'row-reverse',
+              // marginTop: '30px',
+              // border: '1px solid red',
+            }}
+          >
+            <div
+              className="headerhover"
+              style={{
+                height: '45px',
+                /* margin-left: auto; */
+                /* padding-right: 20px; */
+                width: '100%',
+                display: 'flex',
+                flexDirection: 'row-reverse',
+                paddingRight: '100px',
+              }}
+            >
+              {userInfo && userInfo?.isAdmin ? (
+                <div>
+                  <a className="header-a" href="/">
+                    Home
+                  </a>
+                  <a className="header-a" href="/admin/dashboard">
+                    Dashboard
+                  </a>
+                  <a className="header-a" href="/admin/products">
+                    Products
+                  </a>
+                  <a className="header-a" href="/admin/sliders">
+                    Sliders
+                  </a>
+                  <a className="header-a" href="/admin/orders">
+                    Orders
+                  </a>
+                  <a className="header-a" href="/admin/users">
+                    Users
+                  </a>
+                  <a className="header-a" href="/profile">
+                    Admin Profile
+                  </a>
+                </div>
+              ) : (
+                <div>
+                  <a className="header-a" href="/">
+                    Home
+                  </a>
+                  <a className="header-a" href="/orderhistory">
+                    Order History
+                  </a>
+                  <a className="header-a" href="/profile">
+                    User Profile
+                  </a>
+                  <a className="header-a" href="">
+                    Contact Us
+                  </a>
+                  <a className="header-a" href="">
+                    About Us
+                  </a>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
         <div
           className={
             sidebarIsOpen
@@ -417,8 +513,8 @@ function App() {
         <main
           style={{
             display: 'flex',
-            marginLeft: '0 40px',
-            backgroundColor: '#85ca18;',
+            margin: '0 10%',
+            // backgroundColor: '#85ca18;',
           }}
         >
           {/* {window.location.pathname === '/signin' ? null : ( */}
@@ -432,7 +528,27 @@ function App() {
                   : '',
             }}
           >
-            <ListGroup style={{ paddingLeft: '10rem', width: '30rem' }}>
+            <div
+              style={{
+                color: 'white',
+                background:
+                  'linear-gradient(rgb(63, 55, 55) 0%, rgb(46, 39, 39) 100%)',
+                textAlign: 'center',
+                height: '45px',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                borderRight: '1px solid black',
+                fontSize: '1.3rem',
+                // fontFamily: 'serif',
+                fontWeight: 400,
+                // color: 'red',
+                // height:
+              }}
+            >
+              Categories
+            </div>
+            <ListGroup>
               {categories?.map((category, i) => (
                 <NavLink
                   to={`/products/categories?type=category&name=${category.slug}`}
@@ -442,26 +558,94 @@ function App() {
                     fontSize: '18px',
                   }}
                 >
-                  <ListGroup.Item key={category.slug}>
+                  <ListGroup.Item
+                    key={category.slug}
+                    style={{ color: 'white' }}
+                  >
                     {category.name}
                   </ListGroup.Item>
                 </NavLink>
               ))}
+              <div class="widget widget_banner" style={{ paddingTop: '30px' }}>
+                <img
+                  src="//cdn.shopify.com/s/files/1/0432/0609/t/3/assets/custom_banner_img.jpg?v=109058294885636396901397135061"
+                  alt=""
+                  style={{ width: '100%' }}
+                />
+              </div>
+              <div
+                className="marketing-animation"
+                style={{
+                  width: '25%',
+                  height: '50px',
+                  border: '1px solid black',
+                  position: 'fixed',
+                  bottom: '1px',
+                  left: '20px',
+                  // transform: 'translate',
+                  backgroundColor: 'lightblue',
+                }}
+              >
+                <marquee direction="up" scrollamount="1">
+                  Multi has purchased $1099 worth products
+                </marquee>
+                <marquee direction="up" scrollamount="1">
+                  Naveen has purchased $1099 worth products
+                </marquee>
+                {/* <marquee direction="up" scrollamount="20">
+                  Shamanth has purchased $1099 worth products
+                </marquee>
+                <marquee direction="up" scrollamount="50">
+                  Harshith has purchased $1099 worth products
+                </marquee>
+                <marquee direction="up" scrollamount="75">
+                  Harsha has purchased $1099 worth products
+                </marquee>
+                <marquee direction="up" scrollamount="110">
+                  Sangeetha has purchased $1099 worth products
+                </marquee>
+                <marquee direction="up" scrollamount="130">
+                  Chida has purchased $1099 worth products
+                </marquee>
+                <marquee direction="up" scrollamount="150">
+                  Rohith has purchased $1099 worth products
+                </marquee>
+                <marquee direction="up" scrollamount="170">
+                  Nithan has purchased $1099 worth products
+                </marquee>
+                <marquee direction="up" scrollamount="200">
+                  Mithun has purchased $1099 worth products
+                </marquee>
+                <marquee direction="up" scrollamount="220">
+                  Mohan has purchased $1099 worth products
+                </marquee> */}
+              </div>
             </ListGroup>
-            <div class="widget widget_banner" style={{ paddingTop: '30px' }}>
+            {/* <div class="widget widget_banner" style={{ paddingTop: '30px' }}>
               <img
                 src="//cdn.shopify.com/s/files/1/0432/0609/t/3/assets/custom_banner_img.jpg?v=109058294885636396901397135061"
                 alt=""
-                style={{ paddingLeft: '182px' }}
+                // style={{ paddingLeft: '182px' }}
               />
-            </div>
+            </div> */}
+            {/* <div
+              className="bestseller"
+              // style={{
+              //   width: '100%',
+              //   height: '300px',
+              //   marginTop: '10px',
+              //   border: '1px solid black',
+              // }}
+            >
+              <BestSeller />
+            </div> */}
           </div>
           {/* )} */}
           <Container
             className="mt-3"
             style={{
-              marginRight: '77px',
-              width: '65%',
+              // marginRight: '77px',
+              width: '80%',
             }}
           >
             <Routes>
@@ -508,6 +692,10 @@ function App() {
                 }
               ></Route>
               <Route
+                path="/contact-detail"
+                element={<ContactDetailScreen />}
+              ></Route>
+              <Route
                 path="/shipping"
                 element={<ShippingAddressScreen />}
               ></Route>
@@ -519,13 +707,14 @@ function App() {
                   </ProtectedRoute>
                 }
               />
+              <Route path="/allProducts" element={<ViewAllProducts />}></Route>
               {/* slide Route */}
               <Route
                 path="/slider/:sliderID"
                 element={
-                  <ProtectedRoute>
-                    <SlidingProducts />
-                  </ProtectedRoute>
+                  // <ProtectedRoute>
+                  <SlidingProducts />
+                  // </ProtectedRoute>
                 }
               />
               <Route path="/carts" element={<SliderCartScreen />} />
@@ -622,8 +811,40 @@ function App() {
               <Route path="/payment" element={<PaymentMethodScreen />}></Route>
               <Route path="/" element={<HomeScreen />} />
             </Routes>
+            <div>
+              <BlackFridaySale />
+            </div>
           </Container>
+          {/* <div
+            style={{
+              width: '100%',
+              border: '1px solid',
+            }}
+          >
+            {' '}
+            Best Sellers{' '}
+          </div> */}
+          {/* <div>
+            <BlackFridaySale />
+          </div> */}
         </main>
+        {/* <div
+          style={{
+            width: '100%',
+            // border: '1px solid',
+            alignItems: 'center',
+            marginLeft: '200px',
+          }}
+        >
+          <img
+            src="https://www.seekpng.com/png/detail/62-621294_tom-ford-ft5401-020-clear-best-seller-banner.png"
+            alt=""
+          />
+          
+        </div> */}
+        {/* <div style={{ marginBotton: '20px' }}> */}
+
+        {/* </div> */}
         <footer>
           <div className="text-center " style={{ paddingTop: ' 10px' }}>
             <Footer />

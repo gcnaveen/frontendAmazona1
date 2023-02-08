@@ -43,13 +43,16 @@ export default function SigninScreen() {
   }, [navigate, redirect, userInfo]);
 
   return (
-    <Container className="small-container">
+    <Container className="small-container" style={{ marginLeft: '15%' }}>
       <Helmet>
         <title>Sign In</title>
       </Helmet>
 
       <h1 className="my-3">Sign In</h1>
-      <Form onSubmit={submitHandler} style={{ width: '400px' }}>
+      <Form
+        onSubmit={submitHandler}
+        style={{ width: '350px', marginLeft: '20%' }}
+      >
         <Form.Group className="mb-3" controlId="email">
           <Form.Label>Email</Form.Label>
           <Form.Control
@@ -76,7 +79,7 @@ export default function SigninScreen() {
         <div className="mb-3">
           <Link
             to={`/reset-password?redirect=${redirect}`}
-            style={{ color: ' #75b510 !important' }}
+            style={{ color: 'black ' }}
           >
             Forgot Password
           </Link>

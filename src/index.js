@@ -30,6 +30,7 @@ import App from './App';
 import { HelmetProvider } from 'react-helmet-async';
 import { StoreProvider } from './Store';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import 'react-table-6/react-table.css';
 ReactDOM.render(
   <React.StrictMode>
     <StoreProvider>

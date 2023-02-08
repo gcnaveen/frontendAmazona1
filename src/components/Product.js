@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
@@ -10,6 +10,9 @@ import { toast } from 'react-toastify';
 
 export default function Product(props) {
   const { state, dispatch: ctxDispatch } = useContext(Store);
+  // const _slice = props.product.slice(0, show);
+  // console.log('slice', _slice);
+
   const {
     userInfo,
     cart: { cartItems },
@@ -28,11 +31,12 @@ export default function Product(props) {
       type: 'CART_ADD_ITEM',
       payload: { ...item, quantity },
     });
-    if (state.userInfo) {
-      toast.success(`${item.name} Added to the cart`);
-    } else {
-      navigate('/signin');
-    }
+    // if (state.userInfo) {
+    toast.success(`${item.name} Added to the cart`);
+    // }
+    // else {
+    //   navigate('/signin');
+    // }
   };
   const discountPrice =
     props.product.price - props.product.productDiscountedPrice;
@@ -87,15 +91,18 @@ export default function Product(props) {
             >
               {' '}
               Rs.{props.product.price}
-            </span>
+            </span>{' '}
+            &nbsp; &nbsp;
             <span
               style={{
                 margin: 'auto',
-                background: '#dc3545',
-                color: 'white',
+                // background: '#dc3545',
+                color: 'green',
+                fontSize: '15px',
+                fontWeight: 600,
               }}
             >
-              ({percentage}% off)
+              {percentage}% OFF
             </span>
           </div>
         </Card.Text>
