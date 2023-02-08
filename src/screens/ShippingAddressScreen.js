@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { Store } from '../Store';
 import CheckoutSteps from '../components/CheckoutSteps';
 import { Helmet } from 'react-helmet-async';
+// import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 export default function ShippingAddressScreen() {
   const navigate = useNavigate();
@@ -54,6 +55,17 @@ export default function ShippingAddressScreen() {
   useEffect(() => {
     ctxDispatch({ type: 'SET_FULLBOX_OFF' });
   }, [ctxDispatch, fullBox]);
+
+  // const theme = createTheme({
+  //   components: {
+  //     MuiFormLabel: {
+  //       styleOverrides: {
+  //         asterisk: { color: 'red' },
+  //       },
+  //     },
+  //   },
+  // });
+
   return (
     <div>
       <CheckoutSteps step1 step2 step3></CheckoutSteps>
@@ -64,7 +76,13 @@ export default function ShippingAddressScreen() {
         <h1 className="my-3">Shipping Address</h1>
         <Form onSubmit={submitHandler}>
           <Form.Group className="mb-3" controlId="fullName">
-            <Form.Label>Full Name</Form.Label>
+            <Form.Label>
+              Full Name{' '}
+              <span className="required" style={{ color: 'red' }}>
+                *
+              </span>
+            </Form.Label>
+
             <Form.Control
               value={fullName}
               type="text"
@@ -73,7 +91,12 @@ export default function ShippingAddressScreen() {
             />
           </Form.Group>
           <Form.Group className="mb-3" controlId="address">
-            <Form.Label>Address</Form.Label>
+            <Form.Label>
+              Address{' '}
+              <span className="required" style={{ color: 'red' }}>
+                *
+              </span>
+            </Form.Label>
             <Form.Control
               value={address}
               type="text"
@@ -82,7 +105,12 @@ export default function ShippingAddressScreen() {
             />
           </Form.Group>
           <Form.Group className="mb-3" controlId="city">
-            <Form.Label>City</Form.Label>
+            <Form.Label>
+              City{' '}
+              <span className="required" style={{ color: 'red' }}>
+                *
+              </span>
+            </Form.Label>
             <Form.Control
               value={city}
               type="text"
@@ -91,7 +119,12 @@ export default function ShippingAddressScreen() {
             />
           </Form.Group>
           <Form.Group className="mb-3" controlId="postalCode">
-            <Form.Label>Postal Code</Form.Label>
+            <Form.Label>
+              Postal Code{' '}
+              <span className="required" style={{ color: 'red' }}>
+                *
+              </span>
+            </Form.Label>
             <Form.Control
               value={postalCode}
               type="number"
@@ -100,7 +133,12 @@ export default function ShippingAddressScreen() {
             />
           </Form.Group>
           <Form.Group className="mb-3" controlId="country">
-            <Form.Label>Country</Form.Label>
+            <Form.Label>
+              Country{' '}
+              <span className="required" style={{ color: 'red' }}>
+                *
+              </span>
+            </Form.Label>
             <Form.Control
               value={country}
               type="text"

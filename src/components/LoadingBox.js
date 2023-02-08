@@ -7,9 +7,11 @@ export default function LoadingBox() {
       animation="border"
       role="status"
       style={{
-        itemAlign: 'center',
-        marginTop: '100px',
-        marginLeft: '346px',
+        display: 'fixed',
+        top: '50%',
+        left: '50%',
+        // marginTop: '100px',
+        // marginLeft: '346px',
       }}
     >
       <span className="visually-hidden">Loading...</span>

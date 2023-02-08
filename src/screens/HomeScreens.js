@@ -107,11 +107,7 @@ export default function HomeScreens() {
       </div>
       <>
         <div className="products">
-          {loading ? (
-            <LoadingBox />
-          ) : error ? (
-            <MessageBox variant="danger">{error}</MessageBox>
-          ) : (
+          {
             <Row className="justify-content-evenly">
               <div style={{ width: '95%' }} className="page-heading">
                 <h2>Products</h2>
@@ -168,7 +164,7 @@ export default function HomeScreens() {
                 show more
               </Link> */}
             </Row>
-          )}
+          }
           {/* <div
             style={{
               width: '100%',

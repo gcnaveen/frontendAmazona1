@@ -174,43 +174,16 @@ function App() {
                 alt="Nutrition supplements"
               ></img>
               <LinkContainer to="/">
-                <Navbar.Brand style={{ color: 'white' }}>
-                  <span
-                    style={{
-                      fontSize: '50px',
-                      lineHeight: '50px',
-                      marginTop: ' 10px',
-                      display: 'block',
-                      color: 'white',
-                      fontWeight: 700,
-                    }}
-                  >
-                    RX
-                  </span>
-                  <span
-                    style={{
-                      display: 'block',
-                      marginTop: '-10px',
-                      fontWeight: 100,
-                      fontSize: ' 41px',
-                      lineHeight: '41px',
-                      color: '#736a6a',
-                    }}
-                  >
-                    MEDICINE
-                  </span>
-                  <span
-                    style={{
-                      display: 'block',
-                      marginTop: '-10px',
-                      fontWeight: 100,
-                      fontSize: ' 41px',
-                      lineHeight: '41px',
-                      color: '#736a6a',
-                    }}
-                  >
-                    ONLINE
-                  </span>
+                <Navbar.Brand>
+                  <div className="headerText">
+                    <span className="headericon">RX</span>
+                    <span className="subheadericon">
+                      MEDICINE
+                      <br height="0px" />
+                      ONLINE
+                    </span>
+                  </div>
+                  {/* <span className="subheadericon"></span> */}
                 </Navbar.Brand>
               </LinkContainer>
 

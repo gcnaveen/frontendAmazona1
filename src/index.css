@@ -548,13 +548,47 @@ a:hover {
   border: none !important;
 }
 
+/* .form-control {
+  content: '*' !important;
+  color: red !important;
+} */
 svg {
   vertical-align: sub !important;
 }
-
+/* .form-group .required .control-label:before {
+  content: '*' !important;
+  color: red !important;
+} */
 .pagination-bottom {
   display: none !important;
 }
 .rt-td {
   text-align: center !important;
+}
+
+.headericon {
+  font-size: 3rem;
+  line-height: 3rem;
+  margin-top: 0.6rem;
+  display: block;
+  color: white;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.subheadericon {
+  display: block;
+  margin-top: -0.6rem;
+  font-weight: 100;
+  font-size: 2.5rem;
+  line-height: 2rem;
+  color: #736a6a;
+}
+
+/* .subheadericon:hover {
+  color: #6aa907 !important;
+} */
+
+.headericon:hover {
+  color: #6aa907 !important;
 }

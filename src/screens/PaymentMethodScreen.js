@@ -14,7 +14,7 @@ export default function PaymentMethodScreen() {
   } = state;
 
   const [paymentMethodName, setPaymentMethod] = useState(
-    paymentMethod || 'Cash On Delivery'
+    paymentMethod || 'Cash'
   );
 
   useEffect(() => {
@@ -61,14 +61,15 @@ export default function PaymentMethodScreen() {
           <div className="mb-3">
             <Form.Check
               type="radio"
-              id="Cash On Delivery"
-              label="Cash On Delivery"
-              value="Cash On Delivery"
-              checked={paymentMethodName === 'Cash On Delivery'}
+              id="Cash"
+              label="Cash"
+              value="Cash "
+              checked={paymentMethodName === 'Cash'}
               onChange={(e) => setPaymentMethod(e.target.value)}
             />
             <Form.Check
               type="radio"
+              disabled
               id="PAYPAL"
               label="PAYPAL"
               value="PAYPAL"
@@ -78,6 +79,7 @@ export default function PaymentMethodScreen() {
             <Form.Check
               type="radio"
               id="BTC"
+              disabled
               label="BTC"
               value="BTC"
               checked={paymentMethodName === 'BTC'}
@@ -85,6 +87,7 @@ export default function PaymentMethodScreen() {
             />
             <Form.Check
               type="radio"
+              disabled
               id="ETHERUM"
               label="ETHERUM"
               value="ETHERUM"
@@ -93,6 +96,7 @@ export default function PaymentMethodScreen() {
             />
             <Form.Check
               type="radio"
+              disabled
               id="BANK TRANSFER"
               label="BANK TRANSFER"
               value="BANK TRANSFER"

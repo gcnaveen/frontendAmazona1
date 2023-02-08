@@ -87,7 +87,12 @@ export default function ContactDetailScreen() {
       <h1 className="my-3">Contact Details</h1>
       <Form>
         <Form.Group className="mb-3" controlId="phoneNumber">
-          <Form.Label>Phone Number</Form.Label>
+          <Form.Label>
+            Phone Number{' '}
+            <span className="required" style={{ color: 'red' }}>
+              *
+            </span>
+          </Form.Label>
           <Form.Control
             value={phoneNumber}
             type="number"
@@ -158,7 +163,12 @@ export default function ContactDetailScreen() {
           <p style={{ color: 'red' }}>Please check the Watsapp Number</p>
         )}
         <Form.Group className="mb-3" controlId="email">
-          <Form.Label>Email</Form.Label>
+          <Form.Label>
+            Email{' '}
+            <span className="required" style={{ color: 'red' }}>
+              *
+            </span>
+          </Form.Label>
           <Form.Control
             value={email}
             type="email"
