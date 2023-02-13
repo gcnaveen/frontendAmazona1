@@ -148,6 +148,7 @@ export default function SignupScreen() {
           </span>
           <Form.Control
             type="number"
+            maxLength="10"
             required
             onChange={(e) => {
               setPhoneNo(e.target.value);

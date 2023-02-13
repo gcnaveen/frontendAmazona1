@@ -71,6 +71,7 @@ export default function SignUpInfo() {
           <Form.Label>Whatsapp Number</Form.Label>
           <Form.Control
             type="number"
+            maxLength="10"
             // required
             onChange={(e) => {
               setWhatsapp(e.target.value);
@@ -82,6 +83,7 @@ export default function SignUpInfo() {
           <Form.Label>iMessage Number</Form.Label>
           <Form.Control
             type="number"
+            maxLength="10"
             required
             onChange={(e) => {
               setImessage(e.target.value);
@@ -93,6 +95,7 @@ export default function SignUpInfo() {
           <Form.Label>Telegram Number</Form.Label>
           <Form.Control
             type="number"
+            maxLength="10"
             // required
             onChange={(e) => {
               setTelegram(e.target.value);
