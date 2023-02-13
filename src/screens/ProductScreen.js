@@ -105,6 +105,10 @@ export default function ProductScreen() {
   //   });
   // };
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   const removeItemHandler = (item) => {
     ctxDispatch({ type: 'CART_REMOVE_ITEM', payload: item });
   };

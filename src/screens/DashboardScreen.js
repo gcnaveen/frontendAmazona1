@@ -196,6 +196,10 @@ export default function DashboardScreen() {
     },
   };
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <div style={{ backgroundColor: '#F1F5F9' }}>
       <h1>Dashboard</h1>

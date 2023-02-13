@@ -66,6 +66,10 @@ export default function ShippingAddressScreen() {
   //   },
   // });
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <div>
       <CheckoutSteps step1 step2 step3></CheckoutSteps>

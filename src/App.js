@@ -1,20 +1,14 @@
-import {
-  BrowserRouter,
-  Route,
-  Routes,
-  // useNavigation,
-} from 'react-router-dom';
-import { ToastContainer } from 'react-toastify';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import HomeScreen from './screens/HomeScreens';
 import ProductScreen from './screens/ProductScreen';
 import Navbar from 'react-bootstrap/Navbar';
 import Badge from 'react-bootstrap/Badge';
 import Nav from 'react-bootstrap/Nav';
-// import NavDropdown from 'react-bootstrap/NavDropdown';
 import Container from 'react-bootstrap/Container';
 import { LinkContainer } from 'react-router-bootstrap';
-import { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Store } from './Store';
 import CartScreen from './screens/CartScreen';
 import SigninScreen from './screens/SigninScreen';
@@ -26,9 +20,8 @@ import OrderScreen from './screens/OrderScreen';
 import OrderHistoryScreen from './screens/OrderHistoryScreen';
 import ProfileScreen from './screens/ProfileScreen';
 import ListGroup from 'react-bootstrap/ListGroup';
-// import Button from 'react-bootstrap/Button';
-// import { getError } from './utils';
 import axios from 'axios';
+import AddToCart from './screens/ContinueShopping';
 import SearchBox from './components/SearchBox';
 import SearchScreen from './screens/SearchScreen';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -48,18 +41,17 @@ import SliderCartScreen from './components/SliderScreens/SliderCartScreen';
 import SlideListScreen from './components/SliderScreens/SlideListScreen';
 import SliderEditScreen from './components/SliderScreens/SliderEditScreen';
 import EditShippingAdress from './screens/EditShippingAdress';
-// import { NavItem } from 'react-bootstrap';
 import CreateSlide from './components/SliderScreens/CreateSlide';
 import CategoryWiseProductList from './screens/CategoryWiseProductList';
 import { NavLink } from 'react-router-dom';
 import SubMenuComp from './components/Sidebar/SubMenu';
 import CreateProduct from './screens/CreateProduct';
 import CreateCateogry from './screens/CreateCateogry';
-import Product from './components/Product';
 import ContactDetailScreen from './screens/ContactDetailScreen';
-import BestSeller from './components/BestSelleer/BestSeller';
 import BlackFridaySale from './components/Black-friday-sale/BlackFridaySale';
 import ViewAllProducts from './screens/ViewAllProducts';
+import { getError } from './utils';
+import SignUpInfo from './screens/SignUpInfo';
 
 function App() {
   const {
@@ -68,12 +60,13 @@ function App() {
     // getInitialValues
   } = useContext(Store);
   const { cart, userInfo, fullBox } = state;
+
   const signoutHandler = () => {
     ctxDispatch({ type: 'USER_SIGNOUT' });
     localStorage.removeItem('userInfo');
     localStorage.removeItem('shippingAddress');
     localStorage.removeItem('paymentMethod');
-    // localStorage.removeItem('cartItems');
+    localStorage.removeItem('cartItems');
     window.location.href = '/signin';
   };
   const [sidebarIsOpen] = useState(false);
@@ -81,13 +74,16 @@ function App() {
   console.log(state);
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  useEffect(() => {
     const fetchCategories = async () => {
       try {
         const { data } = await axios.get('/api/products/getAllCats');
         setCategories(data);
       } catch (err) {
-        console.log('network error', err);
-        // toast.error(getError(err));
+        toast.error(getError(err));
       }
     };
 
@@ -106,43 +102,6 @@ function App() {
   setTimeout(() => {
     returnCategoryComponent();
   }, 500);
-  // console.log('categories', JSON.stringify(categories));
-  // const toggleCatagory = () => {
-  //   if (window?.location.pathname === '/signin') {
-  //     <div class="caregoryList">
-  //       <ListGroup style={{ paddingLeft: '10rem', width: '30rem' }}>
-  //         {categories?.map((category, i) => (
-  //           <NavLink
-  //             to={`/products/categories?type=category&name=${category.slug}`}
-  //             style={{
-  //               textDecoration: 'none',
-  //               color: 'black',
-  //               fontSize: '18px',
-  //             }}
-  //           >
-  //             <ListGroup.Item key={category.slug}>
-  //               {category.name}
-  //             </ListGroup.Item>
-  //           </NavLink>
-  //         ))}
-  //       </ListGroup>
-  //       <div class="widget widget_banner" style={{ paddingTop: '30px' }}>
-  //         <img
-  //           src="//cdn.shopify.com/s/files/1/0432/0609/t/3/assets/custom_banner_img.jpg?v=109058294885636396901397135061"
-  //           alt=""
-  //           style={{ paddingLeft: '182px' }}
-  //         />
-  //       </div>
-  //     </div>;
-  //   } else {
-  //     <div></div>;
-  //   }
-  // };
-  // if (window?.location.pathname === '/signin') {
-  //   window.location.reload(false);
-  // } else {
-  //   window.location.reload(true);
-  // }
 
   return (
     <BrowserRouter>
@@ -183,7 +142,6 @@ function App() {
                       ONLINE
                     </span>
                   </div>
-                  {/* <span className="subheadericon"></span> */}
                 </Navbar.Brand>
               </LinkContainer>
 
@@ -268,124 +226,39 @@ function App() {
                         marginTop: '10px',
                       }}
                     >
-                      {userInfo && userInfo.isAdmin ? null : (
-                        // : userInfo ===
-                        //   null ? (
-                        // <a
-                        //   href="/signin"
-                        //   className="nav-a"
-                        //   style={{ padding: '10px' }}
-                        // >
-                        //   <i
-                        //     className="fas fa-shopping-cart"
-                        //     style={{ color: 'white' }}
-                        //   ></i>
-                        //   <span style={{ color: 'white', fontSize: '17px' }}>
-                        //     {' '}
-                        //     Cart
-                        //   </span>
-                        // </a>
-                        // )
-                        <a
-                          href="/cart"
-                          className="nav-a"
+                      <a
+                        href="/cart"
+                        className="nav-a"
+                        style={{ color: 'white' }}
+                      >
+                        <i
+                          className="fas fa-shopping-cart"
                           style={{ color: 'white' }}
-                        >
-                          <i
-                            className="fas fa-shopping-cart"
-                            style={{ color: 'white' }}
-                          ></i>
-                          <span style={{ color: 'white', fontSize: '17px' }}>
-                            {' '}
-                            Cart
-                          </span>{' '}
-                          {
-                            cart.cartItems.length > 0 && (
-                              // (userInfo ? (
-                              <Badge pill bg="danger">
-                                {cart.cartItems.reduce(
-                                  (a, c) => a + c.quantity,
-                                  0
-                                )}
-                              </Badge>
-                            )
-                            // ) : null)
-                          }
-                        </a>
-                      )}
+                        ></i>
+                        <span style={{ color: 'white', fontSize: '17px' }}>
+                          {' '}
+                          Cart
+                        </span>{' '}
+                        {
+                          cart.cartItems.length > 0 && (
+                            // (userInfo ? (
+
+                            <Badge pill bg="danger">
+                              {cart.cartItems.reduce(
+                                (a, c) => a + c.quantity,
+                                0
+                              )}
+                            </Badge>
+                          )
+                          // ) : null)
+                        }
+                      </a>
+                      {/* // )} */}
                     </div>
                   )}
                 </Nav>
               </Navbar.Collapse>
             </Container>
-            {/* <Container>
-              <div
-                style={{
-                  width: '1050px',
-
-                  // maxWidth: '1000px',
-                  position: 'relative',
-                  zIndex: 99,
-                  borderTop: ' 1px solid #534b4b',
-                  background:
-                    'linear-gradient(to bottom,#3f3737 0%,#2e2727 100%)',
-                  // margin: 'auto',
-                  borderRadius: '6px',
-                  display: 'flex',
-                  marginTop: '30px',
-                  // border: '1px solid red',
-                }}
-              >
-                <div
-                  className="headerhover"
-                  style={{ marginLeft: 'auto', paddingRight: '20px' }}
-                >
-                  {userInfo && userInfo?.isAdmin ? (
-                    <div>
-                      <a className="header-a" href="/">
-                        Home
-                      </a>
-                      <a className="header-a" href="/admin/dashboard">
-                        Dashboard
-                      </a>
-                      <a className="header-a" href="/admin/products">
-                        Products
-                      </a>
-                      <a className="header-a" href="/admin/sliders">
-                        Sliders
-                      </a>
-                      <a className="header-a" href="/admin/orders">
-                        Orders
-                      </a>
-                      <a className="header-a" href="/admin/users">
-                        Users
-                      </a>
-                      <a className="header-a" href="/profile">
-                        Admin Profile
-                      </a>
-                    </div>
-                  ) : (
-                    <div>
-                      <a className="header-a" href="/">
-                        Home
-                      </a>
-                      <a className="header-a" href="/orderhistory">
-                        Order History
-                      </a>
-                      <a className="header-a" href="/profile">
-                        User Profile
-                      </a>
-                      <a className="header-a" href="">
-                        Contact Us
-                      </a>
-                      <a className="header-a" href="">
-                        About Us
-                      </a>
-                    </div>
-                  )}
-                </div>
-              </div>
-            </Container> */}
           </Navbar>
         </header>
         <div className="category-div">
@@ -546,7 +419,7 @@ function App() {
                   style={{ width: '100%' }}
                 />
               </div>
-              <div
+              {/* <div
                 className="marketing-animation"
                 style={{
                   width: '25%',
@@ -558,14 +431,14 @@ function App() {
                   // transform: 'translate',
                   backgroundColor: 'lightblue',
                 }}
-              >
-                <marquee direction="up" scrollamount="1">
+              > */}
+              {/* <marquee direction="up" scrollamount="1">
                   Multi has purchased $1099 worth products
                 </marquee>
                 <marquee direction="up" scrollamount="1">
                   Naveen has purchased $1099 worth products
-                </marquee>
-                {/* <marquee direction="up" scrollamount="20">
+                </marquee> */}
+              {/* <marquee direction="up" scrollamount="20">
                   Shamanth has purchased $1099 worth products
                 </marquee>
                 <marquee direction="up" scrollamount="50">
@@ -592,7 +465,7 @@ function App() {
                 <marquee direction="up" scrollamount="220">
                   Mohan has purchased $1099 worth products
                 </marquee> */}
-              </div>
+              {/* </div> */}
             </ListGroup>
             {/* <div class="widget widget_banner" style={{ paddingTop: '30px' }}>
               <img
@@ -630,6 +503,7 @@ function App() {
               <Route path="/cart" element={<CartScreen />} />
               <Route path="/signin" element={<SigninScreen />} />
               <Route path="/signup" element={<SignupScreen />} />
+              <Route path="/signup-info" element={<SignUpInfo />} />
               <Route
                 path="/reset-password"
                 element={<ForgetPasswordScreen />}
@@ -672,6 +546,7 @@ function App() {
                 path="/shipping"
                 element={<ShippingAddressScreen />}
               ></Route>
+              <Route path="/add-to-cart" element={<AddToCart />}></Route>
               <Route
                 path="/map"
                 element={
@@ -788,6 +663,7 @@ function App() {
               <BlackFridaySale />
             </div>
           </Container>
+          {/* <div ref={scrollTopRef} /> */}
           {/* <div
             style={{
               width: '100%',

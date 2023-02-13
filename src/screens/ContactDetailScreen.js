@@ -1,11 +1,11 @@
-import React, { useContext, useReducer, useState } from 'react';
+import React, { useContext, useEffect, useReducer, useState } from 'react';
 import CheckoutSteps from '../components/CheckoutSteps';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { Store } from '../Store';
-import { Axios } from 'axios';
+import axios, { Axios } from 'axios';
 import swal from 'sweetalert';
 import { getError } from '../utils';
 import { toast } from 'react-toastify';
@@ -55,6 +55,78 @@ export default function ContactDetailScreen() {
     handleSubmit,
     formState: { errors },
   } = useForm();
+  const round2 = (num) => Math.round(num * 100 + Number.EPSILON) / 100; // 123.2345 => 123.23
+  state.cart.itemsPrice = round2(
+    state.cart.cartItems.reduce((a, c) => a + c.quantity * c.price, 0)
+  );
+  state.cart.itemsPrice = round2(
+    state.cart.cartItems.reduce((a, c) => a + c.quantity * c.price, 0)
+  );
+  state.cart.discountPrice = round2(
+    state.cart.cartItems.reduce(
+      (a, c) => a + c.quantity * c.productDiscountedPrice,
+      0
+    )
+  );
+  state.cart.shippingPrice =
+    state.cart.itemsPrice > 100 ? round2(0) : round2(10);
+  state.cart.taxPrice = round2(0.15 * state.cart.itemsPrice);
+  state.cart.totalPrice =
+    state.cart.itemsPrice + state.cart.shippingPrice - state.cart.discountPrice;
+  const placeOrderHandler = async () => {
+    try {
+      dispatch({ type: 'CREATE_REQUEST' });
+      const token = userInfo
+        ? userInfo.token
+        : 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2M2UzYzhkNzljZDgzYjdlOGJlZWZiMGEiLCJuYW1lIjoiZ3Vlc3R1c2VyIiwiZW1haWwiOiJndWVzdEBleGFtcGxlLmNvbSIsImlzQWRtaW4iOmZhbHNlLCJpYXQiOjE2NzU4NzI0NzEsImV4cCI6MjYyMjYwMDQ3MX0.byzxrrei5Q9E-y_DRSGjj8KyUDRac2vw6ZuNtpG1Nw8';
+      console.log('token', token);
+      const { data } = await axios.post(
+        '/api/orders',
+        {
+          orderItems: state.cart.cartItems,
+          // shippingAddress: state.cart.shippingAddress,
+          // paymentMethod: state.cart.paymentMethod,
+          contactDetails: state.cart.contactDetails,
+          itemsPrice: state.cart.itemsPrice,
+          shippingPrice: state.cart.shippingPrice,
+          taxPrice: state.cart.taxPrice,
+          totalPrice: state.cart.totalPrice,
+        },
+        {
+          headers: {
+            authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      console.log('inside the place order::', data);
+      ctxDispatch({ type: 'CART_CLEAR' });
+      dispatch({ type: 'CREATE_SUCCESS' });
+      localStorage.removeItem(`${userInfo?._id}`);
+
+      swal({
+        title: 'Success',
+        text: 'Thanks for Ordering our customer exicutive will contact you shortly',
+        icon: 'success',
+        button: 'close',
+      });
+
+      // swal({
+      //   title: 'Success',
+      //   text: ` ${data.order.orderItems.map(
+      //     (ele) => ele.name
+      //   )} item order has been placed`,
+      //   icon: 'success',
+      //   button: 'close',
+      // });
+      navigate(`/order/${data.order._id}`);
+    } catch (err) {
+      dispatch({ type: 'CREATE_FAIL' });
+      // toast.error(getError(err));
+      console.log('error in side place order', err);
+    }
+  };
+
   const onSubmit = async () => {
     // console.log('in onsubmit:::', data);
     ctxDispatch({
@@ -77,15 +149,27 @@ export default function ContactDetailScreen() {
         email,
       })
     );
-
-    navigate('/placeorder');
+    swal({
+      title: 'Success',
+      text: 'Thanks for Ordering our customer exicutive will contact you shortly',
+      icon: 'success',
+      button: 'close',
+    });
+    placeOrderHandler();
+    navigate('/');
+    // navigate('/payment');
   };
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  console.log('inside the contact details :::', state.cart);
 
   return (
     <div className="container small-container">
       {/* <CheckoutSteps step1 step2></CheckoutSteps> */}
       <h1 className="my-3">Contact Details</h1>
-      <Form>
+      <Form onSubmit={onSubmit}>
         <Form.Group className="mb-3" controlId="phoneNumber">
           <Form.Label>
             Phone Number{' '}
@@ -104,16 +188,15 @@ export default function ContactDetailScreen() {
         {errors.phoneNumber && (
           <p style={{ color: 'red' }}>Please check the Phone Number</p>
         )}
-        <Form.Group className="mb-3" controlId="whatsappNumber">
+        {/* <Form.Group className="mb-3" controlId="whatsappNumber">
           <Form.Label>whatsapp Number</Form.Label>
           <Form.Control
             value={whatsappNumber}
             type="number"
             maxLength={10}
             onChange={(e) => setWhatsappNumber(e.target.value)}
-            required
           />
-        </Form.Group>
+        </Form.Group> */}
         {/* <Form.Field style={{ display: 'grid' }}>
           <label style={{ fontSize: '17px' }}>Telegram Number</label>
           <input
@@ -128,26 +211,24 @@ export default function ContactDetailScreen() {
         {errors.telegramNumber && (
           <p style={{ color: 'red' }}>Please check the Telegram Number</p>
         )}
-        <Form.Group className="mb-3" controlId="iMessageNumber">
+        {/* <Form.Group className="mb-3" controlId="iMessageNumber">
           <Form.Label>iMessage Number</Form.Label>
           <Form.Control
             value={iMessageNumber}
             type="number"
             maxLength={10}
             onChange={(e) => setIMessageNumber(e.target.value)}
-            required
           />
-        </Form.Group>
-        <Form.Group className="mb-3" controlId="telegramNumber">
+        </Form.Group> */}
+        {/* <Form.Group className="mb-3" controlId="telegramNumber">
           <Form.Label>Telegram Number</Form.Label>
           <Form.Control
             value={telegramNumber}
             type="number"
             maxLength={10}
             onChange={(e) => setTelegramNumber(e.target.value)}
-            required
           />
-        </Form.Group>
+        </Form.Group> */}
         {/* <Form.Field style={{ display: 'grid', marginTop: '5px' }}>
           <label style={{ fontSize: '17px' }}>Watsapp Number</label>
           <input
@@ -171,9 +252,10 @@ export default function ContactDetailScreen() {
           </Form.Label>
           <Form.Control
             value={email}
+            required
+            // pattern="/^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/"
             type="email"
             onChange={(e) => setEmail(e.target.value)}
-            required
           />
         </Form.Group>
         {/* <Form.Field style={{ display: 'grid' }}>
@@ -190,7 +272,9 @@ export default function ContactDetailScreen() {
         </Form.Field> */}
         {errors.email && <p style={{ color: 'red' }}>Please check the Email</p>}
 
-        <Button onClick={onSubmit}>Submit</Button>
+        <Button variant="primary" type="submit">
+          Submit
+        </Button>
       </Form>
     </div>
   );

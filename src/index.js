@@ -31,12 +31,15 @@ import { HelmetProvider } from 'react-helmet-async';
 import { StoreProvider } from './Store';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'react-table-6/react-table.css';
+import ReactScrollableFeed from 'react-scrollable-feed';
 
 ReactDOM.render(
   <React.StrictMode>
     <StoreProvider>
       <HelmetProvider>
-        <App />
+        <ReactScrollableFeed>
+          <App />
+        </ReactScrollableFeed>
       </HelmetProvider>
     </StoreProvider>
   </React.StrictMode>,

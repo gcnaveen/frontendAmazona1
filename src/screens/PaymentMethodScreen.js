@@ -14,7 +14,7 @@ export default function PaymentMethodScreen() {
   } = state;
 
   const [paymentMethodName, setPaymentMethod] = useState(
-    paymentMethod || 'Cash'
+    paymentMethod || 'Cashapp'
   );
 
   useEffect(() => {
@@ -29,6 +29,11 @@ export default function PaymentMethodScreen() {
     localStorage.setItem('paymentMethod', paymentMethodName);
     navigate('/placeorder');
   };
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <div>
       <CheckoutSteps step1 step2 step3></CheckoutSteps>
@@ -61,10 +66,10 @@ export default function PaymentMethodScreen() {
           <div className="mb-3">
             <Form.Check
               type="radio"
-              id="Cash"
-              label="Cash"
-              value="Cash "
-              checked={paymentMethodName === 'Cash'}
+              id="Cashapp"
+              label="Cashapp"
+              value="Cashapp "
+              checked={paymentMethodName === 'Cashapp'}
               onChange={(e) => setPaymentMethod(e.target.value)}
             />
             <Form.Check
@@ -101,6 +106,15 @@ export default function PaymentMethodScreen() {
               label="BANK TRANSFER"
               value="BANK TRANSFER"
               checked={paymentMethodName === 'BANK TRANSFER'}
+              onChange={(e) => setPaymentMethod(e.target.value)}
+            />
+            <Form.Check
+              type="radio"
+              disabled
+              id="Zelle"
+              label="Zelle"
+              value="Zelle"
+              checked={paymentMethodName === 'Zelle'}
               onChange={(e) => setPaymentMethod(e.target.value)}
             />
           </div>

@@ -89,6 +89,11 @@ export default function UserEditScreen() {
       dispatch({ type: 'UPDATE_FAIL' });
     }
   };
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <Container className="small-container">
       <Helmet>

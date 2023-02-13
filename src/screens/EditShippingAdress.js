@@ -70,7 +70,9 @@ export default function ShippingAddressScreen() {
   // );
 
   const [shippingAddress] = useState({});
-
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   useEffect(() => {
     async function getShippingAddress() {
       let address = await axios.get(

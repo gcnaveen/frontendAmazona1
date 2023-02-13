@@ -8,7 +8,9 @@ import { useNavigate } from 'react-router-dom';
 import { getError } from '../utils';
 function CreateCateogry() {
   const navigate = useNavigate();
-
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   useEffect(() => {
     const fetchCategories = async () => {
       let result = await axios.get('/api/products/getAllCats');

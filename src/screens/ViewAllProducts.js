@@ -62,6 +62,10 @@ export default function ViewAllProducts() {
     fetchData();
   }, []);
   // console.log('pro', products);
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <div style={{ overflowX: 'hidden' }}>
       {/* <Helmet>

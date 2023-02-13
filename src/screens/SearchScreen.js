@@ -88,7 +88,9 @@ export default function SearchScreen() {
       loading: true,
       error: '',
     });
-
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   useEffect(() => {
     const fetchData = async () => {
       try {

@@ -42,6 +42,10 @@ export default function SigninScreen() {
     }
   }, [navigate, redirect, userInfo]);
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <Container className="small-container" style={{ marginLeft: '15%' }}>
       <Helmet>

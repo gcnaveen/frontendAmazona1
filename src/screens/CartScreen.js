@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useReducer, useState } from 'react';
 import { Store } from '../Store';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -11,11 +11,36 @@ import axios from 'axios';
 import { Helmet } from 'react-helmet-async';
 import { Modal, ModalBody, ModalHeader } from 'reactstrap';
 import ContactDetailScreen from './ContactDetailScreen';
+import swal from 'sweetalert';
+import ContinueShopping from './ContinueShopping';
 
-export default function CartScreen() {
+const reducer = (state, action) => {
+  switch (action.type) {
+    case 'FETCH_REQUEST':
+      return { ...state, loading: true };
+    case 'FETCH_SUCCESS':
+      return { ...state, product: action.payload, loading: false };
+    case 'FETCH_FAIL':
+      return { ...state, loading: false, error: action.payload };
+    case 'REFRESH_PRODUCT':
+      return { ...state, product: action.payload };
+    case 'CREATE_REQUEST':
+      return { ...state, loadingCreateReview: true };
+    case 'CREATE_SUCCESS':
+      return { ...state, loadingCreateReview: false };
+    case 'CREATE_FAIL':
+      return { ...state, loadingCreateReview: false };
+    default:
+      return state;
+  }
+};
+
+export default function AddToCart() {
   const navigate = useNavigate();
   const [quantity, setQuantity] = useState(0);
   const [modal, setModal] = useState(false);
+  const [_modal, _setModal] = useState(false);
+
   const { state, dispatch: ctxDispatch } = useContext(Store);
   const {
     cart: { cartItems },
@@ -35,7 +60,12 @@ export default function CartScreen() {
   const removeItemHandler = (item) => {
     ctxDispatch({ type: 'CART_REMOVE_ITEM', payload: item });
   };
-
+  // const [{ loading, error, product, loadingCreateReview }, dispatch] =
+  //   useReducer(reducer, {
+  //     product: [],
+  //     loading: true,
+  //     error: '',
+  //   });
   const checkoutHandler = () => {
     // return (
     //   <Modal>
@@ -43,12 +73,53 @@ export default function CartScreen() {
     //   </Modal>
     // );
     // navigate('/shipping');
-    state.userInfo ? navigate('/shipping') : setModal(!modal);
+    state.userInfo ? navigate('/shipping') : _setModal(!_modal);
+    // swal('To Continue select one from the below ', {
+    //     buttons: {
+    //       // text: 'Continue with out login',
+
+    //       cancel: 'Continue with out login',
+    //       catch: 'Log in',
+    //       // default: true,
+    //     },
+    //   }).then((value) => {
+    //     switch (value) {
+    //       case 'catch':
+    //         navigate('/signin');
+    //         // swal('Pikachu fainted! You gained 500 XP!');
+    //         break;
+    //       case 'cancel':
+    //         navigate('/contact-detail');
+    //       // case 'catch':
+    //       //   swal('Gotcha!', 'Pikachu was caught!', 'success');
+    //       //   break;
+
+    //       default:
+    //         navigate('/contact-detail');
+    //     }
+    //   });
   };
+
   // let vl = cartItems.map((ele) => {
   //   return ele.quantity;
   // });
+  // const { cart, userInfo } = state;
 
+  // const addToCartHandler = async () => {
+  //   const existItem = cart.cartItems.find((x) => x._id === product._id);
+  //   let quantity = existItem ? existItem.quantity + 1 : 1;
+  //   const { data } = await axios.get(`/api/products/${product._id}`);
+  //   console.log('inside :::', data);
+  //   if (data.countInStock < quantity) {
+  //     window.alert('Sorry. Product is out of stock');
+  //     return;
+  //   }
+  //   ctxDispatch({
+  //     type: 'CART_ADD_ITEM',
+  //     payload: { ...product, quantity },
+  //   });
+  //   navigate('/cart');
+  // };
   console.log('cartItems:::', cartItems);
   // console.log('mukli hadri', vl);
   const handleChange = (item, val) => {
@@ -71,6 +142,9 @@ export default function CartScreen() {
     }
   };
   console.log(cartItems);
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   return (
     <div>
       <Helmet>
@@ -86,7 +160,21 @@ export default function CartScreen() {
           </ModalBody>
         </Modal>
       </div>
-
+      <div>
+        <Modal
+          style={{ marginTop: '200px' }}
+          size="ls"
+          isOpen={_modal}
+          toggle={() => _setModal(!_modal)}
+        >
+          <ModalHeader toggle={() => _setModal(!_modal)}>
+            Would You Like To Login?{' '}
+          </ModalHeader>
+          <ModalBody>
+            <ContinueShopping />
+          </ModalBody>
+        </Modal>
+      </div>
       <Row>
         <Col md={8}>
           {cartItems.length === 0 ? (
@@ -98,7 +186,7 @@ export default function CartScreen() {
               {cartItems.map((item) => (
                 <ListGroup.Item key={item._id} style={{ color: 'black' }}>
                   <Row className="align-items-center">
-                    <Col md={4}>
+                    <Col md={3}>
                       <img
                         src={item.image}
                         alt={item.name}
@@ -106,7 +194,7 @@ export default function CartScreen() {
                       ></img>{' '}
                       <Link to={`/product/${item.slug}`}>{item.name}</Link>
                     </Col>
-                    <Col md={3}>
+                    <Col md={4}>
                       <Button
                         onClick={() => {
                           // let qnty = quantity + 1;
@@ -128,17 +216,11 @@ export default function CartScreen() {
                         <i className="fas fa-plus-circle"></i>
                       </Button>
                     </Col>
-                    <Col md={3}>Rs.{item.price}</Col>
-                    <Col md={2}>
-                      <Button
-                        onClick={() => removeItemHandler(item)}
-                        variant="light"
-                      >
-                        <i className="fas fa-trash"></i>
-                      </Button>
-
+                    <Col md={3}>
+                      Rs.{item.price}
                       <div>
                         <select
+                          style={{ fontSize: '13px' }}
                           defaultValue=""
                           onChange={(e) => handleChange(item, e.target.value)}
                         >
@@ -150,6 +232,14 @@ export default function CartScreen() {
                           <option value="180">180</option>
                         </select>
                       </div>
+                    </Col>
+                    <Col md={2}>
+                      <Button
+                        onClick={() => removeItemHandler(item)}
+                        variant="light"
+                      >
+                        <i className="fas fa-trash"></i>
+                      </Button>
                     </Col>
                   </Row>
                 </ListGroup.Item>

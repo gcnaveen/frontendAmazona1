@@ -98,6 +98,10 @@ export default function ProductListScreen() {
     navigate('/admin/createCategory');
   };
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   const createHandler = async () => {
     navigate('/admin/product/createProduct');
 

@@ -97,6 +97,10 @@ export default function OrderListScreen() {
     }
   };
   useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  useEffect(() => {
     if (successDelete) {
       dispatch({ type: 'DELETE_RESET' });
     } else {
@@ -322,7 +326,7 @@ export default function OrderListScreen() {
 
                 <td>{order.user ? order.user.name : 'UNREGISTERED USER'}</td>
                 <td>{order.createdAt?.substring(0, 10)}</td>
-                <td>{order.totalPrice.toFixed(2)}</td>
+                <td>{order.totalPrice?.toFixed(2)}</td>
                 <td>{order.isPaid ? order.paidAt.substring(0, 10) : 'No'}</td>
                 <td>{order.isDelivered ? 'Yes' : 'No'}</td>
                 <td>

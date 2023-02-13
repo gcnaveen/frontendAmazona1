@@ -16,6 +16,9 @@ export default function SignupScreen() {
   const [name, setName] = useState('');
   const [phoneNo, setPhoneNo] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [whatsapp, setWhatsapp] = useState('');
+  const [imessage, setImessage] = useState('');
+  const [telegram, setTelegram] = useState('');
 
   // const mypin = Math.floor(100000 + Math.random() * 900000);
   // const [pin, setPin] = useState(`${mypin}`);
@@ -35,20 +38,36 @@ export default function SignupScreen() {
       return;
     }
     try {
-      const { data } = await Axios.post('/api/users/signup', {
-        name,
-        email,
-        phoneNo,
-        password,
+      // const { data } = await Axios.post('/api/users/signup', {
+      //   name,
+      //   email,
+      //   phoneNo,
+      //   password,
+      //   // imessage,
+      //   // whatsapp,
+      //   // telegram,
+      // });
+      // console.log('inside signup', data);
+
+      // ctxDispatch({ type: 'USER_SIGNIN', payload: data });
+      // localStorage.setItem('userInfo', JSON.stringify(data));
+      navigate('/signup-info', {
+        state: {
+          name: name,
+          email: email,
+          phoneNo: phoneNo,
+          password: password,
+        },
       });
-      ctxDispatch({ type: 'USER_SIGNIN', payload: data });
-      localStorage.setItem('userInfo', JSON.stringify(data));
-      navigate(redirect || '/');
-      console.log('data', data);
+      // console.log('inside signup', data);
     } catch (err) {
       toast.error(getError(err));
     }
   };
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   useEffect(() => {
     if (userInfo) {
@@ -72,6 +91,9 @@ export default function SignupScreen() {
       <Form onSubmit={submitHandler}>
         <Form.Group className="mb-3" controlId="name">
           <Form.Label>Name</Form.Label>
+          <span className="required" style={{ color: 'red' }}>
+            *
+          </span>
           <Form.Control
             required
             onChange={(e) => {
@@ -81,6 +103,9 @@ export default function SignupScreen() {
         </Form.Group>
         <Form.Group className="mb-3" controlId="email">
           <Form.Label>Email</Form.Label>
+          <span className="required" style={{ color: 'red' }}>
+            *
+          </span>
           <Form.Control
             type="email"
             required
@@ -91,6 +116,9 @@ export default function SignupScreen() {
         </Form.Group>
         <Form.Group className="mb-3" controlId="password">
           <Form.Label>Password</Form.Label>
+          <span className="required" style={{ color: 'red' }}>
+            *
+          </span>
           <Form.Control
             type="password"
             required
@@ -101,6 +129,9 @@ export default function SignupScreen() {
 
           <Form.Group className="mb-3" controlId="confirmPassword">
             <Form.Label>Confirm Password</Form.Label>
+            <span className="required" style={{ color: 'red' }}>
+              *
+            </span>
             <Form.Control
               type="password"
               required
@@ -112,6 +143,9 @@ export default function SignupScreen() {
         </Form.Group>
         <Form.Group className="mb-3" controlId="phoneNo">
           <Form.Label>Phone Number</Form.Label>
+          <span className="required" style={{ color: 'red' }}>
+            *
+          </span>
           <Form.Control
             type="number"
             required
@@ -120,6 +154,42 @@ export default function SignupScreen() {
             }}
           />
         </Form.Group>
+        {/* <Form.Group className="mb-3" controlId="whatsapp">
+          <Form.Label>Whatsapp Number</Form.Label>
+          <Form.Control
+            type="number"
+            required
+            onChange={(e) => {
+              setWhatsapp(e.target.value);
+              //   setName(e.target.value);
+            }}
+          />
+        </Form.Group>
+
+        <Form.Group className="mb-3" controlId="imessage">
+          <Form.Label>iMessage Number</Form.Label>
+          <Form.Control
+            type="number"
+            required
+            onChange={(e) => {
+              setImessage(e.target.value);
+              //   setEmail(e.target.value);
+            }}
+          />
+        </Form.Group>
+
+        <Form.Group className="mb-3" controlId="telegram">
+          <Form.Label>Telegram Number</Form.Label>
+          <Form.Control
+            type="number"
+            required
+            onChange={(e) => {
+              setTelegram(e.target.value);
+              //   setEmail(e.target.value);
+            }}
+          />
+        </Form.Group> */}
+
         {/* <Form.Group className="mb-3" controlId="Otp">
           <Form.Label>Verify Otp</Form.Label>
           <Form.Control
@@ -132,7 +202,7 @@ export default function SignupScreen() {
           <Button onClick={handleAlert}>Verify</Button>
         </Form.Group> */}
         <div className="mb-3">
-          <Button type="submit">Sign Up</Button>
+          <Button type="submit">Next</Button>
         </div>
         <div className="mb-3">
           Already have an account

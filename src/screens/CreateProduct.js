@@ -108,7 +108,9 @@ function CreateProduct() {
 
     console.log(productFields.subCategory);
   }
-
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   return (
     <div className="container">
       <form onSubmit={handleFormSubmit}>

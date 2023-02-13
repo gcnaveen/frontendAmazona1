@@ -88,7 +88,9 @@ export default function ProductEditScreen() {
 
     setSliderFields({ ...sliderFields, [name]: value });
   };
-
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   const submitUpdateForm = async (e) => {
     e.preventDefault();
 

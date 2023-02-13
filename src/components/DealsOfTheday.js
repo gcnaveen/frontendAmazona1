@@ -1,14 +1,17 @@
 import axios from 'axios';
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Button, Card, Col } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { Modal, ModalBody, ModalHeader } from 'reactstrap';
+import CartScreen from '../screens/CartScreen';
 import { Store } from '../Store';
 import Rating from './Rating';
 
 export default function DealsOfTheday(props) {
   console.log('in side SaleOfTheday ', props);
   const { state, dispatch: ctxDispatch } = useContext(Store);
+  const [modal, setModal] = useState(false);
 
   const {
     userInfo,
@@ -16,7 +19,7 @@ export default function DealsOfTheday(props) {
   } = state;
 
   const addToCartHandler = async (item) => {
-    const existItem = cartItems.find((x) => x._id === props.product._id);
+    const existItem = cartItems?.find((x) => x?._id === props?.product?._id);
     const quantity = existItem ? existItem.quantity + 1 : 1;
     const { data } = await axios.get(`/api/products/${item._id}`);
     if (data.countInStock < quantity) {
@@ -27,15 +30,29 @@ export default function DealsOfTheday(props) {
       type: 'CART_ADD_ITEM',
       payload: { ...item, quantity },
     });
-    toast.success(`${item.name} Added to the cart`);
+    setModal(!modal);
+
+    // toast.success(`${item.name} Added to the cart`);
   };
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   return (
     <>
       <div style={{ width: '99%' }} className="page-heading">
+        <div>
+          <Modal size="lg" isOpen={modal} toggle={() => setModal(!modal)}>
+            <ModalHeader toggle={() => setModal(!modal)}>Cart</ModalHeader>
+            <ModalBody>
+              <CartScreen />
+            </ModalBody>
+          </Modal>
+        </div>
         <h2>Deal Of The Day</h2>
         <div className="viweAll">
-          <Link
+          {/* <Link
             style={{
               display: 'flex',
               flexDirection: 'row-reverse',
@@ -46,7 +63,7 @@ export default function DealsOfTheday(props) {
             // onClick={() => loadMore()}
           >
             View all
-          </Link>
+          </Link> */}
         </div>
       </div>
       <div style={{ display: 'flex' }}>
@@ -79,7 +96,11 @@ export default function DealsOfTheday(props) {
                     className="card-img-top"
                     src={product.image}
                     alt={product.name}
-                    style={{ height: '100%', objectFit: 'contain' }}
+                    style={{
+                      height: '100%',
+                      objectFit: 'contain',
+                      paddingTop: '5px',
+                    }}
                   />
                 </Link>
                 <div

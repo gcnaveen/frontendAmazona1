@@ -89,6 +89,10 @@ export default function SlideProductScreen() {
     navigate('/carts');
   };
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   console.log('in side', slider);
   return loading ? (
     <LoadingBox />

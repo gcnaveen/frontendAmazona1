@@ -42,17 +42,18 @@ export default function HomeScreens() {
     error: '',
   });
 
-  useEffect(() => {}, []);
-
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   useEffect(() => {
     let items =
-      localStorage.getItem('userInfo') &&
+      // localStorage.getItem('userInfo') &&
       localStorage.getItem(
-        `${JSON.parse(localStorage.getItem('userInfo'))._id}`
+        `${JSON.parse(localStorage.getItem('userInfo'))?._id}`
       )
         ? JSON.parse(
             localStorage.getItem(
-              `${JSON.parse(localStorage.getItem('userInfo'))._id}`
+              `${JSON.parse(localStorage.getItem('userInfo'))?._id}`
             )
           )
         : [];

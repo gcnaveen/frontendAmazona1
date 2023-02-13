@@ -31,6 +31,7 @@ export default function ProductEditScreen() {
     countInStock: '',
     productDiscountedPrice: '',
     categoryID: '',
+    blackFridaySale: false,
     image: '',
     images: [],
   });
@@ -64,7 +65,14 @@ export default function ProductEditScreen() {
   function handleAdditionalInputFields(e) {
     setProductImages({ ...productImages, images: e.target.files });
   }
-
+  const handleChange = (val) => {
+    if (val === 'true') {
+      console.log('vsl in hsndle chsnge:::', val);
+      return productFields.blackFridaySale === true;
+    } else {
+      return productFields.blackFridaySale === false;
+    }
+  };
   useEffect(() => {
     if (productFields.category) {
       let selectedCategory = categories.find((category) => {
@@ -129,6 +137,7 @@ export default function ProductEditScreen() {
     );
     formData.append('categoryID', productFields.categoryID);
     formData.append('IMAGE_STATUS', filesStatus);
+    formData.append('blackFridaySale', productFields.blackFridaySale);
 
     try {
       const { data } = await axios.put(`/api/products/${productId}`, formData, {
@@ -144,6 +153,10 @@ export default function ProductEditScreen() {
     }
   }
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+  // console.log('form data', formData);
   return (
     <div className="container">
       <form onSubmit={handleFormSubmit}>
@@ -248,6 +261,18 @@ export default function ProductEditScreen() {
               value={productFields.description}
               className="form-control"
             />
+          </div>
+          <div className="col-md-6 col-sm-12">
+            <label>Black Friday Sale</label>
+            <select
+              onSelect={(e) => {
+                console.log('e:', e);
+                handleChange(e.target.value);
+              }}
+            >
+              <option value="true">Yes</option>
+              <option value="false">No</option>
+            </select>
           </div>
         </div>
 

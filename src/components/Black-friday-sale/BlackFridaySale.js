@@ -9,7 +9,7 @@ export default function BlackFridaySale() {
 
   let interval = useRef();
   const startTimer = () => {
-    const countDowndate = new Date('Feb 10 2023 00:00:00').getTime();
+    const countDowndate = new Date('Feb 17 2023 00:00:00').getTime();
     interval = setInterval(() => {
       const now = new Date().getTime();
       const distance = countDowndate - now;
@@ -37,6 +37,10 @@ export default function BlackFridaySale() {
     return () => {
       clearInterval(interval.current);
     };
+  }, []);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
   }, []);
 
   return (

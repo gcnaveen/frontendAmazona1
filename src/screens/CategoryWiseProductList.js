@@ -55,12 +55,14 @@ function CategoryWiseProductList() {
     toast.success(`${item.name} Added to the cart`);
   };
   console.log('products', products);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   const product = products.map((ele) => ele.category);
   return (
     <div style={{ position: 'relative', zIndex: '500' }}>
-      <h1 style={{ position: 'relative', zIndex: '500' }}>
-        Category : {product[0]}
-      </h1>
+      <h1 style={{ position: 'relative', zIndex: '500' }}>{product[0]}</h1>
       {
         products?.length === 0 && <LoadingBox />
         //  <MessageBox>No Product Found</MessageBox>
@@ -68,7 +70,7 @@ function CategoryWiseProductList() {
       <div className="products">
         {products?.map((ele) => {
           return (
-            <div className="product">
+            <div key={ele.slug} className="product">
               <Card style={{ width: '250px', height: '300px', margin: '2px' }}>
                 <Link to={`/product/${ele.slug}`} style={{ height: '50%' }}>
                   {/* {ele?.length === 0 && <LoadingBox />} */}
@@ -119,15 +121,16 @@ function CategoryWiseProductList() {
                       <span
                         style={{
                           margin: 'auto',
-                          background: '#dc3545',
-                          color: 'white',
+                          // background: '#dc3545',
+                          fontSize: '15px',
+                          fontWeight: 600,
+                          color: 'green',
                         }}
                       >
-                        (
                         {Math.floor(
                           (ele.productDiscountedPrice / ele.price) * 100
                         )}
-                        % off)
+                        % off
                       </span>
                     </div>
                   </Card.Text>

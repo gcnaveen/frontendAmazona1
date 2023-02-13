@@ -30,7 +30,6 @@ const reducer = (state, action) => {
 
 export default function PlaceOrderScreen() {
   const navigate = useNavigate();
-  const [popup, setPopup] = useState(false);
   const [{ loading }, dispatch] = useReducer(reducer, {
     loading: false,
   });
@@ -148,6 +147,11 @@ export default function PlaceOrderScreen() {
     }
   }, [cart, navigate]);
   console.log('inside the place order:::', userInfo);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <div>
       <CheckoutSteps step1 step2 step3 step4></CheckoutSteps>
@@ -157,42 +161,19 @@ export default function PlaceOrderScreen() {
       <h1 className="my-3">Preview Order</h1>
       <Row>
         <Col md={8}>
-          {userInfo ? (
-            <Card className="mb-3">
-              <Card.Body>
-                <Card.Title>Shipping</Card.Title>
-                <Card.Text>
-                  <strong>Name:</strong> {cart.shippingAddress.fullName} <br />
-                  <strong>Address: </strong> {cart.shippingAddress.address},
-                  {cart.shippingAddress.city}, {cart.shippingAddress.postalCode}
-                  ,{cart.shippingAddress.country}
-                </Card.Text>
-                <Link to="/shipping">Edit</Link>
-              </Card.Body>
-            </Card>
-          ) : (
-            <Card className="mb-3">
-              <Card.Body>
-                <Card.Title>Contact Details</Card.Title>
-                <Card.Text>
-                  <strong>Phone Number : </strong>{' '}
-                  {cart.contactDetails.phoneNumber} <br />
-                  <strong>Whatsapp Number : </strong>{' '}
-                  {cart.contactDetails.whatsappNumber}
-                  <br />
-                  <strong>Telegram Number : </strong>{' '}
-                  {cart.contactDetails.telegramNumber}
-                  <br />
-                  <strong>iMessage Number : </strong>{' '}
-                  {cart.contactDetails.iMessageNumber}
-                  <br />
-                  <strong>Email : </strong> {cart.contactDetails.email}
-                  <br />
-                </Card.Text>
-                {/* <Link to="/shipping">Edit</Link> */}
-              </Card.Body>
-            </Card>
-          )}
+          <Card className="mb-3">
+            <Card.Body>
+              <Card.Title>Shipping</Card.Title>
+              <Card.Text>
+                <strong>Name:</strong> {cart.shippingAddress.fullName} <br />
+                <strong>Address: </strong> {cart.shippingAddress.address},
+                {cart.shippingAddress.city}, {cart.shippingAddress.postalCode},
+                {cart.shippingAddress.country}
+              </Card.Text>
+              <Link to="/shipping">Edit</Link>
+            </Card.Body>
+          </Card>
+
           {/* <Card className="mb-3">
             <Card.Body>
               <Card.Title>Shipping</Card.Title>
@@ -218,7 +199,6 @@ export default function PlaceOrderScreen() {
           ) : (
             ''
           )}
-
           <Card className="mb-3">
             <Card.Body>
               <Card.Title>Items</Card.Title>

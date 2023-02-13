@@ -39,7 +39,9 @@ function CreateSlide() {
 
     setSliderFields({ ...sliderFields, [name]: value });
   };
-
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   const submitHandler = async (e) => {
     e.preventDefault();
 

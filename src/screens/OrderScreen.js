@@ -87,6 +87,11 @@ export default function OrderScreen() {
       dispatch({ type: 'FETCH_FAIL', payload: getError(err) });
     }
   }
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+  console.log('in side the detail page::', order);
   useEffect(() => {
     if (!userInfo) {
       return navigate('/signin');
@@ -174,7 +179,7 @@ export default function OrderScreen() {
       console.log(err);
     }
   }
-  console.log('inside the', order);
+  // console.log(' in the new console', order);
   return loading ? (
     <LoadingBox></LoadingBox>
   ) : error ? (
@@ -188,7 +193,70 @@ export default function OrderScreen() {
       <Row>
         <Col md={8}>
           <Card className="mb-3">
-            {order?.user ? (
+            {order?.user == '63e3c8d79cd83b7e8beefb0a' ? (
+              // <Card.Body>
+              //   <Card.Title>Shipping</Card.Title>
+
+              //   <Card.Text>
+              //     <strong>Name:</strong> {order.shippingAddress?.fullName}{' '}
+              //     <br />
+              //     <strong>Address: </strong> {order.shippingAddress?.address},
+              //     {order.shippingAddress?.city},{' '}
+              //     {order.shippingAddress?.postalCode},
+              //     {order.shippingAddress?.country}
+              //     &nbsp;
+              //     {order.shippingAddress?.location &&
+              //       order.shippingAddress?.location?.lat && (
+              //         <a
+              //           target="_new"
+              //           href={`https://maps.google.com?q=${order.shippingAddress.location.lat},${order.shippingAddress.location.lng}`}
+              //         >
+              //           Show On Map
+              //         </a>
+              //       )}
+              //     <br />
+              //     {!order.isDispatched &&
+              //       !order.isCancelled &&
+              //       !userInfo?.isAdmin && (
+              //         <Link to={`/adress-edit/${order._id}`}>Edit</Link>
+              //       )}
+              //   </Card.Text>
+              //   {/* {order.isDelivered ? (
+              //   <MessageBox variant="success">
+              //     Delivered at {order.deliveredAt}
+              //   </MessageBox>
+              // ) : (
+              //   <MessageBox variant="danger">Not Delivered</MessageBox>
+              // )} */}
+              // </Card.Body> (
+              <Card.Body>
+                <Card.Title>Contact Details</Card.Title>
+
+                <Card.Text>
+                  <strong>Phone Number : </strong>{' '}
+                  {order.contactDetails?.phoneNumber} <br />
+                  {/* <strong>Whatsapp Number </strong>{' '}
+                  {order.contactDetails?.whatsappNumber},<br />
+                  <strong>Telegram Number </strong>{' '}
+                  {order.contactDetails?.telegramNumber},<br />
+                  <strong>iMessage Number </strong>{' '} */}
+                  {/* {order.contactDetails?.iMessageNumber}, */}
+                  <strong>Email </strong>
+                  {order.contactDetails?.email},
+                  <br />
+                  {/* {!order.isDispatched && !order.isCancelled && (
+                    <Link to={`/adress-edit/${order._id}`}>Edit</Link>
+                  )} */}
+                </Card.Text>
+                {/* {order.isDelivered ? (
+                <MessageBox variant="success">
+                  Delivered at {order.deliveredAt}
+                </MessageBox>
+              ) : (
+                <MessageBox variant="danger">Not Delivered</MessageBox>
+              )} */}
+              </Card.Body>
+            ) : (
               <Card.Body>
                 <Card.Title>Shipping</Card.Title>
 
@@ -217,39 +285,12 @@ export default function OrderScreen() {
                     )}
                 </Card.Text>
                 {/* {order.isDelivered ? (
-                <MessageBox variant="success">
-                  Delivered at {order.deliveredAt}
-                </MessageBox>
-              ) : (
-                <MessageBox variant="danger">Not Delivered</MessageBox>
-              )} */}
-              </Card.Body>
-            ) : (
-              <Card.Body>
-                <Card.Title>Contact Details</Card.Title>
-
-                <Card.Text>
-                  <strong>Phone Number : </strong>{' '}
-                  {order.contactDetails?.phoneNumber} <br />
-                  <strong>Whatsapp Number </strong>{' '}
-                  {order.contactDetails?.whatsappNumber},<br />
-                  <strong>Telegram Number </strong>{' '}
-                  {order.contactDetails?.telegramNumber},<br />
-                  <strong>iMessage Number </strong>{' '}
-                  {order.contactDetails?.iMessageNumber},<strong>Email </strong>
-                  {order.contactDetails?.email},
-                  <br />
-                  {/* {!order.isDispatched && !order.isCancelled && (
-                    <Link to={`/adress-edit/${order._id}`}>Edit</Link>
-                  )} */}
-                </Card.Text>
-                {/* {order.isDelivered ? (
-                <MessageBox variant="success">
-                  Delivered at {order.deliveredAt}
-                </MessageBox>
-              ) : (
-                <MessageBox variant="danger">Not Delivered</MessageBox>
-              )} */}
+            <MessageBox variant="success">
+              Delivered at {order.deliveredAt}
+            </MessageBox>
+          ) : (
+            <MessageBox variant="danger">Not Delivered</MessageBox>
+          )} */}
               </Card.Body>
             )}
             {/* <Card.Body>
@@ -285,7 +326,7 @@ export default function OrderScreen() {
               )}
             </Card.Body> */}
           </Card>
-          {userInfo ? (
+          {order?.user == '63e3c8d79cd83b7e8beefb0a' ? null : (
             <Card className="mb-3">
               <Card.Body>
                 <Card.Title>Payment</Card.Title>
@@ -301,7 +342,7 @@ export default function OrderScreen() {
               )} */}
               </Card.Body>
             </Card>
-          ) : null}
+          )}
 
           <Card className="mb-3">
             <Card.Body>

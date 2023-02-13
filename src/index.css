@@ -10,9 +10,9 @@ body {
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden !important;
 }
-body::-webkit-scrollbar {
+/* body::-webkit-scrollbar {
   display: none;
-}
+} */
 .site-container {
   min-height: 100%;
   overflow-x: hidden !important;
@@ -181,13 +181,27 @@ button {
     display: none !important;
   }
 }
-
+.continueShopingButtons {
+  display: inline-grid;
+  margin: 10px 0 0px 156px;
+  border: none;
+  border-radius: 4px;
+}
 /* @media only screen and (min-width: 1150px) {
   .col-md-4 {
     width: 50%;
   }
 } */
-
+/* style={{
+  height: '100px !important',
+  width: '400x !important',
+  left: '20rem !important',
+}} */
+/* .modal-contant {
+  width: 100px !important ;
+  height: 400px !important ;
+  left: 20rem !important ;
+} */
 .side-bar-nav {
   display: flex;
   margin-top: 30px;
@@ -592,4 +606,10 @@ svg {
 
 .headericon:hover {
   color: #6aa907 !important;
+}
+
+input[type='number']::-webkit-inner-spin-button,
+input[type='number']::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }

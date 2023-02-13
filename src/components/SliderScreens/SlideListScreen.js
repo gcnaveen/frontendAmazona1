@@ -101,7 +101,9 @@ export default function SlideListScreen() {
   const createHandler = async () => {
     navigate('/admin/sliders/createSlide');
   };
-
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   //   console.log('in side the prices', sliders);
   const deleteHandler = async (product) => {
     if (window.confirm('Are you sure to delete?')) {

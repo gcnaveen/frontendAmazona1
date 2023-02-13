@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Nav } from 'react-bootstrap';
 import { NavLink } from 'react-router-dom';
 import { RiArrowDownSFill, RiArrowUpSFill } from 'react-icons/ri';
@@ -7,6 +7,10 @@ function SubMenuComp({ category }) {
   const handleSidebar = () => {
     setSubMenu(!subMenu);
   };
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <Nav.Item>
       <NavLink

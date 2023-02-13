@@ -68,6 +68,10 @@ export default function UserListScreen() {
     }
   }, [userInfo, successDelete]);
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   // const deleteHandler = async (user) => {
   //   if (window.confirm('Are you sure to delete?')) {
   //     try {

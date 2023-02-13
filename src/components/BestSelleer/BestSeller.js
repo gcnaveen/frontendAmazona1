@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Button, Card } from 'react-bootstrap';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -7,10 +7,13 @@ import { Link, useNavigate } from 'react-router-dom';
 import Rating from '../Rating';
 import { toast } from 'react-toastify';
 import axios from 'axios';
+import { Modal, ModalBody, ModalHeader } from 'reactstrap';
+import CartScreen from '../../screens/CartScreen';
 
 export default function BestSeller(props) {
   const { state, dispatch: ctxDispatch } = useContext(Store);
   const [show, setShow] = useState(3);
+  const [modal, setModal] = useState(false);
 
   const {
     userInfo,
@@ -30,8 +33,9 @@ export default function BestSeller(props) {
       type: 'CART_ADD_ITEM',
       payload: { ...item, quantity },
     });
+    setModal(!modal);
     // if (state.userInfo) {
-    toast.success(`${item.name} Added to the cart`);
+    // toast.success(`${item.name} Added to the cart`);
     // }
     // else {
     //   navigate('/signin');
@@ -43,12 +47,26 @@ export default function BestSeller(props) {
     setShow(show + show);
   };
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <>
       <div style={{ width: '99%' }} className="page-heading">
+        <div>
+          <Modal size="lg" isOpen={modal} toggle={() => setModal(!modal)}>
+            <ModalHeader toggle={() => setModal(!modal)}>
+              Added Cart
+            </ModalHeader>
+            <ModalBody>
+              <CartScreen />
+            </ModalBody>
+          </Modal>
+        </div>
         <h2>Best Sellers</h2>
         <div className="viweAll">
-          <Link
+          {/* <Link
             style={{
               display: 'flex',
               flexDirection: 'row-reverse',
@@ -59,7 +77,7 @@ export default function BestSeller(props) {
             // onClick={() => loadMore()}
           >
             View all
-          </Link>
+          </Link> */}
         </div>
       </div>
       {/* <h2 className="page-heading">Best Sellers</h2> */}
@@ -94,7 +112,11 @@ export default function BestSeller(props) {
                     className="card-img-top"
                     src={product.image}
                     alt={product.name}
-                    style={{ height: '100%', objectFit: 'contain' }}
+                    style={{
+                      height: '100%',
+                      objectFit: 'contain',
+                      paddingTop: '5px',
+                    }}
                   />
                 </Link>
                 <div

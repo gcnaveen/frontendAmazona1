@@ -1,4 +1,4 @@
-import React, { useContext, useReducer, useState } from 'react';
+import React, { useContext, useEffect, useReducer, useState } from 'react';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import { Store } from '../Store';
@@ -38,8 +38,8 @@ export default function ProfileScreen() {
     e.preventDefault();
 
     if (password !== confirmPassword) {
-      toast.error("Passwords do not match")
-      return
+      toast.error('Passwords do not match');
+      return;
     }
     try {
       const { data } = await axios.put(
@@ -48,7 +48,7 @@ export default function ProfileScreen() {
           name,
           email,
           password,
-          oldPassword
+          oldPassword,
         },
         {
           headers: { Authorization: `Bearer ${userInfo.token}` },
@@ -67,6 +67,10 @@ export default function ProfileScreen() {
       toast.error(getError(err));
     }
   };
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   return (
     <div className="container small-container">
