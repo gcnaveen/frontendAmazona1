@@ -8,10 +8,10 @@ export default function LoadingBox() {
       role="status"
       style={{
         display: 'fixed',
-        top: '50%',
-        left: '50%',
-        // marginTop: '100px',
-        // marginLeft: '346px',
+        // top: '50%',
+        // left: '50%',
+        marginTop: '100px',
+        marginLeft: '346px',
       }}
     >
       <span className="visually-hidden">Loading...</span>

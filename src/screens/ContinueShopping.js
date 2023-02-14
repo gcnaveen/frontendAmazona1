@@ -17,7 +17,7 @@ export default function ContinueShopping() {
           style={{ border: 'none', borderRadius: '3px', width: '180px' }}
           onClick={handleContinue}
         >
-          Continue without login
+          Continue
         </button>
         <button
           style={{

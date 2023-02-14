@@ -39,17 +39,13 @@ export default function ContactDetailScreen() {
   const [phoneNumber, setPhoneNumber] = useState(
     contactDetails.phoneNumber || ''
   );
-  const [whatsappNumber, setWhatsappNumber] = useState(
-    contactDetails.watsappNumber || ''
-  );
-  const [iMessageNumber, setIMessageNumber] = useState(
-    contactDetails.iMessageNumber || ''
-  );
-  const [telegramNumber, setTelegramNumber] = useState(
-    contactDetails.telegramNumber || ''
-  );
+  const [address, setAddress] = useState(contactDetails.address || '');
+  const [city, setCity] = useState(contactDetails.city || '');
+  const [postalCode, setPostalCode] = useState(contactDetails.postalCode || '');
+  const [country, setCountry] = useState(contactDetails.country || '');
+
   const [email, setEmail] = useState(contactDetails.email || '');
-  console.log('state in contact details::', state);
+  console.log('state in contact details::', state.cart);
   const {
     register,
     handleSubmit,
@@ -133,20 +129,22 @@ export default function ContactDetailScreen() {
       type: 'SAVE_CONTACT_DETAILS',
       payload: {
         phoneNumber,
-        whatsappNumber,
-        iMessageNumber,
-        telegramNumber,
         email,
+        address,
+        postalCode,
+        country,
+        city,
       },
     });
     localStorage.setItem(
       'contactDetails',
       JSON.stringify({
         phoneNumber,
-        whatsappNumber,
-        iMessageNumber,
-        telegramNumber,
         email,
+        address,
+        postalCode,
+        country,
+        city,
       })
     );
     swal({
@@ -272,6 +270,62 @@ export default function ContactDetailScreen() {
         </Form.Field> */}
         {errors.email && <p style={{ color: 'red' }}>Please check the Email</p>}
 
+        <Form.Group className="mb-3" controlId="address">
+          <Form.Label>
+            Address{' '}
+            <span className="required" style={{ color: 'red' }}>
+              *
+            </span>
+          </Form.Label>
+          <Form.Control
+            value={address}
+            type="text"
+            onChange={(e) => setAddress(e.target.value)}
+            required
+          />
+        </Form.Group>
+        <Form.Group className="mb-3" controlId="city">
+          <Form.Label>
+            City{' '}
+            <span className="required" style={{ color: 'red' }}>
+              *
+            </span>
+          </Form.Label>
+          <Form.Control
+            value={city}
+            type="text"
+            onChange={(e) => setCity(e.target.value)}
+            required
+          />
+        </Form.Group>
+        <Form.Group className="mb-3" controlId="postalCode">
+          <Form.Label>
+            Postal Code{' '}
+            <span className="required" style={{ color: 'red' }}>
+              *
+            </span>
+          </Form.Label>
+          <Form.Control
+            value={postalCode}
+            type="number"
+            onChange={(e) => setPostalCode(e.target.value)}
+            required
+          />
+        </Form.Group>
+        <Form.Group className="mb-3" controlId="country">
+          <Form.Label>
+            Country{' '}
+            <span className="required" style={{ color: 'red' }}>
+              *
+            </span>
+          </Form.Label>
+          <Form.Control
+            value={country}
+            type="text"
+            onChange={(e) => setCountry(e.target.value)}
+            required
+          />
+        </Form.Group>
         <Button variant="primary" type="submit">
           Submit
         </Button>

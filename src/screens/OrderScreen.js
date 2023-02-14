@@ -244,6 +244,11 @@ export default function OrderScreen() {
                   <strong>Email </strong>
                   {order.contactDetails?.email},
                   <br />
+                  <strong>Address: </strong> {order.contactDetails?.address},
+                  {order.contactDetails?.city},{' '}
+                  {order.contactDetails?.postalCode},
+                  {order.contactDetails?.country}
+                  <br />
                   {/* {!order.isDispatched && !order.isCancelled && (
                     <Link to={`/adress-edit/${order._id}`}>Edit</Link>
                   )} */}
