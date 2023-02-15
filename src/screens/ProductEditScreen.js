@@ -68,11 +68,15 @@ export default function ProductEditScreen() {
   const handleChange = (val) => {
     if (val === 'true') {
       console.log('vsl in hsndle chsnge:::', val);
-      return productFields.blackFridaySale === true;
-    } else {
-      return productFields.blackFridaySale === false;
+      // return (productFields.blackFridaySale = true);
+      setProductFields({ ...productFields, blackFridaySale: true });
+    } else if (val === 'false') {
+      setProductFields({ ...productFields, blackFridaySale: false });
+
+      // return (productFields.blackFridaySale = false);
     }
   };
+  console.log('in side edit screen', productFields.blackFridaySale);
   useEffect(() => {
     if (productFields.category) {
       let selectedCategory = categories.find((category) => {
@@ -152,6 +156,7 @@ export default function ProductEditScreen() {
       navigate('/admin/products');
     }
   }
+  console.log('getting all fields', productFields);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -265,11 +270,15 @@ export default function ProductEditScreen() {
           <div className="col-md-6 col-sm-12">
             <label>Black Friday Sale</label>
             <select
-              onSelect={(e) => {
+              value={productFields.blackFridaySale}
+              // defaultValue=""
+              onChange={(e) => {
                 console.log('e:', e);
                 handleChange(e.target.value);
               }}
             >
+              <option value="">select</option>
+
               <option value="true">Yes</option>
               <option value="false">No</option>
             </select>

@@ -108,6 +108,19 @@ function CreateProduct() {
 
     console.log(productFields.subCategory);
   }
+
+  const handleChange = (val) => {
+    if (val === 'true') {
+      console.log('vsl in hsndle chsnge:::', val);
+      // return (productFields.blackFridaySale = true);
+      setProductFields({ ...productFields, blackFridaySale: true });
+    } else {
+      setProductFields({ ...productFields, blackFridaySale: false });
+
+      // return (productFields.blackFridaySale = false);
+    }
+  };
+  console.log('getting all fields', productFields);
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -190,6 +203,21 @@ function CreateProduct() {
               className="form-control"
             />
           </div>
+        </div>
+        <div className="col-md-6 col-sm-12">
+          <label>Black Friday Sale</label>
+          <select
+            defaultValue=""
+            onChange={(e) => {
+              console.log('e:', e);
+              handleChange(e.target.value);
+            }}
+          >
+            <option value="">select</option>
+
+            <option value="true">Yes</option>
+            <option value="false">No</option>
+          </select>
         </div>
         <div className="row">
           <div className="col-md-6 col-sm-12">
