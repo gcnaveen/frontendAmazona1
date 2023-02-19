@@ -118,7 +118,7 @@ export default function BlackFridaySale() {
   return (
     <div>
       {/* <h1>Black friday sale</h1> */}
-      {todayDay == 'Fri' ? (
+      {todayDay == 'Fri' || 'Sat' || 'Sun' ? (
         <>
           <div style={{ width: '95%' }} className="page-heading">
             <h2>Black Friday Sale</h2>

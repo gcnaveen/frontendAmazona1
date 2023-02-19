@@ -82,9 +82,9 @@ export default function HomeScreens() {
   const _slice = products.slice(0, show);
   console.log('slice', _slice);
 
-  const loadMore = () => {
-    <Product />;
-  };
+  // const loadMore = () => {
+  //   <Product />;
+  // };
 
   console.log('pro', product);
   return (
@@ -121,7 +121,7 @@ export default function HomeScreens() {
                       fontSize: '18px',
                     }}
                     to="/allProducts"
-                    onClick={() => loadMore()}
+                    // onClick={() => loadMore()}
                   >
                     View all
                   </Link>
